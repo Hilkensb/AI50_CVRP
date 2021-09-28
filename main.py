@@ -10,18 +10,13 @@ import matplotlib
 matplotlib.use('TkAgg')
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import copy
-import solution.cvrp.solution as sol
+
 
 
 def main():
     c = cvrp.Cvrp(file_path="http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.vrp", file_type="web")
-    c.showConsole()
-    s = sol.SolutionCvrp(c)
-    s.readSolutionWeb(url="http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.sol")
-    print(s)
-    print(s.evaluation())
-    s.showMathPlotLib()
-    
+    d = copy.copy(c)
+    d.showMathPlotLib()
     """
     root = Tk.Tk()
     root.wm_title("Animated Graph embedded in TK")
