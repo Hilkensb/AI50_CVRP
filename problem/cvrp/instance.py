@@ -15,8 +15,11 @@ import networkx as nx
 import requests
 # Library to create the graph plot
 import matplotlib.pyplot as plt
+# Library to generate html graph plot
 import plotly.graph_objs as go
 from plotly.offline import plot
+# Library pandas from dataframe
+import pandas as pd
 
 # Modules
 from problem.vrp_interface import VehiculeRootingProblem
@@ -124,22 +127,43 @@ class Cvrp(VehiculeRootingProblem):
         :rtype: str
         """
         return f"CVRP-n{self.__nb_customer + 1}-k{self.min_vehicule_number()}"
-    
-    # TODO    
+      
     def __str__(self) -> str:
         """
         """
-        return ""
+        
+        # Get the matrix of the instance
+        # Round the distance and put them in int
+        distance_matrix: np.matrix = self.distanceMatrix(round_distance=True, precision=0)
+        
+        # Get the id of nodes to put it then as column and row name
+        # At first only the node id of customers
+        nodes_id: List[int] = [customer.node_id for customer in self.__customers]
+        # Add finaly the node id of the depot
+        nodes_id.append(self.__depot.node_id)
+        # Sort the list
+        nodes_id.sort()
+        
+        # Create a pandas dataframe to show column name and row name of the matrix
+        matrix_data_frame = pd.DataFrame(distance_matrix, columns=nodes_id, index=nodes_id)
+        
+        # Return the string value of the dataframe
+        return str(matrix_data_frame)
+        
 
 # ---------------------------- Inhereted Methods ---------------------------- #
     
-    def distanceMatrix(self) -> np.matrix:   
+    def distanceMatrix(self, round_distance: bool = False, precision: int = 2) -> np.matrix:   
         """
         distanceMatrix
         
         Method to get the distance matrix of the cvrp instance (node are sorted
         by their node_id)
         
+        :param round_distance: If the distance between nodes should rounded or not, default to False (opt.)
+        :type round_distance: bool
+        :param precision: Precision of the round, default to 2 (opt.)
+        :type precision: int
         :return: The distance matrix of the instance
         :rtype: :class:'numpy.matrix'
         
@@ -162,12 +186,12 @@ class Cvrp(VehiculeRootingProblem):
         # Round the distance to the nearest integer
         distance_matrix: np.matrix = np.matrix([
             [
-                round(mathfunc.euclideanDistance(node1, node2)) 
+                round(mathfunc.euclideanDistance(node1, node2), precision)
+                if round_distance else mathfunc.euclideanDistance(node1, node2)
                 for node2 in node_list
             ] for node1 in node_list
         ])
-           
-        # TODO -1, ou os.maxsize ?   
+             
         # fill the diagonal of the distance matrix with -1
         np.fill_diagonal(distance_matrix, -1)
         
@@ -193,7 +217,7 @@ class Cvrp(VehiculeRootingProblem):
         
         # Create a list of node id (for all the customers)
         node_id_list: List[int] = [customer.node_id for customer in self.__customers]
-        # Add the depot to the edge
+        # Add the depot to the node id list
         node_id_list.append(self.__depot.node_id)
         # Sort the list by id
         node_id_list.sort()
@@ -320,7 +344,17 @@ class Cvrp(VehiculeRootingProblem):
         """
         randomInstance
         
-        Method to create a random instance
+        Method to create a random instance of cvrp
+        
+        :param nb_customer: The number of customers in the instance, default to 30 (opt.)
+        :type nb_customer: int
+        :param vehicule_capacity: The capacity of the vehicule's fleet, default to 100 (opt.)
+        :type vehicule_capacity: int
+        :param customer_demand_lb: Lowerbound of the customer demand which will be distributed randomly and uniformely, default to 1 (opt.)
+        :type customer_demand_lb: int
+        :param customer_demand_ub: Upperbound of the customer demand which will be distributed randomly and uniformely, default to 20 (opt.)
+        :type customer_demand_ub: int
+        :param grid_size: The size of the grid in other word the maximum value
         """
         
         # Set the parameters passed as argments
@@ -422,15 +456,10 @@ class Cvrp(VehiculeRootingProblem):
         """
         """
         
-        # Display the depot
-        print("---------------- Depot ----------------")
-        print(self.depot)
-        
-        # Display the customers
-        print("-------------- Customers --------------")
-        # For each customer
-        for customer in self.customers:
-            print(customer)
+        # Print the depot node id
+        print(f"Depot node id: {self.__depot.node_id}")
+        # Print the string value of the instance
+        print(self.__str__())
 
     def showMathPlotLib(
         self, show_edge: bool = False, customer_node_color: str = "#8eaaf6",
@@ -508,44 +537,7 @@ class Cvrp(VehiculeRootingProblem):
         
         # Create a color map to color each customer with a color and the depot with another one
         # the color has to be in str
-        color_map: list[str] = []
-        # For every node set his color
-        for node in graph:
-            # If the node is representing the depot
-            if node == self.__depot.node_id:
-                color_map.append(depot_node_color)
-            # If it's not a depot, it means that the node is representing a customer
-            # So we have to color it with the customer color
-            else:
-                color_map.append(customer_node_color)
-        
-        # Get the keys of the list of position
-        fixed_nodes: List[int] = fixed_positions.keys()
-        # Create the layout of the graph with the position
-        position_layout: nx.spring_layout = nx.spring_layout(graph, pos=fixed_positions, fixed = fixed_nodes)# Get the graph
-        graph: nx.Graph = self.graph()
-        
-        # If we don't want to show the edges of the graph
-        if not show_edge:
-            # Create a list containing all the edges of the graph to then remove them
-            edges: List[nx.classes.reportviews.EdgeView] = list(graph.edges)
-            # remove the edges
-            graph.remove_edges_from(edges)
-        
-        # Set the position of the nodes
-        # Dict with two of the positions set
-        fixed_positions: Dict[int, Tuple[int, int]] = {}
-        # For every customer
-        for customer in self.__customers:
-            # Set his position
-            fixed_positions[customer.node_id] = customer.getCoordinates()
-        
-        # Set the position of the depot
-        fixed_positions[self.__depot.node_id] = self.__depot.getCoordinates()
-        
-        # Create a color map to color each customer with a color and the depot with another one
-        # the color has to be in str
-        color_map: list[str] = []
+        color_map: List[str] = []
         # For every node set his color
         for node in graph:
             # If the node is representing the depot
@@ -798,6 +790,24 @@ class Cvrp(VehiculeRootingProblem):
 
         # Return the result
         return customer_found
+        
+    def getCustomerByCustomerNumber(self, customer_number_searched: int) -> CustomerCvrp:
+        """
+        """
+        
+        # Get a copy (NOT a deepcopy) of the customers list
+        customers_list: List[CustomerCvrp] = self.__customers[:]
+
+        # Sort the list by node id
+        customers_list.sort(key=lambda customer: customer.node_id)
+        
+        # Get the customer
+        # /!\ can raise a ValueError if the node_id is not in the list
+        # We then need to add 1 because indexing in python start at 0, but
+        # the customer number start at 1
+        customer: CustomerCvrp = customers_list[customer_number_searched - 1]
+        
+        return customer
         
     def getNodeById(self, id_searched: int) -> Union[CustomerCvrp, DepotCvrp]:
         """
