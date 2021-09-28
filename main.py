@@ -10,12 +10,31 @@ import matplotlib
 matplotlib.use('TkAgg')
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import copy
+#Added in order to display matrix
+import numpy as np
+import pandas as pd
+
 
 
 def main():
     c = cvrp.Cvrp(file_path="http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.vrp", file_type="web")
     d = copy.copy(c)
     d.showMathPlotLib()
+
+    #this should be put into a function 'maybe distanceMatrix
+    #Creates columns and rows name for distance matrix
+    row_names =[]
+    column_names =[]
+    for i in range(c.nb_customer+1):
+        row_names.append("Node number "+str(i+1)+"  ")
+        column_names.append("Distance from node number "+str(i))
+
+    #Allows to see the whole matrix
+    pd.set_option('display.max_columns', None)
+    #Data frame in order to display columns and rows names
+    distanceMatrix = pd.DataFrame(c.distanceMatrix(), columns=column_names, index=row_names)
+    #Print de distance matrix
+    print(distanceMatrix)
     """
     root = Tk.Tk()
     root.wm_title("Animated Graph embedded in TK")
