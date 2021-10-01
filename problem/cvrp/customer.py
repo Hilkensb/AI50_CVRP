@@ -13,7 +13,7 @@ class CustomerCvrp(nodeWithCoord):
 
 # ---------------------------- Overrided Methods ---------------------------- #
 
-    def __init__(self, node_id: int, x: int, y: int, demand: int):
+    def __init__(self, node_id: int, x: int, y: int, demand: int) -> CustomerCvrp:
         """
         Constructor of the CustomerCvrp
         """
@@ -38,10 +38,17 @@ class CustomerCvrp(nodeWithCoord):
         """
         """
         return CustomerCvrp(node_id=self.__node_id, x=self.__x, y=self.__y, demand=self.__demand)
+        
+    def __eq__(self, other: CustomerCvrp) -> bool:
+        """
+        """
+        return self.node_id == other.node_id
 
 # --------------------------------- Methods --------------------------------- #
 
     def getCoordinates(self) -> Tuple[int, int]:
+        """
+        """
         return self.x, self.y
      
 # ----------------------------- Getter / Setter ----------------------------- #

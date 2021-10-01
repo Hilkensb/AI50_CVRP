@@ -2,6 +2,7 @@
 from __future__ import annotations
 from typing import List, Dict, Tuple, Union
 import random
+import copy
 
 # Other Library
 # Library to get data from a website
@@ -25,14 +26,54 @@ class SolutionCvrp:
 
 # ---------------------------- Overrided Methods ---------------------------- #
 
-    def __init__(self, instance: Cvrp) -> SolutionCvrp:
+    def __init__(self, instance: Cvrp, route: List[Route] = []) -> SolutionCvrp:
         """
         """
         
         # The instance of cvrp problem linked to this solution
         self.__cvrp_instance: Cvrp = instance
         # List of all route used
-        self.__route: List[Route] = []
+        # TODO Utiliser un set pour augmenter la vitesse de comparaison ? Mais perte en insertion !
+        self.__route: List[Route] = route
+    
+    def __copy__(self) -> SolutionCvrp:
+        """
+        """
+        # Copy all the route
+        # So for each route we will have the same node reference
+        # But the reference of  the list of those nodes will be different
+        route_copy: List[Route] = [copy.copy(route) for route in self.__route]
+        # /!\ Does not copy cvrp instance to gain some time ressources
+        # to also have a copy of the cvrp instance take a look at deepcopy
+        
+        # Create a new solution of the same cvrp instance and the new route
+        # Return without put it in a variable so we gain some operation and 
+        # will be time saving
+        return SolutionCvrp(instance=self.__cvrp_instance, route=route_copy)
+
+        
+        return solution_copy
+        
+    def __deepcopy__(self) -> SolutionCvrp:
+        """
+        """
+        # Copy the cvrp instance
+        instance_copy: Cvrp = copy.copy(self.__cvrp_instance)
+        # Create a copy of the route with the new node references
+        route_copy: List[Route] = [
+            Route(route=[
+                instance_copy.getNodeById(node.node_id)
+                for node in route.customers_route
+            ])
+            for route in self.__route
+        ]
+        
+        # Create a new solution of the same cvrp instance
+        solution_copy: SolutionCvrp = SolutionCvrp(instance=instance_copy)
+        # Set the route of the solution
+        solution_copy.route(value=route_copy)
+        
+        return solution_copy
         
     def __str__(self) -> str:
         """
@@ -40,13 +81,124 @@ class SolutionCvrp:
         
         return "\n".join(f"Route #{index+1}: {route}" for index, route in enumerate(self.__route))
         
+    def __repr__(self) -> str:
+        """
+        """
+        return f"Solution-{self.__cvrp_instance.__repr__()}"
+
+    def __lt__(self, other: SolutionCvrp) -> bool:
+        """
+        """
         
+        # Compare the cost of self and the other solution
+        # Will return true if this solution have a lower evaluation cost than 
+        # the sol solution that we are comparing with
+        return self.evaluation() < other.evaluation()
+        
+    def __le__(self, other: SolutionCvrp) -> bool:
+        """
+        """
+
+        # Compare the cost of self and the other solution
+        # Will return true if this solution have a lower or equal evaluation cost than 
+        # the sol solution that we are comparing with
+        return self.evaluation() <= other.evaluation()
+        
+    def __eq__(self, other: SolutionCvrp) -> bool:
+        """
+        """
+        # Compare the cost of self and the other solution
+        # Will return true if this solution have the same evaluation cost than 
+        # the sol solution that we are comparing with
+        return self.evaluation() == other.evaluation()
+        
+    def __ne__(self, other: SolutionCvrp) -> bool:
+        """
+        """
+        # Compare the cost of self and the other solution
+        # Will return true if this solution have a higer or equal evaluation cost than 
+        # the sol solution that we are comparing with
+        return self.evaluation() >= other.evaluation()
+        
+    def __gt__(self, other: SolutionCvrp) -> bool:
+        """
+        """
+        # Compare the cost of self and the other solution
+        # Will return true if this solution have a higher evaluation cost than 
+        # the sol solution that we are comparing with
+        return self.evaluation() > other.evaluation()
+       
+    def __len__(self) -> int:
+        """
+        """
+        # Return the number of routes in the solution
+        return len(self.__route) 
+                
 # --------------------------------- Methods --------------------------------- #
 
 # ______________________________ Reader Method ______________________________ #
+     
+    def readSolution(self, file_path: str) -> SolutionCvrp:
+        """
+        readSolution
+        
+        Method to read solution of vrp on local machine
+        
+        :param file_path: Path of the file where the vrp instance is
+        :type url: str
+        :return: Itself
+        :rtype: :class:'SolutionCvrp'
+        :raises FileNotFoundError: when the file has not been found
+        :raises ValueError: when the solution could not have been parsed
+        
+        .. warning:: Please ensure the format of the instance is correct.
+        Exemples of the file format can be found on: http://vrp.atd-lab.inf.puc-rio.br/index.php/en/
+        
+        :exemple:
+
+        >>> cvrp_instance.readSolution(file_path=\"C:\\Users\\YourName\\Documents\\instance.sol\")
+        """
+        # Can raise FileNotFoundError /!\
+        instance_file: file = open(file_path, "r")
+        
+        # Get the data stored inside the file
+        instance_data: str = instance_file.read()
+        # Close the file
+        instance_file.close()
+        
+        try:
+            # Parse the data to create the object
+            self.__parseSol(instance_data)
+        # If an exception occurs at lower level
+        # It means that file could not have been parsed
+        # The file must have been in a wrong format and raise a new Exception
+        except Exception as e:
+            raise ValueError(f"The solution could not have been parsed. Reason: {e}")
+            
+        # return itself
+        return self
 
     def readSolutionWeb(self, url: str) -> SolutionCvrp:
         """
+        readSolutionWeb
+        
+        Method to read solution of cvrp on internet
+        
+        :param url: Url of the page where the vrp solution is
+        :type url: str
+        :return: Itself
+        :rtype: :class:'Cvrp'
+        :raises AssertionError: when the requests failled to get data from the url
+        :raises ValueError: when the solution could not have been parsed
+        
+        .. warning:: If the url is incorrect raise a ValueError
+        
+        .. warning:: Please ensure the format of the instance is correct.
+        Exemples of the file format can be found on: http://vrp.atd-lab.inf.puc-rio.br/index.php/en/
+        
+        :exemple:
+
+        >>> cvrp_instance.readSolutionWeb(url=\"http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.sol\")
         """
         # Get the data of the url
         data_request: requests.Response = requests.get(url)
@@ -70,9 +222,24 @@ class SolutionCvrp:
         # Return itself
         return self
 
+# _____________________________ Writter Methods _____________________________ #
+
+    # TODO
+    def writeInstanceVrp(self, file_path: str) -> None:  
+        """
+        """
+        pass
+
 # ______________________________ Diplay Method ______________________________ #
 
-    def showMathPlotLib(
+    def getFigure(
+        self, with_labels: bool = True, route_color: List[str] = [], depot_node_color: str = "#a6f68e"
+    ) -> matplotlib.figure.Figure:
+        """
+        """
+        pass
+        
+    def showFigure(
         self, with_labels: bool = True, route_color: List[str] = [], depot_node_color: str = "#a6f68e"
     ) -> None:
         """
@@ -244,9 +411,44 @@ class SolutionCvrp:
         route_path.append(self.__cvrp_instance.depot) 
         
         # Build the route
-        route = Route(route=route_path)
+        route: Route = Route(route=route_path)
         
         return route
+ 
+# ___________________________ Comparaison Methods ___________________________ # 
+
+    # TODO: a tester
+    def isSameSolution(self, other: SolutionCvrp) -> bool:
+        """
+        """
+        
+        # Check that they have both the same amount of routes
+        if len(self) != len(other):
+            return False
+            
+        # Get the route of the other solution
+        other_routes: List[int] = other.route
+        
+        # For every route in the solution
+        for route in self.__route:
+            # If the route is also in the other solutions routes
+            if route in other_routes:
+                # remove the route from other_routes to speed up next search
+                other_routes.remove(route)
+            # If the route is not in the other solution routes
+            # it means that the solution is not the same
+            else:
+                return False
+
+        # if all routes have been found in both solution can return true
+        return True
+
+# ___________________________ Other Useful Method ___________________________ # 
+                
+    def getNeighbours(self) -> SolutionCvrp:
+        """
+        """
+        pass
                 
 # ----------------------------- Getter / Setter ----------------------------- #
 

@@ -5,6 +5,7 @@ from problem.cvrp.customer import CustomerCvrp
 from problem.cvrp.depot import DepotCvrp
 from problem.node import nodeWithCoord
 
+# ---------------------------- Euclidean Distance --------------------------- #
 
 @singledispatch
 def euclideanDistance(a, b) -> float:
@@ -37,3 +38,26 @@ def euclideanDistanceImplementation(a: nodeWithCoord, b: nodeWithCoord) -> float
     dist = np.linalg.norm(vector_1 - vector_2)
 
     return dist
+
+# --------------------------- Linear Interpolation -------------------------- #
+  
+@singledispatch
+def linearInterpolation(min_value, max_value, value) -> float:
+    """
+    """
+    raise TypeError(f"The function linearInterpolation is not implemented with the {type(a)} type.")
+
+@linearInterpolation.register
+def linearInterpolationImplementation(min_value: int, max_value: int, value: int) -> float:
+    """        
+    """
+    # Put everything in float to return a float (if not it will return either 0 or 1)
+    return (1.0/(float(max_value) - float(min_value))) * (float(value) - float(min_value))
+
+@linearInterpolation.register
+def linearInterpolationImplementation(min_value: float, max_value: float, value: float) -> float:
+    """
+    """
+    # Since everything is already floats, no need to cast them
+    return (1.0/(max_value - min_value)) * (value - min_value)
+
