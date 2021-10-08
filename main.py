@@ -18,19 +18,7 @@ def main():
     c = cvrp.Cvrp(file_path="http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.vrp", file_type="web")
     s = sol.SolutionCvrp(c)
     s.readSolutionWeb(url="http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.sol")
-    print(s.showFigure())
-
-    
-    """
-    root = Tk.Tk()
-    root.wm_title("Animated Graph embedded in TK")
-    # Quit when the window is done
-    root.wm_protocol('WM_DELETE_WINDOW', root.quit)
-    f=c.getFigure(fixed_size=False, show_legend=True)
-    canvas = FigureCanvasTkAgg(f, master=root)
-    canvas.get_tk_widget().pack(side=Tk.TOP, fill=Tk.BOTH, expand=1)
-    Tk.mainloop()
-    """
+    s.showFigure()
     
 
 

@@ -43,7 +43,7 @@ class VehiculeRootingProblem(abc.ABC):
         pass
         
     @abc.abstractclassmethod
-    def min_vehicule_number(self) -> int:
+    def minVehiculeNumber(self) -> int:
         """
         """ 
         pass

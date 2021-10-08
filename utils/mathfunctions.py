@@ -3,7 +3,7 @@ import numpy as np
 from functools import singledispatch
 from problem.cvrp.customer import CustomerCvrp
 from problem.cvrp.depot import DepotCvrp
-from problem.node import nodeWithCoord
+from problem.node import NodeWithCoord
 
 # ---------------------------- Euclidean Distance --------------------------- #
 
@@ -25,7 +25,7 @@ def euclideanDistanceImplementation(a: tuple, b: tuple) -> float:
     return dist
 
 @euclideanDistance.register
-def euclideanDistanceImplementation(a: nodeWithCoord, b: nodeWithCoord) -> float:
+def euclideanDistanceImplementation(a: NodeWithCoord, b: NodeWithCoord) -> float:
     """
     """
 
