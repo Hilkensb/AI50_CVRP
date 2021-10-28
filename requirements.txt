@@ -33,3 +33,5 @@ sphinxcontrib-jsmath==1.0.1
 sphinxcontrib-qthelp==1.0.3
 sphinxcontrib-serializinghtml==1.1.5
 urllib3==1.26.7
+gurobipy==9.1.2
+Pyomo==6.1.2

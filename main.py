@@ -11,29 +11,49 @@ matplotlib.use('TkAgg')
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
 import copy
 import solution.cvrp.solution as sol
-from solver.constructive.clarkwrightsaving import clarkWrightSaving
-from solver.constructive.nearestneighbors import nearestNeighbors
-from solver.metaheuristic.tabusearch import tabuSearch
-from utils.otherplotting import getHtmlSolutionEvolutionAnimationPlotly
+import solution.solver.solver as slv
+import numpy as np
+import problem.cvrp.customer as cust
+
+class test():
+
+    def __init__(self):
+        self.__t = [1, 2, 3]
+
+    @property
+    def t(self) :
+        return self.__t
 
 
 def main():
-    c = cvrp.Cvrp(file_path="http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n101-k4.vrp", file_type="web")
-    s = sol.SolutionCvrp(c)
-    #s.readSolutionWeb(url="http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/X/X-n502-k39.sol")
-    #print(s.getHtmlFigurePlotly())
-    # s.showFigure()
-    s = clarkWrightSaving(c)
-    #s = nearestNeighbors(c)
-    #print(s.evaluation())
-    #print(s.isValid())
-    #displayTabuSearchResult(s)
-    t = tabuSearch(s, max_second_run=10, number_iteration=500)
-    #print(t.best_solution_evolution[-1].isValid())
-    #print(t.best_solution_evolution[-1].evaluation())
-    #print(len(t.best_solution_evolution))
-    #showSolutionEvolutionAnimation(t.best_solution_evolution, auto_node_size=True, with_labels=True)
-    print(getHtmlSolutionEvolutionAnimationPlotly(t.best_solution_evolution))
+    #c = cvrp.Cvrp(file_path="http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.vrp", file_type="web")
+    c = cvrp.Cvrp()
+    c.randomInstance(7,50,10,30,100)
+    #s = sol.SolutionCvrp(c)
+    #s.readSolutionWeb(url="http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.sol")
+    #print(s.showFigure())
+    newCt = []
+    for k in c.customers:
+        newCt.append(cust.CustomerCvrp(k.node_id+1,k.x,k.y,k.demand))
+
+    S = slv.Solver(newCt,c.min_vehicule_number(),c.vehicule_capacity,c.distanceMatrix())
+    #cust = [customer(2,1,1,10),customer(3,1,1,10),customer(4,1,1,20),customer(5,1,1,30),customer(6,1,1,10),customer(7,1,1,20),customer(8,1,1,20)]
+    #Md = [[0,2]]
+    #S = slv.Solver(cust,3,50,Md)
+    
+    S.run()
+    S.show()
+
+    """
+    root = Tk.Tk()
+    root.wm_title("Animated Graph embedded in TK")
+    # Quit when the window is done
+    root.wm_protocol('WM_DELETE_WINDOW', root.quit)
+    f=c.getFigure(fixed_size=False, show_legend=True)
+    canvas = FigureCanvasTkAgg(f, master=root)
+    canvas.get_tk_widget().pack(side=Tk.TOP, fill=Tk.BOTH, expand=1)
+    Tk.mainloop()
+    """
 
 if __name__ == "__main__":
     main()
