@@ -1,0 +1,409 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CVRP Solution object &mdash; CVRP (Capacitated Vehicle Routing Problem) 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../_static/utbm_logo.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Route of CVRP" href="route.html" />
+    <link rel="prev" title="Capacitated Vehicle Routing Problem Modelization" href="../solution.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> CVRP (Capacitated Vehicle Routing Problem)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../packages.html">Python Objects Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../problem/problem.html">Capacitated Vehicle Routing Problem Modelization</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../solution.html">Capacitated Vehicle Routing Problem Modelization</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../solution.html#the-package">The package</a><ul class="current">
+<li class="toctree-l4 current"><a class="current reference internal" href="#">CVRP Solution object</a></li>
+<li class="toctree-l4"><a class="reference internal" href="route.html">Route of CVRP</a></li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CVRP (Capacitated Vehicle Routing Problem)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../packages.html">Python Objects Documentation</a> &raquo;</li>
+          <li><a href="../solution.html">Capacitated Vehicle Routing Problem Modelization</a> &raquo;</li>
+      <li>CVRP Solution object</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/packages/solution/cvrp/solution.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cvrp-solution-object">
+<h1>CVRP Solution object<a class="headerlink" href="#cvrp-solution-object" title="Permalink to this headline"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">solution.cvrp.solution.</span></span><span class="sig-name descname"><span class="pre">SolutionCvrp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../problem/cvrp/instance.html#problem.cvrp.instance.Cvrp" title="problem.cvrp.instance.Cvrp"><span class="pre">problem.cvrp.instance.Cvrp</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">route</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="route.html#solution.cvrp.route.RouteCvrp" title="solution.cvrp.route.RouteCvrp"><span class="pre">solution.cvrp.route.RouteCvrp</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.__drawMatPlotLib">
+<span class="sig-name descname"><span class="pre">__drawMatPlotLib</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">route_color</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depot_node_color</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'#a6f68e'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">route_to_display</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">nx.graph</span><span class="p"><span class="pre">,</span> </span><span class="pre">nx.spring_layout</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.__drawMatPlotLib" title="Permalink to this definition"></a></dt>
+<dd><p>drawMatPlotLib()</p>
+<p>Method to draw a figure of the solution (all routes displayed on the
+cvrp graph)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>route_color</strong> – List of colors of the routes in the solution, default the DEFAULT_COLOR_PALETTE (utils.colorpallete) (opt.)</p></li>
+<li><p><strong>route_color</strong> – List[str]</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node depot, default to “#a6f68e” (opt.)</p></li>
+<li><p><strong>route_to_display</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – Number of the routes to display on the solution (route number start at 1), default to None (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Return a tuple containing (in that order): the graph, the layout of the graph, node color map (list of node color), edge color map (list of edge color), weight map (list of weight)</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.__parseRoute">
+<span class="sig-name descname"><span class="pre">__parseRoute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">route_to_build</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="route.html#solution.cvrp.route.RouteCvrp" title="solution.cvrp.route.RouteCvrp"><span class="pre">solution.cvrp.route.RouteCvrp</span></a></span></span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.__parseRoute" title="Permalink to this definition"></a></dt>
+<dd><p>parseRoute()</p>
+<p>Method to parse a route from solution file. The route should be a string.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>route_to_build</strong> – The string of a line of the data file representing a route</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The route object representing the route string passed as argument</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="route.html#solution.cvrp.route.RouteCvrp" title="solution.cvrp.route.RouteCvrp">RouteCvrp</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.__parseSol">
+<span class="sig-name descname"><span class="pre">__parseSol</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">data_to_parse</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.__parseSol" title="Permalink to this definition"></a></dt>
+<dd><p>parseSol()</p>
+<p>Method to parse solution file. Either web or local file,
+since the argument must be a string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data_to_parse</strong> – The string of the data file to parse</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.evaluation">
+<span class="sig-name descname"><span class="pre">evaluation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.evaluation" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get the cost of the solution (not rounded)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The cost (the sum of all distance between the nodes of the route)</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.getAllRouteSwapNeighbours">
+<span class="sig-name descname"><span class="pre">getAllRouteSwapNeighbours</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.getAllRouteSwapNeighbours" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get all swaps possible of customers in a single route. Do this for each route of the solution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list containing the new solutions with the customers swaps in a single route, and their cost</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[Tuple[<a class="reference internal" href="#solution.cvrp.solution.SolutionCvrp" title="solution.cvrp.solution.SolutionCvrp">SolutionCvrp</a>, int]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.getFigure">
+<span class="sig-name descname"><span class="pre">getFigure</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.getFigure" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get a figure of the solution (all routes displayed on the
+cvrp graph)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>with_labels</strong> (<em>bool</em>) – Display or not the name of the nodes (node id), default to True (opt.)</p></li>
+<li><p><strong>route_color</strong> – List of colors of the routes in the solution, default the DEFAULT_COLOR_PALETTE (utils.colorpallete) (opt.)</p></li>
+<li><p><strong>route_color</strong> – List[str]</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node depot, default to “#a6f68e” (opt.)</p></li>
+<li><p><strong>show_weight</strong> (<em>bool</em>) – True if the weight should be displayed on the edge, else False. Default to True (opt.)</p></li>
+<li><p><strong>route_to_display</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – Number of the routes to display on the solution (route number start at 1), default to None (opt.)</p></li>
+<li><p><strong>fig_size</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Size of the figure</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The graph figure of the solution of the cvrp</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>plt.figure</p>
+</dd>
+<dt class="field-even">Exemple</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">root</span><span class="o">.</span><span class="n">wm_title</span><span class="p">(</span><span class="s2">&quot;Graph embedded in TK&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">root</span><span class="o">.</span><span class="n">wm_protocol</span><span class="p">(</span><span class="s1">&#39;WM_DELETE_WINDOW&#39;</span><span class="p">,</span> <span class="n">root</span><span class="o">.</span><span class="n">quit</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">figure</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">getFigure</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">canvas</span> <span class="o">=</span> <span class="n">FigureCanvasTkAgg</span><span class="p">(</span><span class="n">figure</span><span class="p">,</span> <span class="n">master</span><span class="o">=</span><span class="n">root</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">canvas</span><span class="o">.</span><span class="n">get_tk_widget</span><span class="p">()</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">Tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">Tk</span><span class="o">.</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Tk</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.getPermutationNeighbours">
+<span class="sig-name descname"><span class="pre">getPermutationNeighbours</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.getPermutationNeighbours" title="Permalink to this definition"></a></dt>
+<dd><p>Method to build new solution by swapping a customer between 2 route. The position difference between the customer in route1 and route2 is defined by proximity_swaps. Swaps between each routes of the solution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>proximity_swaps</strong> (<em>int</em>) – Number of customer between to customer to swap between the route, default to 1 (opt.)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list containing the new solutions with the customers swaps in a single route, and their cost</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Tuple[<a class="reference internal" href="#solution.cvrp.solution.SolutionCvrp" title="solution.cvrp.solution.SolutionCvrp">SolutionCvrp</a>, int]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.getRouteSwapNeighbours">
+<span class="sig-name descname"><span class="pre">getRouteSwapNeighbours</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.getRouteSwapNeighbours" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get a single swap for each customer in a single route. The swap is made between customers that are separated by proximity_swaps - 1 customers. Do this for each route of the solution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>proximity_swaps</strong> (<em>int</em>) – Number of customer between to customer to swap in the route, default to 1 (opt.)</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list containing the new solutions with the customers swaps in a single route, and their cost</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Tuple[<a class="reference internal" href="#solution.cvrp.solution.SolutionCvrp" title="solution.cvrp.solution.SolutionCvrp">SolutionCvrp</a>, int]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.isSameSolution">
+<span class="sig-name descname"><span class="pre">isSameSolution</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.isSameSolution" title="Permalink to this definition"></a></dt>
+<dd><p>Method to know if 2 solutions are the same</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>other</strong> (<a class="reference internal" href="#solution.cvrp.solution.SolutionCvrp" title="solution.cvrp.solution.SolutionCvrp"><em>SolutionCvrp</em></a>) – The solution to compare</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>True is the 2 solution are the same, False else</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.isValid">
+<span class="sig-name descname"><span class="pre">isValid</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.isValid" title="Permalink to this definition"></a></dt>
+<dd><p>Method to know whether a solution is valid or not</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>True if the route is valid, False else</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>bool</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.readSolution">
+<span class="sig-name descname"><span class="pre">readSolution</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.readSolution" title="Permalink to this definition"></a></dt>
+<dd><p>Method to read solution of vrp on local machine</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_path</strong> – Path of the file where the vrp instance is</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Itself</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>:class:’SolutionCvrp’</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – when the file has not been found</p></li>
+<li><p><strong>ValueError</strong> – when the solution could not have been parsed</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Please ensure the format of the instance is correct. Exemples of the file format can be found on: <a class="reference external" href="http://vrp.atd-lab.inf.puc-rio.br/index.php/en/">http://vrp.atd-lab.inf.puc-rio.br/index.php/en/</a></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Exemple</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cvrp_instance</span><span class="o">.</span><span class="n">readSolution</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;C:\Users\YourName\Documents\instance.sol&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.readSolutionWeb">
+<span class="sig-name descname"><span class="pre">readSolutionWeb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.readSolutionWeb" title="Permalink to this definition"></a></dt>
+<dd><p>Method to read solution of cvrp on internet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>url</strong> (<em>str</em>) – Url of the page where the vrp solution is</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Itself</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>:class:’Cvrp’</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AssertionError</strong> – when the requests failled to get data from the url</p></li>
+<li><p><strong>ValueError</strong> – when the solution could not have been parsed</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If the url is incorrect raise a ValueError</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Please ensure the format of the instance is correct. Exemples of the file format can be found on: <a class="reference external" href="http://vrp.atd-lab.inf.puc-rio.br/index.php/en/">http://vrp.atd-lab.inf.puc-rio.br/index.php/en/</a></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Exemple</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cvrp_instance</span><span class="o">.</span><span class="n">readSolutionWeb</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.sol&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.showFigure">
+<span class="sig-name descname"><span class="pre">showFigure</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.showFigure" title="Permalink to this definition"></a></dt>
+<dd><p>Method to display a figure of the solution (all routes displayed on the
+cvrp graph)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>with_labels</strong> (<em>bool</em>) – Display or not the name of the nodes (node id), default to True (opt.)</p></li>
+<li><p><strong>route_color</strong> – List of colors of the routes in the solution, default the DEFAULT_COLOR_PALETTE (utils.colorpallete) (opt.)</p></li>
+<li><p><strong>route_color</strong> – List[str]</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node depot, default to “#a6f68e” (opt.)</p></li>
+<li><p><strong>show_weight</strong> (<em>bool</em>) – True if the weight should be displayed on the edge, else False. Default to True (opt.)</p></li>
+<li><p><strong>route_to_display</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – Number of the routes to display on the solution (route number start at 1), default to None (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Exemple</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">sol</span><span class="o">.</span><span class="n">showFigure</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.writeInstanceVrp">
+<span class="sig-name descname"><span class="pre">writeInstanceVrp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.writeInstanceVrp" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../solution.html" class="btn btn-neutral float-left" title="Capacitated Vehicle Routing Problem Modelization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="route.html" class="btn btn-neutral float-right" title="Route of CVRP" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright free.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

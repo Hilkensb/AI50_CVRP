@@ -3,8 +3,9 @@ import abc
 from typing import Tuple
 
 
-class nodeWithCoord(abc.ABC):
+class NodeWithCoord(abc.ABC):
     """
+    Node Interface for nodes of vrp problem with coordinates
     """
 
     @abc.abstractclassmethod

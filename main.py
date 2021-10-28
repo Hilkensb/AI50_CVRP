@@ -5,7 +5,7 @@
 import problem.cvrp.instance as cvrp
 import networkx as nx
 import utils.mathfunctions as mathfunc
-import tkinter as Tk
+import tkinter as tk
 import matplotlib
 matplotlib.use('TkAgg')
 from matplotlib.backends.backend_tkagg import FigureCanvasTkAgg
@@ -54,8 +54,6 @@ def main():
     canvas.get_tk_widget().pack(side=Tk.TOP, fill=Tk.BOTH, expand=1)
     Tk.mainloop()
     """
-
-
 
 if __name__ == "__main__":
     main()

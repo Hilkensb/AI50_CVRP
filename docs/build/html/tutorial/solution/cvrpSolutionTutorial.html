@@ -1,0 +1,150 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to create a Solution for CVRP &mdash; CVRP (Capacitated Vehicle Routing Problem) 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/utbm_logo.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Python Objects Documentation" href="../../packages/packages.html" />
+    <link rel="prev" title="How to create and use CVRP" href="../problem/cvrpTutorial.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> CVRP (Capacitated Vehicle Routing Problem)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../problem/cvrpTutorial.html">How to create and use CVRP</a></li>
+<li class="toctree-l2 current"><a class="current reference internal" href="#">How to create a Solution for CVRP</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../packages/packages.html">Python Objects Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CVRP (Capacitated Vehicle Routing Problem)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../tutorial.html">Tutorial</a> &raquo;</li>
+      <li>How to create a Solution for CVRP</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/tutorial/solution/cvrpSolutionTutorial.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="how-to-create-a-solution-for-cvrp">
+<h1>How to create a Solution for CVRP<a class="headerlink" href="#how-to-create-a-solution-for-cvrp" title="Permalink to this headline"></a></h1>
+<p>In this small tutorial we will use the instance <a class="reference external" href="http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.vrp">P-n16-k8</a> that we created in the previous page and build it’s solution <a class="reference external" href="http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.sol">Sol-P-n16-k8</a>. First we will create a cvrp solution from the Cvrp instance object of P-n16-k8:</p>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Creation of the solution</span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">problem.cvrp.instance</span> <span class="k">as</span> <span class="nn">cvrp</span>
+<span class="kn">import</span> <span class="nn">solution.cvrp.solution</span> <span class="k">as</span> <span class="nn">sol</span>
+<span class="c1"># We assume that the cvrp instance has been created has showed</span>
+<span class="c1"># in the previous page tutorial</span>
+<span class="n">sol_cvrp</span> <span class="o">=</span> <span class="n">sol</span><span class="o">.</span><span class="n">SolutionCvrp</span><span class="p">(</span><span class="n">cvrp_instance</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Now that we have the solution object linked to the cvrp instance, we need to give it the route to build the solution. We can either do it by hand (by building and giving a list of route) or more simply by giving it a solution file (either on local or on web).</p>
+<p>If the solution file is on internet we can get the solution with the following:</p>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Read a solution</span><a class="headerlink" href="#id2" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sol_cvrp</span><span class="o">.</span><span class="n">readSolutionWeb</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.sol&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Else if you have the solution file on local you can use the readSolution method. You will need to precise the path of the file you want to read.
+Now let’s try to display the solution on a matplotlib window.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>We will use the default parameters but many argument can change how the plot looks like.</p>
+</div>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Plotting the solution</span><a class="headerlink" href="#id3" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">sol_cvrp</span><span class="o">.</span><span class="n">showFigure</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>We will get the following plot generated with matplotlib and networkx.</p>
+<figure class="align-default">
+<img alt="../../_images/cvrpSolutionFigure.png" src="../../_images/cvrpSolutionFigure.png" />
+</figure>
+<p>Finally there’s many more method that can be use for specific purpose. You can create other solutions from a solution object, get the total cost of the solution (sum of all routes cost of the solution), check that the solution is verifying all constraints, …</p>
+<p>Please refer to the object details to see all of these methods and their arguments.</p>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../problem/cvrpTutorial.html" class="btn btn-neutral float-left" title="How to create and use CVRP" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../packages/packages.html" class="btn btn-neutral float-right" title="Python Objects Documentation" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright free.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

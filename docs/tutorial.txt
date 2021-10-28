@@ -1,0 +1,9 @@
+Please make sure that your sphinx build is set with the following :
+set SPHINXBUILD="C:\Users\neil\AppData\Roaming\Python\Python39\Scripts\sphinx-build.exe"
+
+Warning: The following path is just my path, you can find your sphinx-build by going to your parent directory of the sitepackages of the python you are actually using. Then go into the Scripts directory and you should be able to find sphinx-build.exe.
+Note: You need to have sphinx installed. (pip install sphinx)
+
+Then you can run the make html to generate documentation.
+
+Remember to do a make clean if the order of pages is not correct!
