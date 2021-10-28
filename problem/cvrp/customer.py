@@ -82,6 +82,11 @@ class CustomerCvrp(NodeWithCoord):
         :rtype: bool
         """
         return self.node_id == other.node_id
+        
+    def __hash__(self):
+        """
+        """
+        return hash((self.__node_id, self.__x, self.__y, self.__demand))
 
 # --------------------------------- Methods --------------------------------- #
 

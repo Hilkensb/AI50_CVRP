@@ -6,6 +6,7 @@ from typing import List, Dict, Tuple, Union
 import logging as log
 import copy as copy
 from fractions import Fraction
+import re
 
 # Other Library
 # Library for array, matrix, ...
@@ -20,6 +21,10 @@ import matplotlib.pyplot as plt
 import pandas as pd
 # Plot to create the legend
 from matplotlib.lines import Line2D
+# To display plotly grah
+import plotly.graph_objects as go
+# To convert figure into html
+from plotly.io import to_html
 
 # Modules
 from problem.vrp_interface import VehiculeRootingProblem
@@ -130,7 +135,7 @@ class Cvrp(VehiculeRootingProblem):
         :rtype: str
 
         """
-        return f"CVRP-n{self.__nb_customer + 1}-k{self.min_vehicule_number()}"
+        return f"CVRP-n{self.__nb_customer + 1}-k{self.minVehiculeNumber()}"
       
     def __str__(self) -> str:
         """
@@ -413,7 +418,7 @@ class Cvrp(VehiculeRootingProblem):
         minVehiculeNumber()
         
         Method to get the minimum number of vehicule to make a solution of this
-        cvrp problem
+        cvrp problem use the first fit decreasing algorithm
         
         :return: The minimum number of vehicule to solve the cvrp
         :rtype: int
@@ -512,7 +517,8 @@ class Cvrp(VehiculeRootingProblem):
         node_depot_size: int = 300, fixed_size: bool = True,
         node_shape: str = "o", alpha: float = 1.0, legend_fontsize: int = 10,
         legend_markerscale: float = 0.75, legend_labelspacing: float = 0.75,
-        legend_borderpad: float = 0.75, show_legend: bool = False
+        legend_borderpad: float = 0.75, show_legend: bool = False,
+        auto_node_size: bool= False
     ) -> None:
         """
         showFigure()
@@ -561,7 +567,8 @@ class Cvrp(VehiculeRootingProblem):
         graph, position_layout, color_map, size_map = self.__drawMathPlotLib(
             show_edge=show_edge, customer_node_color=customer_node_color,
             depot_node_color=depot_node_color, node_min_size=node_min_size,
-            node_max_size=node_max_size, node_depot_size=node_depot_size
+            node_max_size=node_max_size, node_depot_size=node_depot_size,
+            auto_node_size=auto_node_size
         )
         
         # Check if the user want or not size of node based on customer's demand
@@ -607,6 +614,179 @@ class Cvrp(VehiculeRootingProblem):
 
         # Display the graph
         plt.show()
+      
+    def showFigurePlotly(
+        self, show_edge: bool = False, customer_node_color: str = "#8eaaf6",
+        depot_node_color: str = "#a6f68e",
+        node_min_size: int = 10, node_max_size: int = 50,
+        node_depot_size: int = 30, fixed_size: bool = True,
+    ) -> None:
+        """
+        showFigurePlotly()
+        
+        Method to display a matplotlib representing the graph of the cvrp
+        instance
+        
+        :param show_edge: Boolean to know if the edge will be shown or not in the graph representation, default to False (opt.)
+        :type show_edge: bool
+        :param customer_node_color: Color of the nodes representing the customers, default to \"#8eaaf6\" (kind of sky blue) (opt.)
+        :type customer_node_color: str
+        :param depot_node_color: Color of the node representing the depot, default to \"#a6f68e\" (kind of soft green) (opt.)
+        :type depot_node_color: str
+        :param with_labels: Display or not the name of the nodes (node id), default to True (opt.)
+        :type with_labels: bool
+        :param node_min_size: Minimum size of customers node, default to 250 (opt.)
+        :type node_min_size: int
+        :param node_max_size: Maximum size of customers node, default to 500 (opt.)
+        :type node_max_size: int
+        :param node_depot_size: Size of customers node, default to 300 (opt.)
+        :type node_depot_size: int
+        :param fixed_size: Is the size of nodes fixed or variable in depends of the demand of the customer. If True the size of node will be based on the node_depot_size parameter, default to True (opt.)
+        :type fixed_size: bool
+
+        """  
+      
+        # Get variable to draw a graph on plotly
+        edge_x, edge_y, node_x, node_y, color_map, size_map, node_text, position_layout = self.__drawPlotly(
+            show_edge=show_edge, customer_node_color=customer_node_color,
+            depot_node_color=depot_node_color, node_min_size=node_min_size,
+            node_max_size=node_max_size, node_depot_size=node_depot_size
+        )
+      
+        # Edge of the trace
+        edge_trace: Scatter = go.Scatter(
+            x=edge_x, y=edge_y,
+            line=dict(width=0.5, color='#888'),
+            hoverinfo='none',
+            mode='lines'
+        )
+        
+        # Node of the trace
+        node_trace: Scatter = go.Scatter(
+            x=node_x, y=node_y,
+            mode='markers',
+            hoverinfo='text',
+            marker=dict(
+                color=color_map,
+                size=size_map,
+                line_width=2
+            )
+        )
+        
+        # Set the node id when hovered
+        node_trace.text = node_text
+        
+        # Draw the figure
+        fig = go.Figure(
+                data=[edge_trace, node_trace],
+                layout=go.Layout(
+                    title=self.__repr__(),
+                    titlefont_size=16,
+                    showlegend=False,
+                    hovermode='closest',
+                    margin=dict(b=20,l=5,r=5,t=40),
+                    annotations=[ 
+                        dict(
+                            showarrow=False,
+                            xref="paper", yref="paper",
+                            x=0.005, y=-0.002
+                        )
+                    ],
+                    xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+                    yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
+                )
+
+        fig.show()
+        
+        
+    def getHtmlFigurePlotly(
+        self, show_edge: bool = False, customer_node_color: str = "#8eaaf6",
+        depot_node_color: str = "#a6f68e",
+        node_min_size: int = 10, node_max_size: int = 50,
+        node_depot_size: int = 30, fixed_size: bool = True,
+        full_html: bool = True, default_width: str = '100%',
+        default_height: str = '100%'
+    ) -> str:
+        """
+        getHtmlFigurePlotly()
+        
+        Method to display a matplotlib representing the graph of the cvrp
+        instance
+        
+        :param show_edge: Boolean to know if the edge will be shown or not in the graph representation, default to False (opt.)
+        :type show_edge: bool
+        :param customer_node_color: Color of the nodes representing the customers, default to \"#8eaaf6\" (kind of sky blue) (opt.)
+        :type customer_node_color: str
+        :param depot_node_color: Color of the node representing the depot, default to \"#a6f68e\" (kind of soft green) (opt.)
+        :type depot_node_color: str
+        :param with_labels: Display or not the name of the nodes (node id), default to True (opt.)
+        :type with_labels: bool
+        :param node_min_size: Minimum size of customers node, default to 250 (opt.)
+        :type node_min_size: int
+        :param node_max_size: Maximum size of customers node, default to 500 (opt.)
+        :type node_max_size: int
+        :param node_depot_size: Size of customers node, default to 300 (opt.)
+        :type node_depot_size: int
+        :param fixed_size: Is the size of nodes fixed or variable in depends of the demand of the customer. If True the size of node will be based on the node_depot_size parameter, default to True (opt.)
+        :type fixed_size: bool
+        :param full_html: If True, produce a string containing a complete HTML document starting with an <html> tag. If False, produce a string containing a single <div> element. Default to True (opt.)
+        :type full_html: bool
+        :param default_width: he default figure width/height to use if the provided figure does not specify its own layout.width/layout.height property. May be specified in pixels as an integer (e.g. 500), or as a css width style string (e.g. ‘500px’, ‘100%’). Default to \"100%\" (opt.)
+        :type default_width: str
+        :param default_height: The default figure width/height to use if the provided figure does not specify its own layout.width/layout.height property. May be specified in pixels as an integer (e.g. 500), or as a css width style string (e.g. ‘500px’, ‘100%’). Default to \"100%\" (opt.)
+        :return: a html string
+        :rtype: str
+
+        """  
+      
+        # Get variable to draw a graph on plotly
+        edge_x, edge_y, node_x, node_y, color_map, size_map, node_text, position_layout = self.__drawPlotly(
+            show_edge=show_edge, customer_node_color=customer_node_color,
+            depot_node_color=depot_node_color, node_min_size=node_min_size,
+            node_max_size=node_max_size, node_depot_size=node_depot_size
+        )
+      
+        # Edge of the trace
+        edge_trace: Scatter = go.Scatter(
+            x=edge_x, y=edge_y,
+            line=dict(width=0.5, color='#888'),
+            hoverinfo='none',
+            mode='lines'
+        )
+        
+        # Node of the trace
+        node_trace: Scatter = go.Scatter(
+            x=node_x, y=node_y,
+            mode='markers',
+            hoverinfo='text',
+            marker=dict(
+                color=color_map,
+                size=size_map,
+                line_width=2
+            )
+        )
+        
+        # Set the node id when hovered
+        node_trace.text = node_text
+        
+        # Draw the figure
+        fig = go.Figure(
+                data=[edge_trace, node_trace],
+                layout=go.Layout(
+                    title=self.__repr__(),
+                    titlefont_size=16,
+                    showlegend=False,
+                    hovermode='closest',
+                    margin=dict(b=20,l=5,r=5,t=40),
+                    xaxis=dict(showgrid=False, zeroline=False, showticklabels=False),
+                    yaxis=dict(showgrid=False, zeroline=False, showticklabels=False))
+                )
+        
+        # Return the html string
+        return to_html(
+                fig=fig, full_html=full_html,
+                default_width=default_width, default_height=default_height
+        )
             
     def getFigure(
         self, show_edge: bool = False, customer_node_color: str = "#8eaaf6",
@@ -616,7 +796,7 @@ class Cvrp(VehiculeRootingProblem):
         node_shape: str = "o", alpha: float = 1.0, legend_fontsize: int = 10,
         legend_markerscale: float = 0.75, legend_labelspacing: float = 0.75,
         legend_borderpad: float = 0.75, show_legend: bool = False,
-        fig_size: Tuple[int, int] = (5, 4)
+        fig_size: Tuple[int, int] = (5, 4), auto_node_size: bool= False
     ) -> matplotlib.figure.Figure:
         """
         getFigure()
@@ -732,7 +912,7 @@ class Cvrp(VehiculeRootingProblem):
     def __drawMathPlotLib(
         self, show_edge: bool = False, customer_node_color: str = "#8eaaf6",
         depot_node_color: str = "#a6f68e", node_min_size: int = 250,
-        node_max_size: int = 500, node_depot_size: int = 300
+        node_max_size: int = 500, node_depot_size: int = 300, auto_node_size: bool= False
     ) -> Tuple[nx.graph, nx.spring_layout, List[str]]:
         """
         __drawMathPlotLib()
@@ -761,6 +941,11 @@ class Cvrp(VehiculeRootingProblem):
         
         # Get the graph
         graph: nx.Graph = self.graph()
+        
+        # Check if we need to set the size of the nodes
+        if auto_node_size:
+            # Set the node to be visible and the less has possible overlapping
+            node_size = 300 - round((max(self.__cvrp_instance.nb_customer,  50) - 50) / 2)
         
         # If we don't want to show the edges of the graph
         if not show_edge:
@@ -840,6 +1025,140 @@ class Cvrp(VehiculeRootingProblem):
         position_layout: nx.spring_layout = nx.spring_layout(graph, pos=fixed_positions, fixed = fixed_nodes)
         
         return graph, position_layout, color_map, size_map
+
+    def __drawPlotly(
+        self, show_edge: bool = False, customer_node_color: str = "#8eaaf6",
+        depot_node_color: str = "#a6f68e",
+        node_min_size: int = 10, node_max_size: int = 50,
+        node_depot_size: int = 30
+    ) -> Tuple(List[int], List[int], List[int], List[int], List[str], List[int], List[str], nx.spring_layout):
+        """
+        __drawPlotly()
+
+        Method to draw a matplotlib figure representing the graph of the cvrp.
+        It will tne be use in method getFigure and showFigure (private)
+
+        :param show_edge: Boolean to know if the edge will be shown or not in the graph representation, default to False (opt.)
+        :type show_edge: bool
+        :param customer_node_color: Color of the nodes representing the customers, default to \"#8eaaf6\" (kind of sky blue) (opt.)
+        :type customer_node_color: str
+        :param depot_node_color: Color of the node representing the depot, default to \"#a6f68e\" (kind of soft green) (opt.)
+        :type depot_node_color: str
+        :param with_labels: Display or not the name of the nodes (node id), default to True (opt.)
+        :param node_min_size: Minimum size of customers node, default to 250 (opt.)
+        :type node_min_size: int
+        :param node_max_size: Maximum size of customers node, default to 500 (opt.)
+        :type node_max_size: int
+        :param node_depot_size: Size of customers node, default to 300 (opt.)
+        :type node_depot_size: int
+        :type with_labels: bool
+
+        """
+        
+        # Set the position of the nodes
+        # Dict with two of the positions set
+        fixed_positions: Dict[int, Tuple[int, int]] = {}
+        # For every customer
+        for customer in self.__customers:
+            # Set his position
+            fixed_positions[customer.node_id] = customer.getCoordinates()
+        
+        # Set the position of the depot
+        fixed_positions[self.__depot.node_id] = self.__depot.getCoordinates()
+        
+        # Get all the customers demand into a list
+        # To do so iterate throw all customers (only the customers node)
+        # and get their demand
+        customers_demand: List[int] = [customer.demand for customer in self.__customers]
+        # Get the minimum demand of a customer
+        # Used in linear interpolation
+        # We convert it into float because two version of linear interpolation exists
+        # one with float (without any cast) and one with int (with cast to float)
+        # So it's time saving to cast them before (only 1 cast) than it would
+        # be to cast them for every node
+        minimum_demand: float = float(min(customers_demand))
+        # Get the maximum demand of a customer
+        # Used in linear interpolation
+        # We convert it into float because two version of linear interpolation exists
+        # one with float (without any cast) and one with int (with cast to float)
+        # So it's time saving to cast them before (only 1 cast) than it would
+        # be to cast them for every node
+        maximum_demand: float = float(max(customers_demand))
+        
+        # Get the graph
+        graph: nx.Graph = self.graph()
+        
+        # List of edges
+        edge_x = []
+        edge_y = []
+        
+        # for every edges
+        for edge in graph.edges():
+            # Create the nodes
+            x0, y0 = self.getNodeById(id_searched=edge[0]).getCoordinates()
+            x1, y1 = self.getNodeById(id_searched=edge[1]).getCoordinates()
+            
+            # If we display
+            if show_edge:
+                edge_x.append(x0)
+                edge_x.append(x1)
+                edge_x.append(None)
+                edge_y.append(y0)
+                edge_y.append(y1)
+                edge_y.append(None)
+
+        # List of nodes
+        node_x = []
+        node_y = []
+        
+        # color map
+        color_map: List[str] = []
+        # Size map
+        size_map: List[int] = []
+        # Text when hovered
+        node_text: List[str] = []
+        
+        # For each nodes in the graph
+        for node in graph.nodes():
+            # Get every nodes
+            x, y = self.getNodeById(id_searched=node).getCoordinates()
+            node_x.append(x)
+            node_y.append(y)
+            node_text.append(node)
+            
+            # If the node is representing the depot
+            if node == self.__depot.node_id:
+                # Set the color of the depot
+                color_map.append(depot_node_color)
+                # Set the size of the depot
+                size_map.append(node_depot_size)
+            else:
+                # Set the color of the customer node
+                color_map.append(customer_node_color)
+                # Get the demand of the node
+                # It first get the customer linked with this node id
+                customer: CustomerCvrp = self.getCustomerById(id_searched=node)
+                # Then get the demand linked hiself
+                # Finaly we converrt this demand into float
+                # We convert it into float because two version of linear interpolation exists
+                # one with float (without any cast) and one with int (with cast to float)
+                # So it's time saving to cast them before (only 1 cast) than it would
+                # be to cast them for every node
+                node_demand: float = float(customer.demand)
+                # Determine the node size using linear interpolation
+                node_size: float = mathfunc.linearInterpolation(minimum_demand, maximum_demand, node_demand)
+                # Finaly set the the node depend on the max and min size give
+                node_size = node_size * (node_max_size - node_min_size) + node_min_size
+                # Add the value to the size map
+                size_map.append(node_size)
+
+        # Get the keys of the list of position
+        fixed_nodes: List[int] = fixed_positions.keys()
+        # Create the layout of the graph with the position
+        position_layout: nx.spring_layout = nx.spring_layout(graph, pos=fixed_positions, fixed = fixed_nodes)
+        
+        return edge_x, edge_y, node_x, node_y, color_map, size_map, node_text, position_layout
+        
 
     def __drawLegend(self, customer_node_color: str = "#8eaaf6",
         depot_node_color: str = "#a6f68e", node_min_size: int = 250,
@@ -955,7 +1274,7 @@ class Cvrp(VehiculeRootingProblem):
         :type Exception: str
 
         :raises KeyError: If either DIMENSION, CAPACITY, NODE_COORD_SECTION, DEMAND_SECTION or DEPOT_SECTION are not in the file to parse or have a wrong format
-        :raises IndexOutOfBound: If not all nodes are in both NODE_COORD_SECTION and DEMAND_SECTION. Can also be raised if DEPOT_SECTION is empty.
+        :raises IngetCustomerByIddexOutOfBound: If not all nodes are in both NODE_COORD_SECTION and DEMAND_SECTION. Can also be raised if DEPOT_SECTION is empty.
 
         .. note: Inspired by : https://github.com/scespinoza/CVRP-Formulations/blob/master/cvrp.py
 
@@ -1008,8 +1327,8 @@ class Cvrp(VehiculeRootingProblem):
         # node id, x coordinate, y coordinate
         nodes_raw_list: List[Tuple[int, int, int]] = [
             (
-                int(node.split(" ")[0]),  int(node.split(" ")[1]),
-                int(node.split(" ")[2])
+                int(float(re.split(r"\s|\t", node)[0])),  int(float(re.split(r"\s|\t", node)[1])),
+                int(float(re.split(r"\s|\t", node)[2]))
             )
             for node in nodes_raw_data
         ]
@@ -1028,7 +1347,7 @@ class Cvrp(VehiculeRootingProblem):
         # node id, demand of customer
         demands_raw_list: List[Tuple[int, int]] = np.array([
             (
-                int(demand.split(" ")[0]), int(demand.split(" ")[1])
+                int(float(re.split(r"\s|\t", demand)[0])), int(float(re.split(r"\s|\t", demand)[1]))
             )
             for demand in demands_raw_data
         ])
@@ -1300,7 +1619,6 @@ class Cvrp(VehiculeRootingProblem):
     @property 
     def nb_customer(self) -> int:
         return self.__nb_customer
-        
         
     @property 
     def customers(self) -> List[CustomerCvrp]:

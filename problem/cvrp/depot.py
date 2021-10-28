@@ -69,6 +69,11 @@ class DepotCvrp(NodeWithCoord):
         >>> depot_copy = copy.copy(depot)
         """
         return DepotCvrp(node_id=self.__node_id, x=self.__x, y=self.__y)
+        
+    def __hash__(self):
+        """
+        """
+        return hash((self.__node_id, self.__x, self.__y, self.__demand))
 
 # --------------------------------- Methods --------------------------------- #
 
