@@ -36,11 +36,11 @@ def main():
     for k in c.customers:
         newCt.append(cust.CustomerCvrp(k.node_id+1,k.x,k.y,k.demand))
 
-    S = slv.Solver(newCt,c.min_vehicule_number(),c.vehicule_capacity,c.distanceMatrix())
+    S = slv.Solver(newCt,c.minVehiculeNumber(),c.vehicule_capacity,c.distanceMatrix())
     #cust = [customer(2,1,1,10),customer(3,1,1,10),customer(4,1,1,20),customer(5,1,1,30),customer(6,1,1,10),customer(7,1,1,20),customer(8,1,1,20)]
     #Md = [[0,2]]
     #S = slv.Solver(cust,3,50,Md)
-    
+
     S.run()
     S.show()
 
