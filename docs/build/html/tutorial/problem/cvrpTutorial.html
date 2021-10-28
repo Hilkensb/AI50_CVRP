@@ -1,0 +1,190 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>How to create and use CVRP &mdash; CVRP (Capacitated Vehicle Routing Problem) 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/utbm_logo.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+        <script async="async" src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="How to create a Solutio for CVRP" href="../solution/cvrpSolutionTutorial.html" />
+    <link rel="prev" title="Tutorial" href="../tutorial.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> CVRP (Capacitated Vehicle Routing Problem)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../tutorial.html">Tutorial</a><ul class="current">
+<li class="toctree-l2 current"><a class="current reference internal" href="#">How to create and use CVRP</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../solution/cvrpSolutionTutorial.html">How to create a Solutio for CVRP</a></li>
+</ul>
+</li>
+<li class="toctree-l1"><a class="reference internal" href="../../packages/packages.html">Python Objects Documentation</a></li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CVRP (Capacitated Vehicle Routing Problem)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../tutorial.html">Tutorial</a> &raquo;</li>
+      <li>How to create and use CVRP</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/tutorial/problem/cvrpTutorial.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="how-to-create-and-use-cvrp">
+<h1>How to create and use CVRP<a class="headerlink" href="#how-to-create-and-use-cvrp" title="Permalink to this headline"></a></h1>
+<p>In this small tutorial we will use the instance <a class="reference external" href="http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.vrp">P-n16-k8</a>. First we will create a cvrp instance from the data file P-n16-k8. Two ways to do it:</p>
+<ol class="arabic simple">
+<li><p>Create the instance then read the data file</p></li>
+</ol>
+<div class="literal-block-wrapper docutils container" id="id1">
+<div class="code-block-caption"><span class="caption-text">Creation and reading data file</span><a class="headerlink" href="#id1" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">problem.cvrp.instance</span> <span class="k">as</span> <span class="nn">cvrp</span>
+<span class="n">cvrp_instance</span> <span class="o">=</span> <span class="n">cvrp</span><span class="o">.</span><span class="n">Cvrp</span><span class="p">()</span>
+<span class="n">cvrp_instance</span><span class="o">.</span><span class="n">readInstanceVrpWeb</span><span class="p">(</span>
+     <span class="n">url</span><span class="o">=</span><span class="s2">&quot;http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.vrp&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<ol class="arabic simple" start="2">
+<li><p>Read the data file on the creation of the instance</p></li>
+</ol>
+<div class="literal-block-wrapper docutils container" id="id2">
+<div class="code-block-caption"><span class="caption-text">Reading data file while creating the instance</span><a class="headerlink" href="#id2" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="kn">import</span> <span class="nn">problem.cvrp.instance</span> <span class="k">as</span> <span class="nn">cvrp</span>
+<span class="n">cvrp_instance</span> <span class="o">=</span> <span class="n">cvrp</span><span class="o">.</span><span class="n">Cvrp</span><span class="p">(</span>
+     <span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.vrp&quot;</span><span class="p">,</span>
+     <span class="n">file_type</span><span class="o">=</span><span class="s2">&quot;web&quot;</span>
+<span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>Now that we have created the cvrp instance, let see what we can do with it. First, we can ensure that
+the instance file has been red correctly. For this purpose, let’s take a look at the distance matrix.
+We will round it to the nearest integer to make the lecture of it a bit easier.</p>
+<div class="literal-block-wrapper docutils container" id="id3">
+<div class="code-block-caption"><span class="caption-text">Getting the distance matrix</span><a class="headerlink" href="#id3" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">M</span> <span class="o">=</span> <span class="n">cvrp_instance</span><span class="o">.</span><span class="n">distanceMatrix</span><span class="p">(</span><span class="n">round_distance</span><span class="o">=</span><span class="kc">True</span><span class="p">,</span> <span class="n">precision</span><span class="o">=</span><span class="mi">0</span><span class="p">)</span>
+</pre></div>
+</div>
+</div>
+<p>We will get the following matrix:</p>
+<div class="math notranslate nohighlight">
+\[\begin{split}M = \begin{bmatrix}
+        -1 &amp; 14 &amp; 21 &amp; 33 &amp; 22 &amp; 23 &amp; 12 &amp; 22 &amp; 32 &amp; 32 &amp; 21 &amp; 28 &amp; 30 &amp; 29 &amp; 31 &amp; 30 \\
+        14 &amp; -1 &amp; 12 &amp; 19 &amp; 12 &amp; 24 &amp; 12 &amp; 19 &amp; 21 &amp; 27 &amp;  7 &amp; 19 &amp; 16 &amp; 21 &amp; 33 &amp; 17 \\
+        21 &amp; 12 &amp; -1 &amp; 15 &amp; 22 &amp; 16 &amp; 11 &amp;  9 &amp; 12 &amp; 15 &amp; 11 &amp; 29 &amp; 19 &amp;  9 &amp; 24 &amp; 23 \\
+        33 &amp; 19 &amp; 15 &amp; -1 &amp; 21 &amp; 31 &amp; 25 &amp; 23 &amp;  8 &amp; 24 &amp; 12 &amp; 25 &amp;  9 &amp; 17 &amp; 37 &amp; 16 \\
+        22 &amp; 12 &amp; 22 &amp; 21 &amp; -1 &amp; 36 &amp; 24 &amp; 30 &amp; 26 &amp; 37 &amp; 12 &amp;  7 &amp; 13 &amp; 30 &amp; 44 &amp;  9 \\
+        23 &amp; 24 &amp; 16 &amp; 31 &amp; 36 &amp; -1 &amp; 13 &amp;  8 &amp; 25 &amp; 13 &amp; 26 &amp; 43 &amp; 35 &amp; 16 &amp;  8 &amp; 39 \\
+        12 &amp; 12 &amp; 11 &amp; 25 &amp; 24 &amp; 13 &amp; -1 &amp; 10 &amp; 23 &amp; 20 &amp; 16 &amp; 31 &amp; 26 &amp; 17 &amp; 21 &amp; 28 \\
+        22 &amp; 19 &amp;  9 &amp; 23 &amp; 30 &amp;  8 &amp; 10 &amp; -1 &amp; 18 &amp; 10 &amp; 19 &amp; 37 &amp; 28 &amp;  9 &amp; 15 &amp; 32 \\
+        32 &amp; 21 &amp; 12 &amp;  8 &amp; 26 &amp; 25 &amp; 23 &amp; 18 &amp; -1 &amp; 17 &amp; 15 &amp; 32 &amp; 17 &amp; 10 &amp; 31 &amp; 23 \\
+        32 &amp; 27 &amp; 15 &amp; 24 &amp; 37 &amp; 13 &amp; 20 &amp; 10 &amp; 17 &amp; -1 &amp; 25 &amp; 44 &amp; 31 &amp;  7 &amp; 16 &amp; 37 \\
+        21 &amp;  7 &amp; 11 &amp; 12 &amp; 12 &amp; 26 &amp; 16 &amp; 19 &amp; 15 &amp; 25 &amp; -1 &amp; 19 &amp; 10 &amp; 18 &amp; 34 &amp; 13 \\
+        28 &amp; 19 &amp; 29 &amp; 25 &amp;  7 &amp; 43 &amp; 31 &amp; 37 &amp; 32 &amp; 44 &amp; 19 &amp; -1 &amp; 16 &amp; 37 &amp; 51 &amp; 10 \\
+        30 &amp; 16 &amp; 19 &amp;  9 &amp; 13 &amp; 35 &amp; 26 &amp; 28 &amp; 17 &amp; 31 &amp; 10 &amp; 16 &amp; -1 &amp; 24 &amp; 43 &amp;  6 \\
+        29 &amp; 21 &amp;  9 &amp; 17 &amp; 30 &amp; 16 &amp; 17 &amp;  9 &amp; 10 &amp;  7 &amp; 18 &amp; 37 &amp; 24 &amp; -1 &amp; 21 &amp; 30 \\
+        31 &amp; 33 &amp; 24 &amp; 37 &amp; 44 &amp;  8 &amp; 21 &amp; 15 &amp; 31 &amp; 16 &amp; 34 &amp; 51 &amp; 43 &amp; 21 &amp; -1 &amp; 47 \\
+        30 &amp; 17 &amp; 23 &amp; 16 &amp;  9 &amp; 39 &amp; 28 &amp; 32 &amp; 23 &amp; 37 &amp; 13 &amp; 10 &amp;  6 &amp; 30 &amp; 47 &amp; -1
+    \end{bmatrix}\end{split}\]</div>
+<p>The above matrix represent the distance (round to the nearest integer) of the distance between each node.
+The diagonal of the matrix is filled with -1 values because it’s impossible to go from a node to the same node.
+For exemple let’s try to know the distance between the depot (node 1) and customer 1 (node 2).
+To find out the distance between those 2 nodes we go at first row (distance of node 1) and second column (distance of node 2).
+We see 14, it means that the distance between depot and customer 1 is 14.</p>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>Since it’s a cvrp instance, the matrix is symetric. This means that M(1,2) = M(2,1)</p>
+</div>
+<p>Now let’s display a plot of the instance. For this purpose we will use the showFigure method.</p>
+<div class="literal-block-wrapper docutils container" id="id4">
+<div class="code-block-caption"><span class="caption-text">Reading data file while creating the instance</span><a class="headerlink" href="#id4" title="Permalink to this code"></a></div>
+<div class="highlight-python notranslate"><div class="highlight"><pre><span></span><span class="n">cvrp_instance</span><span class="o">.</span><span class="n">showFigure</span><span class="p">()</span>
+</pre></div>
+</div>
+</div>
+<p>We will get the following plot generated with matplotlib and networkx.</p>
+<figure class="align-default">
+<img alt="../../_images/cvrpInstanceFigure.png" src="../../_images/cvrpInstanceFigure.png" />
+</figure>
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../tutorial.html" class="btn btn-neutral float-left" title="Tutorial" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../solution/cvrpSolutionTutorial.html" class="btn btn-neutral float-right" title="How to create a Solutio for CVRP" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright free.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

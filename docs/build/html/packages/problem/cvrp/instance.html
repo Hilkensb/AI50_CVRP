@@ -1,0 +1,621 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CVRP Problem Instance &mdash; CVRP (Capacitated Vehicle Routing Problem) 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../_static/utbm_logo.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Capacitated Vehicle Routing Problem Modelization" href="../../solution/solution.html" />
+    <link rel="prev" title="CVRP Depot Node" href="depot.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> CVRP (Capacitated Vehicle Routing Problem)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../packages.html">Python Objects Documentation</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../problem.html">Capacitated Vehicle Routing Problem Modelization</a><ul class="current">
+<li class="toctree-l3"><a class="reference internal" href="../problem.html#reminder-about-cvrp">Reminder about CVRP</a></li>
+<li class="toctree-l3 current"><a class="reference internal" href="../problem.html#the-package">The package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="customer.html">CVRP Customer Node</a></li>
+<li class="toctree-l4"><a class="reference internal" href="depot.html">CVRP Depot Node</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">CVRP Problem Instance</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../solution/solution.html">Capacitated Vehicle Routing Problem Modelization</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CVRP (Capacitated Vehicle Routing Problem)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../packages.html">Python Objects Documentation</a> &raquo;</li>
+          <li><a href="../problem.html">Capacitated Vehicle Routing Problem Modelization</a> &raquo;</li>
+      <li>CVRP Problem Instance</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/packages/problem/cvrp/instance.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="cvrp-problem-instance">
+<h1>CVRP Problem Instance<a class="headerlink" href="#cvrp-problem-instance" title="Permalink to this headline"></a></h1>
+<dl class="py class">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp">
+<em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">problem.cvrp.instance.</span></span><span class="sig-name descname"><span class="pre">Cvrp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'local'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp" title="Permalink to this definition"></a></dt>
+<dd><dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.__drawLegend">
+<span class="sig-name descname"><span class="pre">__drawLegend</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.__drawLegend" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get variable that will enable to draw then the legend on the
+graph of matplotlib</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>customer_node_color</strong> (<em>str</em>) – Color of the nodes representing the customers, default to “#8eaaf6” (kind of sky blue) (opt.)</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node representing the depot, default to “#a6f68e” (kind of soft green) (opt.)</p></li>
+<li><p><strong>node_min_size</strong> (<em>int</em>) – Minimum size of customers node, default to 250 (opt.)</p></li>
+<li><p><strong>node_max_size</strong> (<em>int</em>) – Maximum size of customers node, default to 500 (opt.)</p></li>
+<li><p><strong>node_depot_size</strong> (<em>int</em>) – Size of customers node, default to 300 (opt.)</p></li>
+<li><p><strong>fixed_size</strong> (<em>bool</em>) – Is the size of nodes fixed or variable in depends of the demand of the customer. If True the size of node will be based on the node_depot_size parameter, default to True (opt.)</p></li>
+<li><p><strong>node_shape</strong> (<em>str</em>) – The shape of the node. Specification is as matplotlib.scatter marker, one of “so^&gt;v&lt;dph8”, default to “o” (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The nodes in the legend and their labels</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[List[Line2D], List[str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.__drawMathPlotLib">
+<span class="sig-name descname"><span class="pre">__drawMathPlotLib</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.__drawMathPlotLib" title="Permalink to this definition"></a></dt>
+<dd><p>Method to draw a matplotlib figure representing the graph of the cvrp.
+It will tne be use in method getFigure and showFigure (private)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>show_edge</strong> (<em>bool</em>) – Boolean to know if the edge will be shown or not in the graph representation, default to False (opt.)</p></li>
+<li><p><strong>customer_node_color</strong> (<em>str</em>) – Color of the nodes representing the customers, default to “#8eaaf6” (kind of sky blue) (opt.)</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node representing the depot, default to “#a6f68e” (kind of soft green) (opt.)</p></li>
+<li><p><strong>with_labels</strong> (<em>bool</em>) – Display or not the name of the nodes (node id), default to True (opt.)</p></li>
+<li><p><strong>node_min_size</strong> (<em>int</em>) – Minimum size of customers node, default to 250 (opt.)</p></li>
+<li><p><strong>node_max_size</strong> (<em>int</em>) – Maximum size of customers node, default to 500 (opt.)</p></li>
+<li><p><strong>node_depot_size</strong> (<em>int</em>) – Size of customers node, default to 300 (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple with the following data (in that order) : The graph ploted, the layout of the graph, a list of string representing the color</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[nx.graph, nx.spring_layout, List[str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.__parseVrp">
+<span class="sig-name descname"><span class="pre">__parseVrp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.__parseVrp" title="Permalink to this definition"></a></dt>
+<dd><p>Method use to parse the data in .vrp files. Either web or local file,
+since the argument must be a string</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>data_to_parse</strong> – The string of the data file to parse</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>KeyError</strong> – If either DIMENSION, CAPACITY, NODE_COORD_SECTION, DEMAND_SECTION or DEPOT_SECTION are not in the file to parse or have a wrong format</p></li>
+<li><p><strong>IndexOutOfBound</strong> – If not all nodes are in both NODE_COORD_SECTION and DEMAND_SECTION. Can also be raised if DEPOT_SECTION is empty.</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.distanceMatrix">
+<span class="sig-name descname"><span class="pre">distanceMatrix</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.distanceMatrix" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get the distance matrix of the cvrp instance (node are sorted
+by their node_id)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>round_distance</strong> (<em>bool</em>) – If the distance between nodes should rounded or not, default to False (opt.)</p></li>
+<li><p><strong>precision</strong> (<em>int</em>) – Precision of the round, default to 2 (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The distance matrix of the instance</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>np.matrix</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All the distance are round to the nearest int</p>
+</div>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>The diagonal of the matrix is filled with -1</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Exemple</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dm</span> <span class="o">=</span> <span class="n">cvrp_instance</span><span class="o">.</span><span class="n">distanceMatrix</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.getCustomerByCustomerNumber">
+<span class="sig-name descname"><span class="pre">getCustomerByCustomerNumber</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.getCustomerByCustomerNumber" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get any customer (not depot !) by his customer number
+(the customer number is the number used in cvrp solution file)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>customer_number_searched</strong> (<em>int</em>) – The customer number of the customer searched</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The customer found with the customer number passed in input of the method or None if none customers have been found with the customer number</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="customer.html#problem.cvrp.customer.CustomerCvrp" title="problem.cvrp.customer.CustomerCvrp">CustomerCvrp</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>IndexOutOfBound</strong> – if the customer number does not exists (customer number higher than the total amout of customers in the instance)</p>
+</dd>
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">customer</span> <span class="o">=</span> <span class="n">cvrp_instance</span><span class="o">.</span><span class="n">getCustomerByCustomerNumber</span><span class="p">(</span><span class="n">id_searched</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer</span><span class="o">.</span><span class="n">node_id</span>
+<span class="go">7</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.getCustomerById">
+<span class="sig-name descname"><span class="pre">getCustomerById</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.getCustomerById" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get any customer (not depot !) by his node id (the node id
+is the number used in vrp file)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>id_searched</strong> (<em>int</em>) – The node id of the customer searched</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The customer found with the node id passed in input of the method or None if none customers have been found with the id</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="customer.html#problem.cvrp.customer.CustomerCvrp" title="problem.cvrp.customer.CustomerCvrp">CustomerCvrp</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>KeyError</strong> – if there’s multiple customer with the same id</p>
+</dd>
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">customer</span> <span class="o">=</span> <span class="n">cvrp_instance</span><span class="o">.</span><span class="n">getCustomerById</span><span class="p">(</span><span class="n">id_searched</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer</span><span class="o">.</span><span class="n">node_id</span>
+<span class="go">6</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.getCustomerNumberByNodeId">
+<span class="sig-name descname"><span class="pre">getCustomerNumberByNodeId</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.getCustomerNumberByNodeId" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get the customer number (used in solution of vrp) to node id
+(used in instance of vrp). It only sort customers by their node id and then
+return the index of the node id searched.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>node_id</strong> (<em>int</em>) – The node id that we are surching for</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The customer number of the node searched</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>ValueError</strong> – when the node id either does not exists or is the node id of the depot</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">customer_num</span> <span class="o">=</span> <span class="n">cvrp_instance</span><span class="o">.</span><span class="n">getCustomerNumberByNodeId</span><span class="p">(</span><span class="n">node_id</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">customer_num</span>
+<span class="go">5</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.getFigure">
+<span class="sig-name descname"><span class="pre">getFigure</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.getFigure" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get a matplotlib figure representing the graph of the cvrp
+instance that can be include in tkinter windows then</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>show_edge</strong> (<em>bool</em>) – Boolean to know if the edge will be shown or not in the graph representation, default to False (opt.)</p></li>
+<li><p><strong>customer_node_color</strong> (<em>str</em>) – Color of the nodes representing the customers, default to “#8eaaf6” (kind of sky blue) (opt.)</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node representing the depot, default to “#a6f68e” (kind of soft green) (opt.)</p></li>
+<li><p><strong>with_labels</strong> (<em>bool</em>) – Display or not the name of the nodes (node id), default to True (opt.)</p></li>
+<li><p><strong>node_min_size</strong> (<em>int</em>) – Minimum size of customers node, default to 250 (opt.)</p></li>
+<li><p><strong>node_max_size</strong> (<em>int</em>) – Maximum size of customers node, default to 500 (opt.)</p></li>
+<li><p><strong>node_depot_size</strong> (<em>int</em>) – Size of customers node, default to 300 (opt.)</p></li>
+<li><p><strong>fixed_size</strong> (<em>bool</em>) – Is the size of nodes fixed or variable in depends of the demand of the customer. If True the size of node will be based on the node_depot_size parameter, default to True (opt.)</p></li>
+<li><p><strong>node_shape</strong> (<em>str</em>) – The shape of the node. Specification is as matplotlib.scatter marker, one of “so^&gt;v&lt;dph8”, default to “o” (opt.)</p></li>
+<li><p><strong>alpha</strong> (<em>float</em>) – The node transparency, default to 1.0 (opt.)</p></li>
+<li><p><strong>legend_fontsize</strong> (<em>int</em>) – The fontsize use in the legend, default to 10 (opt.)</p></li>
+<li><p><strong>legend_markerscale</strong> (<em>float</em>) – Scale of node in legend compare to the node size in the graph, default to 0.75 (opt.)</p></li>
+<li><p><strong>legend_labelspacing</strong> (<em>float</em>) – The vertical space between the legend entries, in font-size units, default to 0.75 (opt.)</p></li>
+<li><p><strong>legend_borderpad</strong> (<em>float</em>) – The fractional whitespace inside the legend border, in font-size units, default to 0.75 (opt.)</p></li>
+<li><p><strong>show_legend</strong> (<em>bool</em>) – If the legend should be shown or not, default to False (opt.)</p></li>
+<li><p><strong>fig_size</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Size of the figure</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The graph figure of the cvrp</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>plt.figure</p>
+</dd>
+<dt class="field-even">Exemple</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">root</span> <span class="o">=</span> <span class="n">Tk</span><span class="o">.</span><span class="n">Tk</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">root</span><span class="o">.</span><span class="n">wm_title</span><span class="p">(</span><span class="s2">&quot;Graph embedded in TK&quot;</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">root</span><span class="o">.</span><span class="n">wm_protocol</span><span class="p">(</span><span class="s1">&#39;WM_DELETE_WINDOW&#39;</span><span class="p">,</span> <span class="n">root</span><span class="o">.</span><span class="n">quit</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">figure</span><span class="o">=</span><span class="n">cvrp</span><span class="o">.</span><span class="n">getFigure</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">canvas</span> <span class="o">=</span> <span class="n">FigureCanvasTkAgg</span><span class="p">(</span><span class="n">figure</span><span class="p">,</span> <span class="n">master</span><span class="o">=</span><span class="n">root</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">canvas</span><span class="o">.</span><span class="n">get_tk_widget</span><span class="p">()</span><span class="o">.</span><span class="n">pack</span><span class="p">(</span><span class="n">side</span><span class="o">=</span><span class="n">Tk</span><span class="o">.</span><span class="n">TOP</span><span class="p">,</span> <span class="n">fill</span><span class="o">=</span><span class="n">Tk</span><span class="o">.</span><span class="n">BOTH</span><span class="p">,</span> <span class="n">expand</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">Tk</span><span class="o">.</span><span class="n">mainloop</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.getNodeById">
+<span class="sig-name descname"><span class="pre">getNodeById</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.getNodeById" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get any node (customer + depot) by his node id (the node id
+is the number used in vrp file)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>id_searched</strong> (<em>int</em>) – The node id of the customer searched</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The node found with the node id passed in input of the method or None if none node have been found with the id</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="customer.html#problem.cvrp.customer.CustomerCvrp" title="problem.cvrp.customer.CustomerCvrp">CustomerCvrp</a> or <a class="reference internal" href="depot.html#problem.cvrp.depot.DepotCvrp" title="problem.cvrp.depot.DepotCvrp">DepotCvrp</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>KeyError</strong> – if there’s multiple node with the same id</p>
+</dd>
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">node</span> <span class="o">=</span> <span class="n">cvrp_instance</span><span class="o">.</span><span class="n">getNodeById</span><span class="p">(</span><span class="n">id_searched</span><span class="o">=</span><span class="mi">6</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">node</span><span class="o">.</span><span class="n">node_id</span>
+<span class="go">6</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.getNodeIdByCustomerNumber">
+<span class="sig-name descname"><span class="pre">getNodeIdByCustomerNumber</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.getNodeIdByCustomerNumber" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get the customer node id (used in instance of vrp)
+to customer number (used in solution of vrp).
+It only sort customers by their node id and then
+return the value indexed at customer_number value</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>customer_number</strong> (<em>int</em>) – The customer number that we are surching for</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The node id of the customer searched</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p><strong>IndexError</strong> – when the customer number does not exists</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Example</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">node_id</span> <span class="o">=</span> <span class="n">cvrp_instance</span><span class="o">.</span><span class="n">getNodeIdByCustomerNumber</span><span class="p">(</span><span class="n">node_id</span><span class="o">=</span><span class="mi">5</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">node_id</span>
+<span class="go">6</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.graph">
+<span class="sig-name descname"><span class="pre">graph</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.graph" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get the graph (complete graph) generated with networkx</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The graph of the cvrp instance</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>nx.Graph</p>
+</dd>
+</dl>
+<div class="admonition note">
+<p class="admonition-title">Note</p>
+<p>All the distance are round to the nearest int</p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Exemple</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">g</span> <span class="o">=</span> <span class="n">cvrp_instance</span><span class="o">.</span><span class="n">graph</span><span class="p">()</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.minVehiculeNumber">
+<span class="sig-name descname"><span class="pre">minVehiculeNumber</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.minVehiculeNumber" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get the minimum number of vehicule to make a solution of this
+cvrp problem</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The minimum number of vehicule to solve the cvrp</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>RuntimeError</strong> – If there’s no feasible solution (if a demand of at least on customer is higher than the capacity of vehicules)</p>
+</dd>
+<dt class="field-even">Exemple</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">vehicule</span> <span class="o">=</span> <span class="n">cvrp</span><span class="o">.</span><span class="n">min_vehicule_number</span><span class="p">()</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="n">vehicule</span>
+<span class="go">5</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.randomInstance">
+<span class="sig-name descname"><span class="pre">randomInstance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.randomInstance" title="Permalink to this definition"></a></dt>
+<dd><p>Method to create a random instance of cvrp</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>nb_customer</strong> (<em>int</em>) – The number of customers in the instance, default to 30 (opt.)</p></li>
+<li><p><strong>vehicule_capacity</strong> (<em>int</em>) – The capacity of the vehicule’s fleet, default to 100 (opt.)</p></li>
+<li><p><strong>customer_demand_lb</strong> (<em>int</em>) – Lowerbound of the customer demand which will be distributed randomly and uniformely, default to 1 (opt.)</p></li>
+<li><p><strong>customer_demand_ub</strong> (<em>int</em>) – Upperbound of the customer demand which will be distributed randomly and uniformely, default to 20 (opt.)</p></li>
+<li><p><strong>grid_size</strong> – The size of the grid in other word the maximum value</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Itself</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#problem.cvrp.instance.Cvrp" title="problem.cvrp.instance.Cvrp">Cvrp</a></p>
+</dd>
+<dt class="field-even">Exemple</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cvrp</span><span class="o">.</span><span class="n">randomInstance</span><span class="p">(</span><span class="n">nb_customer</span><span class="o">=</span><span class="mi">50</span><span class="p">,</span> <span class="n">vehicule_capacity</span><span class="o">=</span><span class="mi">100</span><span class="p">,</span> <span class="n">customer_demand_lb</span><span class="o">=</span><span class="mi">10</span><span class="p">,</span> <span class="n">customer_demand_ub</span><span class="o">=</span><span class="mi">90</span><span class="p">,</span> <span class="n">grid_size</span><span class="o">=</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.readInstanceVrp">
+<span class="sig-name descname"><span class="pre">readInstanceVrp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.readInstanceVrp" title="Permalink to this definition"></a></dt>
+<dd><p>Method to read instance of vrp on local machine</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_path</strong> – Path of the file where the vrp instance is</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Itself</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#problem.cvrp.instance.Cvrp" title="problem.cvrp.instance.Cvrp">Cvrp</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>FileNotFoundError</strong> – when the file has not been found</p></li>
+<li><p><strong>ValueError</strong> – when the instance could not have been parsed</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Please ensure the format of the instance is correct. Exemples of the file format can be found on: <a class="reference external" href="http://vrp.atd-lab.inf.puc-rio.br/index.php/en/">http://vrp.atd-lab.inf.puc-rio.br/index.php/en/</a></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Exemple</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cvrp_instance</span><span class="o">.</span><span class="n">readInstanceVrp</span><span class="p">(</span><span class="n">file_path</span><span class="o">=</span><span class="s2">&quot;C:\Users\YourName\Documents\instance.vrp&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.readInstanceVrpWeb">
+<span class="sig-name descname"><span class="pre">readInstanceVrpWeb</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.readInstanceVrpWeb" title="Permalink to this definition"></a></dt>
+<dd><p>Method to read instance of vrp on internet</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>url</strong> (<em>str</em>) – Url of the page where the vrp instance is</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Itself</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="#problem.cvrp.instance.Cvrp" title="problem.cvrp.instance.Cvrp">Cvrp</a></p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><ul class="simple">
+<li><p><strong>AssertionError</strong> – when the requests failled to get data from the url</p></li>
+<li><p><strong>ValueError</strong> – when the instance could not have been parsed</p></li>
+</ul>
+</dd>
+</dl>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>If the url is incorrect raise a ValueError</p>
+</div>
+<div class="admonition warning">
+<p class="admonition-title">Warning</p>
+<p>Please ensure the format of the instance is correct. Exemples of the file format can be found on: <a class="reference external" href="http://vrp.atd-lab.inf.puc-rio.br/index.php/en/">http://vrp.atd-lab.inf.puc-rio.br/index.php/en/</a></p>
+</div>
+<dl class="field-list simple">
+<dt class="field-odd">Exemple</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cvrp_instance</span><span class="o">.</span><span class="n">readInstanceVrpWeb</span><span class="p">(</span><span class="n">url</span><span class="o">=</span><span class="s2">&quot;http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.vrp&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.showConsole">
+<span class="sig-name descname"><span class="pre">showConsole</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.showConsole" title="Permalink to this definition"></a></dt>
+<dd><p>Method to display the cvrp instance in the console</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.showFigure">
+<span class="sig-name descname"><span class="pre">showFigure</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.showFigure" title="Permalink to this definition"></a></dt>
+<dd><p>Method to display a matplotlib representing the graph of the cvrp
+instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>show_edge</strong> (<em>bool</em>) – Boolean to know if the edge will be shown or not in the graph representation, default to False (opt.)</p></li>
+<li><p><strong>customer_node_color</strong> (<em>str</em>) – Color of the nodes representing the customers, default to “#8eaaf6” (kind of sky blue) (opt.)</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node representing the depot, default to “#a6f68e” (kind of soft green) (opt.)</p></li>
+<li><p><strong>with_labels</strong> (<em>bool</em>) – Display or not the name of the nodes (node id), default to True (opt.)</p></li>
+<li><p><strong>node_min_size</strong> (<em>int</em>) – Minimum size of customers node, default to 250 (opt.)</p></li>
+<li><p><strong>node_max_size</strong> (<em>int</em>) – Maximum size of customers node, default to 500 (opt.)</p></li>
+<li><p><strong>node_depot_size</strong> (<em>int</em>) – Size of customers node, default to 300 (opt.)</p></li>
+<li><p><strong>fixed_size</strong> (<em>bool</em>) – Is the size of nodes fixed or variable in depends of the demand of the customer. If True the size of node will be based on the node_depot_size parameter, default to True (opt.)</p></li>
+<li><p><strong>node_shape</strong> (<em>str</em>) – The shape of the node. Specification is as matplotlib.scatter marker, one of “so^&gt;v&lt;dph8”, default to “o” (opt.)</p></li>
+<li><p><strong>alpha</strong> (<em>float</em>) – The node transparency, default to 1.0 (opt.)</p></li>
+<li><p><strong>legend_fontsize</strong> (<em>int</em>) – The fontsize use in the legend, default to 10 (opt.)</p></li>
+<li><p><strong>legend_markerscale</strong> (<em>float</em>) – Scale of node in legend compare to the node size in the graph, default to 0.75 (opt.)</p></li>
+<li><p><strong>legend_labelspacing</strong> (<em>float</em>) – The vertical space between the legend entries, in font-size units, default to 0.75 (opt.)</p></li>
+<li><p><strong>legend_borderpad</strong> (<em>float</em>) – The fractional whitespace inside the legend border, in font-size units, default to 0.75 (opt.)</p></li>
+<li><p><strong>show_legend</strong> (<em>bool</em>) – If the legend should be shown or not, default to False (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Exemple</dt>
+<dd class="field-even"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">cvrp</span><span class="o">.</span><span class="n">showFigure</span><span class="p">(</span><span class="n">show_edge</span><span class="o">=</span><span class="kc">False</span><span class="p">,</span> <span class="n">customer_node_color</span><span class="o">=</span><span class="s2">&quot;#91faf6&quot;</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.writeInstanceVrp">
+<span class="sig-name descname"><span class="pre">writeInstanceVrp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.writeInstanceVrp" title="Permalink to this definition"></a></dt>
+<dd></dd></dl>
+
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="depot.html" class="btn btn-neutral float-left" title="CVRP Depot Node" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../solution/solution.html" class="btn btn-neutral float-right" title="Capacitated Vehicle Routing Problem Modelization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright free.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>
