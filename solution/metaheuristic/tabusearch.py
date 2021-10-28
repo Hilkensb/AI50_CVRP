@@ -14,7 +14,7 @@ from solution.cvrp.route import RouteCvrp
 from problem.cvrp.customer import CustomerCvrp
 from problem.cvrp.depot import DepotCvrp
 from problem.node import NodeWithCoord
-from solver.constructive.clarkwrightsaving import clarkWrightSaving
+from solution.constructive.clarkwrightsaving import clarkWrightSaving
 
 
 # -------------------- Tabu Search Neighborhood functions ------------------- #
