@@ -392,8 +392,8 @@ class Cvrp(VehiculeRootingProblem):
         # Clear the list (in case something was generated previously)
         self.__customers = []
         
-        # Create ever customer
-        for customer_number in range(1, self.__nb_customer + 1):
+        # Create every customer
+        for customer_number in range(2, self.__nb_customer + 2):
             # Create the CustomerCvrp object that is storing curstomer information
             # Generate randomly value for each information of the customer
             customer: CustomerCvrp = CustomerCvrp(
@@ -407,7 +407,7 @@ class Cvrp(VehiculeRootingProblem):
 
         # Create the depot
         self.__depot = DepotCvrp(
-            node_id=self.__nb_customer + 1, x=rand.randint(0, grid_size),
+            node_id=1, x=rand.randint(0, grid_size),
             y=rand.randint(0, grid_size)
         )
         
