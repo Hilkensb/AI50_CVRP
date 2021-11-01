@@ -1340,8 +1340,8 @@ class SolutionCvrp:
                     other_route: RouteCvrp = second_route
                     first_index: int = index
                     second_index: int = index2 + index + 1
-                    self_route_cost: float = second_route_cost
-                    other_route_cost: float = route_cost
+                    self_route_cost: float = route_cost
+                    other_route_cost: float = second_route_cost
                 else:
                     base_route: RouteCvrp = second_route
                     other_route: RouteCvrp = route
@@ -1425,7 +1425,7 @@ class SolutionCvrp:
             # Get the route cost
             second_route_cost: int = second_route.evaluation()
             # Cost with the route removed
-            solution_cost: int = route_removed_cost - route_cost
+            solution_cost: int = route_removed_cost - second_route_cost
             # Choose the base route and the other route
             # because route1.getNeighboursRouteInsertion(route2) !=
             # route2.getNeighboursRouteInsertion(route1)
@@ -1435,8 +1435,8 @@ class SolutionCvrp:
                 other_route: RouteCvrp = second_route
                 first_index: int = index
                 second_index: int = ((index+1) % len(self.__route))
-                self_route_cost: float = second_route_cost
-                other_route_cost: float = route_cost
+                self_route_cost: float = route_cost
+                other_route_cost: float = second_route_cost
             else:
                 base_route: RouteCvrp = second_route
                 other_route: RouteCvrp = route

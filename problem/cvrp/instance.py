@@ -7,6 +7,7 @@ import logging as log
 import copy as copy
 from fractions import Fraction
 import re
+import json
 
 # Other Library
 # Library for array, matrix, ...
@@ -165,6 +166,32 @@ class Cvrp(VehiculeRootingProblem):
         
         # Return the string value of the dataframe
         return str(matrix_data_frame)
+
+    def __dict__(self):
+        """
+        dict
+        
+        Create the dictionnary of the object
+        """
+        
+        # Create the dictionnary
+        object_dict: Dict = {}
+        
+        # Create a list of customers
+        customer_list_dict: List = []
+        
+        # for every customer in customers
+        for customer in self.__customers:
+            # Append to the list
+            customer_list_dict.append(customer.__dict__())
+        
+        # Set every variable of it
+        object_dict["nb_customer"] = self.__nb_customer
+        object_dict["customers"] = customer_list_dict
+        object_dict["depot"] = self.__depot.__dict__()
+        object_dict["vehicule_capacity"] = self.__vehicule_capacity
+        
+        return object_dict   
 
 # ---------------------------- Inhereted Methods ---------------------------- #
     
@@ -490,8 +517,7 @@ class Cvrp(VehiculeRootingProblem):
                     customers_demand.remove(demand)
               
         # Return the number minimum of vehicule to solve the problem            
-        return nb_vehicule
-                    
+        return nb_vehicule           
 
 # --------------------------------- Methods --------------------------------- #
 
@@ -618,8 +644,8 @@ class Cvrp(VehiculeRootingProblem):
     def showFigurePlotly(
         self, show_edge: bool = False, customer_node_color: str = "#8eaaf6",
         depot_node_color: str = "#a6f68e",
-        node_min_size: int = 10, node_max_size: int = 50,
-        node_depot_size: int = 30, fixed_size: bool = True,
+        node_min_size: int = 5, node_max_size: int = 30,
+        node_depot_size: int = 15, fixed_size: bool = True,
     ) -> None:
         """
         showFigurePlotly()
@@ -669,7 +695,7 @@ class Cvrp(VehiculeRootingProblem):
             marker=dict(
                 color=color_map,
                 size=size_map,
-                line_width=2
+                line_width=0.5
             )
         )
         
@@ -702,8 +728,8 @@ class Cvrp(VehiculeRootingProblem):
     def getHtmlFigurePlotly(
         self, show_edge: bool = False, customer_node_color: str = "#8eaaf6",
         depot_node_color: str = "#a6f68e",
-        node_min_size: int = 10, node_max_size: int = 50,
-        node_depot_size: int = 30, fixed_size: bool = True,
+        node_min_size: int = 5, node_max_size: int = 30,
+        node_depot_size: int = 15, fixed_size: bool = True,
         full_html: bool = True, default_width: str = '100%',
         default_height: str = '100%'
     ) -> str:
@@ -743,7 +769,7 @@ class Cvrp(VehiculeRootingProblem):
         edge_x, edge_y, node_x, node_y, color_map, size_map, node_text, position_layout = self.__drawPlotly(
             show_edge=show_edge, customer_node_color=customer_node_color,
             depot_node_color=depot_node_color, node_min_size=node_min_size,
-            node_max_size=node_max_size, node_depot_size=node_depot_size
+            node_max_size=node_max_size, node_depot_size=node_depot_size, fixed_size=fixed_size
         )
       
         # Edge of the trace
@@ -762,7 +788,7 @@ class Cvrp(VehiculeRootingProblem):
             marker=dict(
                 color=color_map,
                 size=size_map,
-                line_width=2
+                line_width=0.5
             )
         )
         
@@ -1030,7 +1056,7 @@ class Cvrp(VehiculeRootingProblem):
         self, show_edge: bool = False, customer_node_color: str = "#8eaaf6",
         depot_node_color: str = "#a6f68e",
         node_min_size: int = 10, node_max_size: int = 50,
-        node_depot_size: int = 30
+        node_depot_size: int = 30, fixed_size: bool = True
     ) -> Tuple(List[int], List[int], List[int], List[int], List[str], List[int], List[str], nx.spring_layout):
         """
         __drawPlotly()
@@ -1145,10 +1171,15 @@ class Cvrp(VehiculeRootingProblem):
                 # So it's time saving to cast them before (only 1 cast) than it would
                 # be to cast them for every node
                 node_demand: float = float(customer.demand)
-                # Determine the node size using linear interpolation
-                node_size: float = mathfunc.linearInterpolation(minimum_demand, maximum_demand, node_demand)
-                # Finaly set the the node depend on the max and min size give
-                node_size = node_size * (node_max_size - node_min_size) + node_min_size
+                
+                # Set the default size to the depot node size
+                node_size: float = node_depot_size
+                # If the size of the node should depend on his demand
+                if not fixed_size:
+                    # Determine the node size using linear interpolation
+                    node_size: float = mathfunc.linearInterpolation(minimum_demand, maximum_demand, node_demand)
+                    # Finaly set the the node depend on the max and min size give
+                    node_size = node_size * (node_max_size - node_min_size) + node_min_size
                 # Add the value to the size map
                 size_map.append(node_size)
 
@@ -1398,6 +1429,50 @@ class Cvrp(VehiculeRootingProblem):
             
             # Add the customer
             self.__customers.append(customer)
+
+# _____________________________ Extract Methods _____________________________ #
+
+    def toJSON(self):
+        """
+        toJSON()
+        
+        Method to get the JSON value of the class
+        """
+    
+        return json.dumps(self.__dict__())
+        
+    def fromJSON(self, json: dict) -> None:
+        """
+        fromJSON()
+        
+        Method to transform a JSON into an object
+        
+        :param json: Json data of the object
+        :type json: dict
+        :raises: KeyValueError if the json is incomplete
+        """
+    
+        # Create a list of customers
+        customer_list_raw: List = []
+        
+        # for every customer in the json
+        for customer_dict in json["customers"]:
+            # Create the customer object
+            customer_obj: CustomerCvrp = CustomerCvrp(node_id=0, x=0, y=0, demand=0)
+            # Give it the json to build it
+            customer_obj.fromJSON(customer_dict)
+            # Append to the list
+            customer_list_raw.append(customer_obj)
+        
+        # Create the depot
+        depot_obj = DepotCvrp(node_id=0, x=0, y=0)
+        depot_obj.fromJSON(json["depot"])
+        
+        # Set every variable of it
+        self.__nb_customer = json["nb_customer"]
+        self.__customers = customer_list_raw
+        self.__depot = depot_obj
+        self.__vehicule_capacity = json["vehicule_capacity"]
 
 # ____________________________ Searching Methods ____________________________ #
 

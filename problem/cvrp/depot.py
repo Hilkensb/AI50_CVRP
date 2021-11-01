@@ -2,6 +2,7 @@
 # Standard Library
 from __future__ import annotations
 from typing import Tuple
+import json
 
 # Modules
 from problem.node import NodeWithCoord
@@ -75,6 +76,24 @@ class DepotCvrp(NodeWithCoord):
         """
         return hash((self.__node_id, self.__x, self.__y, self.__demand))
 
+    def __dict__(self):
+        """
+        dict
+        
+        Create the dictionnary of the object
+        """
+        
+        # Create the dictionnary
+        object_dict: Dict = {}
+        
+        # Set every variable of it
+        object_dict["id"] = self.__node_id
+        object_dict["x"] = self.__x
+        object_dict["y"] = self.__y
+        object_dict["demand"] = int(self.__demand)
+        
+        return object_dict
+
 # --------------------------------- Methods --------------------------------- #
 
     def getCoordinates(self) -> Tuple[int, int]:
@@ -88,7 +107,33 @@ class DepotCvrp(NodeWithCoord):
 
         """
         return self.x, self.y
-     
+
+    def toJSON(self) -> Dict:
+        """
+        toJSON()
+        
+        Method to get the JSON value of the class
+        """
+    
+        return json.dumps(self.__dict__())
+        
+    def fromJSON(self, json: dict) -> None:
+        """
+        fromJSON()
+        
+        Method to transform a JSON into an object
+        
+        :param json: Json data of the object
+        :type json: dict
+        :raises: KeyValueError if the json is incomplete
+        """
+    
+        # Set every variable of it
+        self.__node_id = json["id"]
+        self.__x = json["x"]
+        self.__y = json["y"]
+        self.__demand = json["demand"]
+    
 # ----------------------------- Getter / Setter ----------------------------- #
    
     @property 
