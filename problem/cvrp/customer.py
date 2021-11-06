@@ -94,6 +94,9 @@ class CustomerCvrp(NodeWithCoord):
         dict
         
         Create the dictionnary of the object
+        
+        :return: The dictionnary with al values of the object
+        :rtype: dict
         """
         
         # Create the dictionnary
@@ -120,7 +123,7 @@ class CustomerCvrp(NodeWithCoord):
         """
         return self.x, self.y
      
-    def toJSON(self) -> Dict:
+    def toJSON(self) -> str:
         """
         toJSON()
         

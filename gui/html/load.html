@@ -5,7 +5,11 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
-  <link rel="stylesheet" href="https://static.pingendo.com/bootstrap/bootstrap-4.3.1.css" >
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/theme.css') }}" >
+  <script src="{{ url_for('static', filename='javascript/plotly-2.4.2.min.js') }}"></script>
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/card.css') }}" type="text/css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/alert.css') }}" type="text/css">
+  <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.0/css/all.css">
 </head>
 
 <body>
@@ -33,35 +37,84 @@
       </div>
     </div>
   </nav>
-  <div class="py-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-3" style="">
-          <h1 class="" id="Algorithm_name">Name of algo</h1>
-        </div>
-        <div class="col-md-9" style=""></div>
-        <div class="col-md-3" style="">
-          <p class="lead">Best solution cost:</p>
-        </div>
-        <div class="col-md-9" style="">
-          <p class="lead" id="solution_cost"></p>
-        </div>
-        <div class="col-md-3" style="">
-          <p class="lead">Iteration:</p>
-        </div>
-        <div class="col-md-9" style="">
-          <p class="lead" id="Iteration_number"></p>
+  <div id="liveAlertPlaceholder"></div>
+  <!-- Page Wrapper -->
+  <div id="wrapper" style="margin-top: 15px;">
+    <!-- Content Wrapper -->
+    <div id="content-wrapper" class="d-flex flex-column">
+      <!-- Main Content -->
+      <div id="content">
+        <!-- Begin Page Content -->
+        <div class="container-fluid">
+            <!-- Content Row -->
+            <div class="row" style="display: flex;justify-content: center;">
+                <!-- Best solution cost Card -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                  <div class="card border-left-primary shadow h-100 py-2">
+                    <div class="card-body">
+                      <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                          <div class="text-xs font-weight-bold text-primary text-uppercase mb-1">Algorithm currently running:</div>
+                          <div class="h5 mb-0 font-weight-bold text-gray-800" id="Algorithm_name"></div>
+                        </div>
+                        <div class="col-auto">
+                          <i class="fas fa-code fa-2x text-gray-300"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Best algoirhtm Card -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                  <div class="card border-left-success shadow h-100 py-2">
+                    <div class="card-body">
+                      <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                          <div class="text-xs font-weight-bold text-success text-uppercase mb-1"> Current solution cost:</div>
+                          <div class="h5 mb-0 font-weight-bold text-gray-800" id="solution_cost"></div>
+                        </div>
+                        <div class="col-auto">
+                          <i class="fas fa-trophy fa-2x text-gray-300"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <!-- Best algoirhtm Card -->
+                <div class="col-xl-3 col-md-6 mb-4">
+                  <div class="card border-left-info shadow h-100 py-2">
+                    <div class="card-body">
+                      <div class="row no-gutters align-items-center">
+                        <div class="col mr-2">
+                          <div class="text-xs font-weight-bold text-info text-uppercase mb-1"> Current iteration:</div>
+                          <div class="h5 mb-0 font-weight-bold text-gray-800" id="Iteration_number"></div>
+                        </div>
+                        <div class="col-auto">
+                          <i class="fas fa-list-ol fa-2x text-gray-300"></i>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+            </div>
+          </div>
         </div>
       </div>
     </div>
-  </div>
-  <div class="py-5">
-    <div class="container">
-      <div class="row">
-        <div class="col-md-12" id="graph"></div>
-      </div>
+  
+    <div class="card shadow mb-4" style="margin-left:10px;margin-right:10px;">
+        <!-- Card Header - Dropdown -->
+        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+            <h6 class="m-0 font-weight-bold text-primary">Current solution</h6>
+        </div>
+        <!-- Card Body -->
+        <div class="card-body">
+            <div class="chart-area" style="height: 450px;">
+                <div class="col-md-12" id="graph"></div>
+            </div>
+        </div>
     </div>
-  </div>
+  
   <div class="py-3" style="">
     <div class="container">
       <div class="row">
@@ -83,23 +136,43 @@
         var Cost = document.getElementById('solution_cost');
         var Iteration = document.getElementById('Iteration_number');
         var Graph = document.getElementById('graph');
+        var alertPlaceholder = document.getElementById('liveAlertPlaceholder');
 
         source.onmessage = function(e) {
             console.log(e.data.slice(2, -1))
             
             if (e.data.slice(2, -1) == "END"){
-                window.location.assign("https://www.youtube.com/"); 
+                window.location.assign("{{url_for('result')}}");
             }
             
             const json_obj = JSON.parse(e.data.slice(2, -1));
         
+            if(json_obj.messages){
+                var wrapper = document.createElement('div')
+                wrapper.innerHTML = "<div class=\"alert " + json_obj.type + "\"><span class=\"closebtn\">&times;</span>" + json_obj.messages + "</div>"
+                alertPlaceholder.append(wrapper)
+            }
+        
             Algorithm_name.innerHTML = json_obj.algorithm_name;
             Cost.innerHTML = json_obj.cost;
             Iteration.innerHTML = json_obj.iteration;
-            Graph.innerHTML = json_obj.graph;
-        };
+            Plotly.newPlot('graph', json_obj.graph);
+          };
     }
     sse();
+</script>
+
+<script>
+    var close = document.getElementsByClassName("closebtn");
+    var i;
+
+    for (i = 0; i < close.length; i++) {
+      close[i].onclick = function(){
+        var div = this.parentElement;
+        div.style.opacity = "0";
+        setTimeout(function(){ div.style.display = "none"; }, 600);
+      }
+    }
 </script>
   
   <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>

@@ -17,7 +17,7 @@ from problem.cvrp.customer import CustomerCvrp
 from problem.cvrp.depot import DepotCvrp
 from problem.node import NodeWithCoord
 from solution.constructive.clarkwrightsaving import clarkWrightSaving
-from gui.config import redis_server, SOLUTION_TOPIC
+from gui.config import redis_server, SOLUTION_TOPIC, SHOW_SOLUTION
 from utils.redisutils import isRedisAvailable
 
 
@@ -387,7 +387,7 @@ class TabuSearch:
         # wait n seconds for the thread to finish its work
         thread_tabu.join(max_second_run)     
 
-    def __addNewSolution(self, solution: SolutionCvrp, evaluation: float):
+    def __addNewSolution(self, solution: SolutionCvrp, evaluation: float, rounded_json: int = 2):
         """
         """
         # Create an history of the  best value
@@ -398,9 +398,9 @@ class TabuSearch:
         if isRedisAvailable():
             # Create the data
             json_data = {
-                "algorithm_name": "Tabu search", "cost": evaluation,
+                "algorithm_name": "Tabu search", "cost": round(evaluation, 2),
                 "iteration":len(self.__best_solution_evaluation_evolution),
-                "graph": "Not implemented yet" # solution.getHtmlFigurePlotly(full_html=False)
+                "graph": solution.drawPlotlyJSON() if SHOW_SOLUTION else ""
             }
             # Publish
             redis_server.publish(self.__topic, json.dumps(json_data))
@@ -531,4 +531,48 @@ def tabuSearch(
         )
     
     return tabu_search
+
+def easyTabuSearch(
+    initial_solution: SolutionCvrp, multiphase: bool = True,
+    neighborhood_function_list: Union[List[str], str] = ["closestInsertionNeighbours", "routeSwapNeighbours"],
+    function_iteration_list: List[int] = [3, 9], number_iteration: int = -1,
+    tabu_length: int = -1, aspiration: bool = True, max_second_run: int = 45,
+    publish_topic: str = SOLUTION_TOPIC
+) -> List[SolutionCvrp]:
+    """
+    tabuSearch()
+    
+    Function to run tabu search
+    
+    :param initial_solution: The initial solution
+    :type initial_solution: SolutionCvrp
+    :param multiphase: Boolean to know if the tabu search need to have multiple phase
+    :type multiphase: bool
+    :param neighborhood_function_list: List of functions to find neighbours
+    :type neighborhood_function_list: List of function
+    :param function_iteration_list: Number of iteration to do for each function
+    :type function_iteration_list: List of int
+    :param number_iteration: Number of iteration to do
+    :type number_iteration: int
+    :param tabu_length: Length of tabu list
+    :type tabu_length: int
+    :param aspiration: If the aspirate criteria is enabled or not (ignore the tabu list if it upgrade the solution)
+    :type aspiration: bool
+    :param max_second_run: Maximum second to run tabu search
+    :type max_second_run: int
+    :param publish_topic: topic name where to publish the solution
+    :type publish_topic: str
+    :return: An improved solution with all the historical solution found
+    :rtype: TabuSearch
+    """
+    
+    tabu_search_result: TabuSearch = tabuSearch(
+        initial_solution=initial_solution, multiphase=multiphase,
+        neighborhood_function_list=neighborhood_function_list,
+        function_iteration_list=function_iteration_list, number_iteration=number_iteration,
+        tabu_length=tabu_length, aspiration=aspiration, max_second_run=max_second_run,
+        publish_topic=publish_topic
+    )
+    
+    return tabu_search_result.best_solution_evolution, tabu_search_result.best_solution_evaluation_evolution
                     

@@ -168,7 +168,27 @@ class RouteCvrp:
         """
         """
         return self.__customers_route[indices]
+    
+    def __dict__(self):
+        """
+        dict()
         
+        Create the dictionnary of the object
+        
+        :return: The dictionnary with al values of the object
+        :rtype: dict
+        """  
+        
+        # Create the dictionnary
+        object_dict: Dict = {}
+        
+        # Set every variable of it
+        # Convert every customer into dictionnary before putting them inside
+        # the dictionnary of the route
+        # it will then be easier to generate the json string
+        object_dict["customers_route"] = [customer.__dict__() for customer in self.__customers_route]
+        
+        return object_dict  
     
 # --------------------------------- Methods --------------------------------- #
 
@@ -699,6 +719,57 @@ class RouteCvrp:
         demand_list: List[int] = [customer.demand for customer in self.__customers_route]
         
         return sum(demand_list)
+
+# _____________________________ Extract Methods _____________________________ #
+
+    def toJSON(self) -> str:
+        """
+        toJSON()
+        
+        Method to get the JSON value of the class
+        """
+    
+        return json.dumps(self.__dict__())
+        
+    def fromJSON(self, json: dict) -> None:
+        """
+        fromJSON()
+        
+        Method to transform a JSON into an object
+        
+        :param json: Json data of the object
+        :type json: dict
+        :raises: KeyValueError if the json is incomplete
+        """
+    
+        # Create a list of customers
+        customers_list: List[CustomerCvrp] = []
+        # Iterate throw every customers of the route
+        # Excludes the first and last node that should be depot node
+        # So it has to be another object, so another constructor
+        for customer_dict in json["customers_route"][1:-1]:
+            # Create a new customer
+            customer: CustomerCvrp = CustomerCvrp(node_id=0, x=0, y=0, demand=0)
+            # Read the json of the customer and update the customer
+            # with information stored inside
+            customer.fromJSON(json=customer_dict)
+            # Add the customer to the list
+            customers_list.append(customer)
+        
+        # Since every route should start and end at the depot they should be
+        # of type DpotCvrp
+        # We could have made only one object and put it at the start and end
+        # But for the safety we will prefer create 2 objects
+        # Even if the two object should be the same (at least if the json
+        # is correct)
+        start_depot: DepotCvrp = DepotCvrp(node_id=0, x=0, y=0)
+        end_depot: DepotCvrp = DepotCvrp(node_id=0, x=0, y=0)
+        # Read the json to update the objects
+        start_depot.fromJSON(json=json["customers_route"][0])
+        end_depot.fromJSON(json=json["customers_route"][-1])
+        
+        # Create the route with all nodes build before
+        self.__customers_route = [start_depot, *customers_list, end_depot]
 
 # ----------------------------- Getter / Setter ----------------------------- #
 

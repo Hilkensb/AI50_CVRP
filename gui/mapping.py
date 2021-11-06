@@ -30,5 +30,11 @@ mapping: List = [
         "endpoint_name": "load",
         "action": load, 
         "methods": ['GET', 'POST']
+    },
+    {
+        "endpoint": "/result/", 
+        "endpoint_name": "result",
+        "action": result, 
+        "methods": None
     }
 ]

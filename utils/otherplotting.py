@@ -12,6 +12,8 @@ from matplotlib import animation
 import plotly.graph_objects as go
 # To convert figure into html
 from plotly.io import to_html
+import plotly.express as px
+import pandas as pd
 
 # Modules
 from solution.cvrp.solution import SolutionCvrp
@@ -295,6 +297,59 @@ def getHtmlSolutionEvolutionAnimationPlotly(
     # Return the html string
     return to_html(
             fig=fig, full_html=full_html,
-            default_width=default_width, default_height=default_height
+            default_width=default_width, default_height=default_height, auto_play=False
+    )
+
+def getLineCostEvolution(cost_evolution: List[float], title: str = ""):
+    """
+    getLineCostEvolution()
+    
+    :param cost_evolution: cost evolution during the algorithm
+    :type cost_evolution: List[float]
+    :param title: Title of the figure, default to \"\" (opt.)
+    :type title: str
+    :return: Line chart of the cost evolution
+    """
+    
+    # Create the data frame 
+    data_frame: pd.DataFrame = pd.DataFrame(dict(
+        Iterations = [index for index in range(1, len(cost_evolution) + 1)],
+        Cost = cost_evolution
+    ))
+    
+    # Create the figure
+    fig = px.line(data_frame, x="Iterations", y="Cost", title=title) 
+    # return the figure
+    return fig
+
+def getHtmlLineCostEvolution(
+    cost_evolution: List[float], title: str = "",
+    full_html: bool = True, default_width: str = '100%', default_height: str = '100%'
+) -> str:
+    """
+    getHtmlLineCostEvolution()
+    
+    :param cost_evolution: cost evolution during the algorithm
+    :type cost_evolution: List[float]
+    :param title: Title of the figure, default to \"\" (opt.)
+    :type title: str
+        :param full_html: If True, produce a string containing a complete HTML document starting with an <html> tag. If False, produce a string containing a single <div> element. Default to True (opt.)
+
+    :type full_html: bool
+    :param default_width: he default figure width/height to use if the provided figure does not specify its own layout.width/layout.height property. May be specified in pixels as an integer (e.g. 500), or as a css width style string (e.g. ‘500px’, ‘100%’). Default to \"100%\" (opt.)
+    :type default_width: str
+    :param default_height: The default figure width/height to use if the provided figure does not specify its own layout.width/layout.height property. May be specified in pixels as an integer (e.g. 500), or as a css width style string (e.g. ‘500px’, ‘100%’). Default to \"100%\" (opt.)
+    :return: html code of the line chart of the cost evolution
+    :rtype: str
+    """
+    
+    fig = getLineCostEvolution(
+        cost_evolution=cost_evolution, title=title
+    )
+
+    # Return the html string
+    return to_html(
+            fig=fig, full_html=full_html,
+            default_width=default_width, default_height=default_height, auto_play=False
     )
 

@@ -25,6 +25,7 @@ class Application:
         # self.app.config["REDIS_URL"] = REDIS_URL
         # Map all actions
         self.__mapActions()
+        self.app.config.update(SESSION_COOKIE_SAMESITE="None", SESSION_COOKIE_SECURE=True)
         
     def __mapActions(self) -> None:
         """

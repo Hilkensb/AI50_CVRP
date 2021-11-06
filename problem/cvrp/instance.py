@@ -1432,7 +1432,7 @@ class Cvrp(VehiculeRootingProblem):
 
 # _____________________________ Extract Methods _____________________________ #
 
-    def toJSON(self):
+    def toJSON(self) -> str:
         """
         toJSON()
         

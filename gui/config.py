@@ -1,9 +1,13 @@
 # Configuration of the web application
 # Standard Library
 from __future__ import annotations
+from typing import List, Dict, Tuple, Union, Set
 import redis as red
 
 # ------------------------------- -------------------------------#
+# Show or not solution on loading page
+# If not showed it will improved time cost of the algorithms
+SHOW_SOLUTION: bool = False
 # Folder were all html templates are stored
 TEMPLATE_FOLDER: str = "html"
 # Default address
@@ -27,4 +31,6 @@ SOLUTION_ADDRESS: str = "/stream"
 SOLUTION_TOPIC: str = "solution_stream"
 # Redis server for solution event
 redis_server: red.Redis = red.Redis(host=REDIS_HOST, port=REDIS_PORT, db=0)
+# Session saves
+instance_save: Dict = {}
 
