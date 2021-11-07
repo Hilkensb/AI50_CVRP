@@ -230,12 +230,9 @@ def getSolutionEvolutionAnimationPlotly(
             route_color=route_color, show_legend_edge=show_legend_edge,
             show_legend_node=show_legend_node
         )
-        
-        # for every scatter 
-        # each scatter represent either node of a route or edges of a route
-        for route in [*node_scatter_list, *edge_scatter_list]:
-            # Add each scatter to the frame
-            frame["data"].append(route)
+
+        # Add each scatter to the frame
+        frame["data"] += [*node_scatter_list, *edge_scatter_list]
 
         # Create the frame
         fig_dict["frames"].append(frame)
@@ -243,7 +240,7 @@ def getSolutionEvolutionAnimationPlotly(
             [iteration],
             {"frame": {"duration": 300, "redraw": False},
              "mode": "immediate",
-             "transition": {"duration": 300}}
+             "transition": {"duration": 300, "ease": "cubic-in-out"}}
         ],
             "label": iteration,
             "method": "animate"}

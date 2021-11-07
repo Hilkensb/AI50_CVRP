@@ -14,25 +14,25 @@ mapping: List = [
         "methods": None
     },
     {
-        "endpoint": "/algorithm/<instance_type>/", 
+        "endpoint": "/algorithm/<instance_type>/<cvrp_id>/", 
         "endpoint_name": "readInstance",
         "action": readInstance, 
         "methods": ['GET', 'POST']
     },
     {
-        "endpoint": f"/stream", 
+        "endpoint": f"/stream/<cvrp_id>/", 
         "endpoint_name": "stream",
         "action": stream, 
         "methods": None
     },
     {
-        "endpoint": "/load/", 
+        "endpoint": "/load/<cvrp_id>/", 
         "endpoint_name": "load",
         "action": load, 
         "methods": ['GET', 'POST']
     },
     {
-        "endpoint": "/result/", 
+        "endpoint": "/result/<cvrp_id>/", 
         "endpoint_name": "result",
         "action": result, 
         "methods": None

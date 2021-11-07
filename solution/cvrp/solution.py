@@ -281,6 +281,21 @@ class SolutionCvrp:
         """
         pass
 
+# ______________________________ Search Method ______________________________ #
+
+    def getRouteOfCustomer(self, customer_id: int) -> Route:
+        """
+        """
+        
+        # for every route in the solution
+        for route in self.__route:
+            # Build a set by comprehension of the customers node id
+            route_customer_id: Set = {customer.node_id for customer in route.customers_route}
+            # If the customer is in the rouet
+            if customer_id in route_customer_id:
+                # Return the route found
+                return route
+
 # ______________________________ Diplay Method ______________________________ #
 
     def getFigure(
@@ -707,7 +722,7 @@ class SolutionCvrp:
         
         # List of scatter plot 
         # List of the nodes
-        node_scatter_list: List[Scatter] = []
+        node_scatter_list: List[Scatter] = [None] * (self.__cvrp_instance.nb_customer + 1)
         # List of edges
         edge_scatter_list: List[Scatter] = []
         
@@ -737,10 +752,11 @@ class SolutionCvrp:
         
             # Set the previous node to the depot node, so every route start at the depot
             previous_node = depot_node
+            x1, y1 = depot_node.getCoordinates()
             # For every customer in the solution (excluding the depot, so excluding the first and last node of the route)
             for customer in route.customers_route[1:-1]:
                 # Get the x and y position of the departure of the route
-                x0, y0 = previous_node.getCoordinates()
+                x0, y0 = x1, y1
                 # Get the x and y position of the arrival of the route
                 x1, y1 = customer.getCoordinates()
                 
@@ -755,12 +771,37 @@ class SolutionCvrp:
                 edge_y.append(y1)
                 edge_y.append(None)
                 
+                # Set the node
+                # Set is position
+                node_x = [x1]
+                node_y = [y1]
+                # Set his name
+                node_text = [f"{customer.node_id}"]
+      
+                # Node of the trace
+                node_trace: Scatter = go.Scatter(
+                    x=node_x, y=node_y,
+                    showlegend=show_legend_node,
+                    mode='markers',
+                    hoverinfo='text',
+                    marker=dict(
+                        color=route_color[node_route_index[customer.node_id]],
+                        size=node_size,
+                        line_width=0.5
+                    ),
+                    name=f"Customers in route #{node_route_index[customer.node_id] + 1}",
+                    text = node_text
+                )
+                # Add the node scatter 
+                # Garrentee that each node will be in the same oreder
+                node_scatter_list[customer.node_id - 1] = node_trace
+                                
                 # Update the previous node to the actual node value for the next iteration
                 previous_node = customer
 
             # Set the returning edge to the depot
             # Get the x and y position of last customer
-            x0, y0 = previous_node.getCoordinates()
+            x0, y0 = x1, y1
             # Get the x and y position of the depot
             x1, y1 = depot_node.getCoordinates()
             # Set the positions of the ege
@@ -782,41 +823,6 @@ class SolutionCvrp:
             )
             # Add the edge scatter
             edge_scatter_list.append(edge_trace)
-         
-         
-         # We create separatly the customer to garentee that all the time
-         # The customers will be in the same order
-         # It is necessary to build animation then
-         # For every customer in cvrp
-         # do it in another loop to keep the same order all the time of customers
-        for customer in self.__cvrp_instance.customers:
-            # Get the coordinates
-            x1, y1 = customer.getCoordinates()
-        
-            # Set the node
-            # Set is position
-            node_x = [x1]
-            node_y = [y1]
-            # Set his name
-            node_text = [f"{customer.node_id}"]
-  
-            # Node of the trace
-            node_trace: Scatter = go.Scatter(
-                x=node_x, y=node_y,
-                showlegend=show_legend_node,
-                mode='markers',
-                hoverinfo='text',
-                marker=dict(
-                    color=route_color[node_route_index[customer.node_id]],
-                    size=node_size,
-                    line_width=0.5
-                ),
-                name=f"Customers in route #{node_route_index[customer.node_id] + 1}"
-            )
-            # Set the node id when hovered
-            node_trace.text = node_text
-            # Add the node scatter 
-            node_scatter_list.append(node_trace)
             
         # Create the node of the depot
         depot_trace: Scatter = go.Scatter(
@@ -829,13 +835,11 @@ class SolutionCvrp:
                 size=node_size,
                 line_width=0.5
             ),
-            name=f"Depot"
+            name=f"Depot",
+            text = [f"{depot_node.node_id} (Depot)"]
         )
-        # Set the name of the depot node
-        # Set the node id when hovered
-        depot_trace.text = [f"{depot_node.node_id} (Depot)"]
         # Add the depot scatter 
-        node_scatter_list.append(depot_trace)
+        node_scatter_list[depot_node.node_id - 1] = depot_trace
 
         return node_scatter_list, edge_scatter_list
 
@@ -884,7 +888,6 @@ class SolutionCvrp:
         # List of scatter plot 
         # List of the nodes
         scatter_list_json: List[Scatter] = []
-
         
         # List of edges
         edge_x = []
@@ -896,7 +899,6 @@ class SolutionCvrp:
         node_text: List[str] = []
         # Dictionnary of nodes color
         node_route_index: Dict[int, int] = {}
-
 
         # For every route of the solution
         for index, route in enumerate(self.__route):

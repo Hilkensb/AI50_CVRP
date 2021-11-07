@@ -780,3 +780,4 @@ class RouteCvrp:
     @customers_route.setter
     def customers_route(self, value: List[NodeWithCoord]) -> None:
         self.__customers_route = value
+

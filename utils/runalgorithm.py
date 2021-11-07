@@ -16,7 +16,7 @@ from gui.config import SOLUTION_TOPIC, redis_server
 
 def runAlgorithm(
     cvrp_instance: Cvrp, algorithm_list: List, algorithm_kargs: List,
-    algorithm_name: List
+    algorithm_name: List, publish_topic: str
 ) -> List[Union[List[SolutionCvrp], SolutionCvrp]]:
     """
     """
@@ -39,7 +39,7 @@ def runAlgorithm(
                 "iteration" : 0,"graph": ""
             }
             # Publish
-            redis_server.publish(SOLUTION_TOPIC, json.dumps(json_data))
+            redis_server.publish(publish_topic, json.dumps(json_data))
     
         # Algorithm arguments
         algo_args = algorithm_kargs[index]

@@ -3,6 +3,7 @@ from __future__ import annotations
 import threading
 import json
 import time
+import uuid
 
 # Other Library
 from flask import render_template, request, session, jsonify, Response, current_app, redirect
@@ -30,9 +31,9 @@ def index():
     """
 
     # return the index.html template
-    return render_template("index.html")
+    return render_template("index.html", instance_id=uuid.uuid1())
 
-def readInstance(instance_type: str = "web"):
+def readInstance(instance_type: str, cvrp_id: str):
     """
     Controller that will read an instance file and give to the user the choice of algorithm to use
     
@@ -53,12 +54,16 @@ def readInstance(instance_type: str = "web"):
         # if it is not made, the string of the html code will be displayed
         html_instance_graph = Markup(instance_graph)
         
-        return render_template("instance_parameters.html", instance_graph=html_instance_graph)
+        return render_template(
+            "instance_parameters.html", instance_graph=html_instance_graph,
+            nb_customer=cvrp_instance.nb_customer, round=round, min=min,
+            max=max, instance_id=cvrp_id
+        )
     else:
         # return the index.html template
         return render_template('index.html')
 
-def load():
+def load(cvrp_id: str):
     """
     Function that will launch the algorithm choose by the user
     """
@@ -98,7 +103,8 @@ def load():
                 "number_iteration": int(request.form['TabuIteration']),
                 "aspiration": request.form['TabuIteration'] == "True",
                 "tabu_length": int(request.form['TabuLength']),
-                "max_second_run": int(request.form['RunTimeTabu'])
+                "max_second_run": int(request.form['RunTimeTabu']),
+                "publish_topic": f"{SOLUTION_TOPIC}_{cvrp_id}"
             })
         
         # Get the flask application
@@ -112,7 +118,8 @@ def load():
                 "cvrp_instance": cvrp_instance,
                 "algorithm_list": algo_function,
                 "algorithm_kargs": algo_kwargs,
-                "algorithm_name": algo_name
+                "algorithm_name": algo_name,
+                "cvrp_id": cvrp_id
             },
             daemon=True
         )
@@ -121,32 +128,32 @@ def load():
         threaded_task.start()
         
         # return the index.html template
-        return render_template('load.html')
+        return render_template('load.html', instance_id=cvrp_id)
 
-def stream():
+def stream(cvrp_id):
     """
     Controller to get the message publish on the topic
     
     .. note: Inspired by https://github.com/petronetto/flask-redis-realtime-chat/blob/master/app.py
     """
-    return Response(event_stream(), mimetype="text/event-stream")
+    return Response(event_stream(cvrp_id), mimetype="text/event-stream")
     
-def result():
+def result(cvrp_id: str):
     """
     Controller to display the result of the algorithms
     """
     
     return render_template(
-        "result.html", algo_name=instance_save['algorithm_name'],
-        solution_list=instance_save['algorithm_solution'],
-        time_list=instance_save['algorithm_time'],
-        total_time=sum(instance_save['algorithm_time']), enumerate=enumerate,
-        cost_line_chart=instance_save['algorithm_solution_cost'],
-        best_solution_algorithm=instance_save['algorithm_best_solution_cost'],
-        algorithm_iteration=instance_save['algorithm_iteration'],
-        best_overall_cost=instance_save['best_solution_cost'],
-        best_algorithm=instance_save['best_algorithm'], round=round,
-        number_vehicles=instance_save['minimum_vehicles']
+        "result.html", algo_name=instance_save[f'algorithm_name_{cvrp_id}'],
+        solution_list=instance_save[f'algorithm_solution_{cvrp_id}'],
+        time_list=instance_save[f'algorithm_time_{cvrp_id}'],
+        total_time=sum(instance_save[f'algorithm_time_{cvrp_id}']), enumerate=enumerate,
+        cost_line_chart=instance_save[f'algorithm_solution_cost_{cvrp_id}'],
+        best_solution_algorithm=instance_save[f'algorithm_best_solution_cost_{cvrp_id}'],
+        algorithm_iteration=instance_save[f'algorithm_iteration_{cvrp_id}'],
+        best_overall_cost=instance_save[f'best_solution_cost_{cvrp_id}'],
+        best_algorithm=instance_save[f'best_algorithm_{cvrp_id}'], round=round,
+        number_vehicles=instance_save[f'minimum_vehicles_{cvrp_id}']
     )
 
 
@@ -163,7 +170,7 @@ def buildInstance(path: str, instance_type: str) -> Cvrp:
     """
     return Cvrp(file_path=path, file_type=instance_type)
  
-def event_stream() -> str:
+def event_stream(cvrp_id: str) -> str:
     """
     Function to get the message publish on a topic
     
@@ -173,14 +180,15 @@ def event_stream() -> str:
     .. note: Inspired by https://github.com/petronetto/flask-redis-realtime-chat/blob/master/app.py
     """
     pubsub = redis_server.pubsub(ignore_subscribe_messages=True)
-    pubsub.subscribe(SOLUTION_TOPIC)
+    pubsub.subscribe(f"{SOLUTION_TOPIC}_{cvrp_id}")
     # TODO: handle client disconnection.
     for message in pubsub.listen():
         yield 'data: %s\n\n' % message['data']
 
 def algorithmTask(
     flask_applaction: Flask, cvrp_instance: Cvrp,
-    algorithm_list: List, algorithm_kargs: List[Dict], algorithm_name: List[str]
+    algorithm_list: List, algorithm_kargs: List[Dict], algorithm_name: List[str],
+    cvrp_id: str
 ) -> None:
     """
     Function to run the algorithm selected by the user
@@ -200,7 +208,8 @@ def algorithmTask(
     # Run the algorithm 
     algorithm_solution, cost_list, time_list = runAlgorithm(
         cvrp_instance=cvrp_instance, algorithm_list=algorithm_list,
-        algorithm_kargs=algorithm_kargs, algorithm_name=algorithm_name
+        algorithm_kargs=algorithm_kargs, algorithm_name=algorithm_name,
+        publish_topic=f"{SOLUTION_TOPIC}_{cvrp_id}"
     )
     
     #with flask_applaction.test_request_context( '/result/'):
@@ -212,10 +221,10 @@ def algorithmTask(
         "messages": "Generating the results... Please wait", "type": "info"
     }
     # Publish
-    redis_server.publish(SOLUTION_TOPIC, json.dumps(json_data))
+    redis_server.publish(f"{SOLUTION_TOPIC}_{cvrp_id}", json.dumps(json_data))
     
     # Save the result
-    instance_save['algorithm_name'] = algorithm_name
+    instance_save[f'algorithm_name_{cvrp_id}'] = algorithm_name
     # Dictionnary to save solution linked to their solution
     solution_list: List = []
     # List to store the line graph
@@ -242,25 +251,25 @@ def algorithmTask(
         iteration_list.append(iteration_number)
 
     # Save the solution provided by the algorithm
-    instance_save['algorithm_solution'] = solution_list
+    instance_save[f'algorithm_solution_{cvrp_id}'] = solution_list
     # Save the time took by each algorithm
-    instance_save['algorithm_time'] = time_list
+    instance_save[f'algorithm_time_{cvrp_id}'] = time_list
     # Save the cost of solutions
-    instance_save['algorithm_solution_cost'] = solution_cost_list
+    instance_save[f'algorithm_solution_cost_{cvrp_id}'] = solution_cost_list
     # Save the cost of solutions
     # Since it only upgrade the solution we are sure that the best solution is at the end
-    instance_save['algorithm_best_solution_cost'] = [cost[-1] for cost in cost_list]
+    instance_save[f'algorithm_best_solution_cost_{cvrp_id}'] = [cost[-1] for cost in cost_list]
     # Save th iteration number of algorithm
-    instance_save['algorithm_iteration'] = iteration_list
+    instance_save[f'algorithm_iteration_{cvrp_id}'] = iteration_list
     # Find the overall min solution cost
-    instance_save['best_solution_cost'] = min(instance_save['algorithm_best_solution_cost'])
+    instance_save[f'best_solution_cost_{cvrp_id}'] = min(instance_save[f'algorithm_best_solution_cost_{cvrp_id}'])
     # Find which algorithm returned the best result
-    index_best_solution = instance_save['algorithm_best_solution_cost'].index(instance_save['best_solution_cost'])
+    index_best_solution = instance_save[f'algorithm_best_solution_cost_{cvrp_id}'].index(instance_save[f'best_solution_cost_{cvrp_id}'])
     # Best algorithm
-    instance_save['best_algorithm'] = algorithm_name[index_best_solution]
+    instance_save[f'best_algorithm_{cvrp_id}'] = algorithm_name[index_best_solution]
     # Minimum number of vehicles for the best solutions
-    instance_save['minimum_vehicles'] = len(algorithm_solution[index_best_solution][-1].route)
+    instance_save[f'minimum_vehicles_{cvrp_id}'] = len(algorithm_solution[index_best_solution][-1].route)
         
     # Tell to the javsscript that the algorithm as ended
-    redis_server.publish(SOLUTION_TOPIC, "END")
+    redis_server.publish(f"{SOLUTION_TOPIC}_{cvrp_id}", "END")
    

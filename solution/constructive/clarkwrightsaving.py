@@ -158,9 +158,10 @@ def clarkWrightSaving(cvrp: Cvrp) -> SolutionCvrp:
    
 def clarkWrightSavingEvolution(cvrp: Cvrp) -> Tuple[List[SolutionCvrp], List[float]]:
     """
-    clarkWrightSaving()
+    clarkWrightSavingEvolution()
     
-    Function to run Clark Wright Saving algorithm on a given cvrp
+    Function to run Clark Wright Saving algorithm on a given cvrp and getting solution
+    ready to be displayed
     
     :param cvrp: Cvrp instance
     :type cvrp: Cvrp
@@ -300,25 +301,40 @@ def clarkWrightSavingEvolution(cvrp: Cvrp) -> Tuple[List[SolutionCvrp], List[flo
         for customer_updated in merged_route[1:-1]:
             route_finder[customer_updated.node_id] = new_route
 
+        # For every route
+        for index, solution in enumerate(solution_list):
+            # Get the route 1 that will be merged
+            route_in_solution: RouteCvrp = solution.getRouteOfCustomer(customer_id=route1.customers_route[1].node_id)
+            # get its index in the solution route
+            route_in_solution_index: int = solution.route.index(route_in_solution)
+            
+            # Get the actual customer's route
+            new_route_order: List[RouteCvrp] = solution.route
+            # Get the route to move at the end
+            route_add: RouteCvrp = new_route_order.pop(route_in_solution_index)
+            # Move the route so that the route is removed when it is the last one
+            new_route_order.insert(len(routes_list), route_add)
+            solution.route = new_route_order
+
         # Update the route list
         # Removes the previous lists
         routes_list.remove(route1)
-        routes_list.remove(route2)
+        index_route2: int = routes_list.index(route2)
         # Add the new route
-        routes_list.append(new_route)
-        
+        routes_list[index_route2] = new_route
+        # Set an empty route at the end to prevent a bad animation
+        routes_list.append(RouteCvrp(route=[depot, depot]))
+
         # Build a new solution
         builded_solution: SolutionCvrp = SolutionCvrp(instance=cvrp, route=routes_list)
         # Add the first solution to the history
         solution_list.append(builded_solution)
         # Add the cost of the new solution
-        # First calcul it with the saving
-        # By adding the saving to the previous cost
-        # dist_cust_depot: float = mathfunc.euclideanDistance(depot, merged_route[1])
-        # solution_cost: float = cost_list[-1] - saving_tuple[2] + dist_cust_depot
+        # First calcul the cost of the solution
         solution_cost: float = builded_solution.evaluation()
         # Add the cost of the solution to the list
         cost_list.append(solution_cost)
         
     # Return the solution
-    return solution_list, cost_list 
+    return solution_list, cost_list
+
