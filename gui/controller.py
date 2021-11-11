@@ -4,9 +4,10 @@ import threading
 import json
 import time
 import uuid
+import os
 
 # Other Library
-from flask import render_template, request, session, jsonify, Response, current_app, redirect
+from flask import render_template, request, session, jsonify, Response, current_app, redirect, url_for, send_file
 # To create markup from string
 from markupsafe import Markup
 # To create a pub/sub server
@@ -41,11 +42,18 @@ def readInstance(instance_type: str, cvrp_id: str):
     :type instance_type: str
     """
     
-    if request.method == 'POST':  
-        # Get the instance type
-        instance_path: str = request.form['instance']
-        # Build the instance
-        cvrp_instance: Cvrp = buildInstance(path=instance_path, instance_type=instance_type)
+    if request.method == 'POST': 
+        if instance_type == "web": 
+            # Get the instance type
+            instance_path: str = request.form['instance']
+            # Build the instance
+            cvrp_instance: Cvrp = buildInstance(path=instance_path, instance_type=instance_type)
+        else:
+            # Get the instance type
+            instance_string: str = request.files['instance'].read().decode('ascii')
+            # Build the instance
+            cvrp_instance: Cvrp = buildInstance(path=instance_string, instance_type="string")
+            
         # Save the instance in session
         session['instance'] = cvrp_instance.toJSON()
         # Html representation of the instance graph
@@ -88,9 +96,10 @@ def load(cvrp_id: str):
             # Set the name of clark wirght
             algo_name.append("Clarck & Wright saving algorithm")
             # Set the algorithm param
-            algo_kwargs.append({"cvrp": cvrp_instance})
-          
-        # TODO change the tabu search algo    
+            algo_kwargs.append({
+                "cvrp": cvrp_instance, "publish_topic": f"{SOLUTION_TOPIC}_{cvrp_id}"
+            })
+   
         # if the tabu search should be runned
         if len(request.form.getlist("Tabu_Search")) > 0:
             # add the algorithm
@@ -153,9 +162,19 @@ def result(cvrp_id: str):
         algorithm_iteration=instance_save[f'algorithm_iteration_{cvrp_id}'],
         best_overall_cost=instance_save[f'best_solution_cost_{cvrp_id}'],
         best_algorithm=instance_save[f'best_algorithm_{cvrp_id}'], round=round,
-        number_vehicles=instance_save[f'minimum_vehicles_{cvrp_id}']
+        number_vehicles=instance_save[f'minimum_vehicles_{cvrp_id}'], instance_id=cvrp_id
     )
 
+def downloadFile(cvrp_id: str):
+    """
+    """
+    # Get the current flask application
+    flask_applaction = current_app._get_current_object()
+    # Set the file name
+    pdf_name: str = cvrp_id + ".pdf"
+    
+    path = os.path.join(flask_applaction.config["CLIENT_PDF"], pdf_name)
+    return send_file(path, as_attachment=True)
 
 # ----------------------------- Other functions ----------------------------- #
 
@@ -235,13 +254,13 @@ def algorithmTask(
     for index in range(len(algorithm_name)):
         # Generate the html of the graph
         solution_representation: str = getHtmlSolutionEvolutionAnimationPlotly(
-            solution_evolution=algorithm_solution[index], full_html=True, default_height="750px"
+            solution_evolution=algorithm_solution[index], full_html=False, default_height="750px"
         )
         # Append the html in the list
         solution_list.append(solution_representation)
         # Generate the line chart
         cost_representation: str = getHtmlLineCostEvolution(
-            cost_evolution=cost_list[index], full_html=True
+            cost_evolution=cost_list[index], full_html=False
         )
         # append the html of the line chart
         solution_cost_list.append(cost_representation)

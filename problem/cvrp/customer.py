@@ -6,6 +6,7 @@ import json
 
 # Modules
 from problem.node import NodeWithCoord
+from gui.config import DEFAULT_LATITUDE, DEFAULT_LONGITUDE, UNITS_MAP
 
 
 class CustomerCvrp(NodeWithCoord):
@@ -121,7 +122,19 @@ class CustomerCvrp(NodeWithCoord):
         :return: A tuple of int representing the x and y position of the customer node
         :rtype: Tuple[int, int]
         """
-        return self.x, self.y
+        return self.__x, self.__y
+     
+    def getMapCoordinates(self) -> Tuple[float, float]:
+        """
+        getCoordinates()
+        
+        Method to get the coordinates (the x and y position of the node)
+        
+        :return: A tuple of int representing the latitude and longitude position of the depot node
+        :rtype: Tuple[int, int]
+
+        """
+        return (DEFAULT_LATITUDE + (self.__y * UNITS_MAP)), (DEFAULT_LONGITUDE + (self.__x * UNITS_MAP))
      
     def toJSON(self) -> str:
         """
@@ -178,4 +191,12 @@ class CustomerCvrp(NodeWithCoord):
     @demand.setter
     def demand(self, value: int) -> None:
         self.__demand = value
+
+    @property 
+    def latitude(self) -> float:
+        return DEFAULT_LATITUDE + (self.__y * UNITS_MAP)
+        
+    @property 
+    def longitude(self) -> float:
+        return DEFAULT_LONGITUDE + (self.__x * UNITS_MAP)
 

@@ -1459,8 +1459,7 @@ class SolutionCvrp:
             neighboors_list: List[Route]= base_route.getNeighboursRouteSwap(
                 other_route=other_route,
                 vehicule_capacity=self.__cvrp_instance.vehicule_capacity,
-                proximity_swaps=proximity_swaps, self_route_cost=self_route_cost, 
-                other_route_cost=other_route_cost
+                proximity_swaps=proximity_swaps
              )
                 
             # look for every neighboors

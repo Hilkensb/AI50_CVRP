@@ -8,6 +8,8 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/theme.css') }}" type="text/css">
   <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/card.css') }}" type="text/css">
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.15.0/css/all.css">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='image/logo_utbm_no_bg.png') }}">
+  <title>AI50 - Result</title>
 </head>
 
 <body>
@@ -48,7 +50,10 @@
           <!-- Page Heading -->
           <div class="d-sm-flex align-items-center justify-content-between mb-4">
             <h1 class="h3 mb-0 text-gray-800">Results</h1>
-            <a href="#" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm"><i class="fas fa-download fa-sm text-white-50"></i> Generate Report</a>
+            <a href="{{ url_for('downloadFile', cvrp_id=instance_id) }}" class="d-none d-sm-inline-block btn btn-sm btn-primary shadow-sm">
+                <i class="fas fa-download fa-sm text-white-50"></i>
+                Generate Report
+            </a>
           </div>
           <!-- Content Row -->
           <div class="row">
@@ -123,12 +128,12 @@
             <div class="col-md-12 w-100">
               <ul class="nav nav-pills">
                 {%for index, algo in enumerate(algo_name)%}
-                <li class="nav-item" > <a href="" class="nav-link" data-toggle="pill" data-target="#tab{{index}}">{{algo}}</a> </li>
+                <li class="nav-item" > <a href="" class="nav-link {% if index == 0 %}active {%endif%}" data-toggle="pill" data-target="#tab{{index}}">{{algo}}</a> </li>
                 {%endfor%}
               </ul>
               <div class="tab-content mt-2">
                 {%for index, algo in enumerate(algo_name)%}
-                <div class="tab-pane fade w-100 active" id="tab{{index}}" role="tabpanel">
+                <div class="tab-pane fade w-100 active {% if index == 0 %} show {% endif %}" id="tab{{index}}" role="tabpanel">
                   <div class="row">
                     <div class="col-md-9">
                         <div class="card shadow mb-4">

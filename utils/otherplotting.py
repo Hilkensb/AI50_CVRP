@@ -2,6 +2,7 @@
 # Standard Library
 from __future__ import annotations
 from typing import List, Dict, Tuple, Union, Set
+import random
 
 # Other library
 import numpy as np
@@ -14,6 +15,8 @@ import plotly.graph_objects as go
 from plotly.io import to_html
 import plotly.express as px
 import pandas as pd
+# Used for deprecated warning
+from deprecated import deprecated
 
 # Modules
 from solution.cvrp.solution import SolutionCvrp
@@ -118,7 +121,7 @@ def showSolutionEvolutionAnimationMatplotlib(
     # Show the result
     plt.show()
     
-    
+@deprecated(reason="The function \"getFastSolutionEvolutionAnimationPlotly\" is a faster way to have the same result.")
 def getSolutionEvolutionAnimationPlotly(
     solution_evolution: List[SolutionCvrp],depot_node_color: str = "#a6f68e",
     node_size: int = 15, route_color: List[str] = DEFAULT_COLOR_PALETTE,
@@ -253,6 +256,173 @@ def getSolutionEvolutionAnimationPlotly(
     
     # return the figure
     return fig
+    
+def getFastSolutionEvolutionAnimationPlotly(
+    solution_evolution: List[SolutionCvrp],depot_node_color: str = "#a6f68e",
+    node_size: int = 15, route_color: List[str] = DEFAULT_COLOR_PALETTE,
+    show_legend_edge: bool = True, show_legend_node: bool = False
+) -> Figure:
+    """
+    getSolutionEvolutionAnimationPlotly()
+    
+    Function to create animation figure of solution evolution
+    
+    :param route_color: List of colors of the routes in the solution, default the DEFAULT_COLOR_PALETTE (utils.colorpallete) (opt.)
+    :tyoe route_color: List[str]
+    :param depot_node_color: Color of the node depot, default to \"#a6f68e\" (opt.)
+    :type depot_node_color: str
+    :param node_size: Size of the nodes, default to 15 (opt)
+    :type node_size: int
+    :param show_legend_edge: Display or not the legend of edges, default to True (opt.)
+    :type show_legend_edge: bool
+    :param show_legend_node: Display or not the legend of nodes, default to False (opt.)
+    :type show_legend_edge: bool
+    :return: Animation Figure of the solution evolution
+    :rtype: Figure
+    """
+    
+    # Get the number of routes
+    number_of_routes: int = max(len(solution_evolution[0]), len(solution_evolution[-1]))
+    # Get the number of colors passed by the user
+    number_of_colors: int = len(route_color)
+    # if there's not enougth color (in other words if there's more route than color)
+    if number_of_routes > number_of_colors:
+        # Generate random color by choosing randomly char the string
+        # Create the right amount of color to color every route
+        route_color += [
+            "#"+''.join([
+                random.choice('0123456789abcdef') for rgb in range(6)
+            ])
+            for color in range(number_of_routes - number_of_colors)
+        ]
+    
+    # Create an solution that will store the previous solution to then compare the route
+    previous_soltuion: SolutionCvrp = None
+
+    # make figure properties to build it then
+    fig_dict = {
+        "data": [],
+        "layout": {},
+        "frames": []
+    }
+
+    # Hover mode of the animation
+    fig_dict["layout"]["hovermode"] = "closest"
+    # Button menu of the animation
+    # Create the play and pause button
+    fig_dict["layout"]["updatemenus"] = [
+        {
+            "buttons": [
+                {
+                    "args": [None, {"frame": {"duration": 500, "redraw": True},
+                                    "fromcurrent": True, "transition": {"duration": 300}}],
+                    "label": "Play",
+                    "method": "animate"
+                },
+                {
+                    "args": [[None], {"frame": {"duration": 0, "redraw": True},
+                                      "mode": "immediate",
+                                      "transition": {"duration": 0}}],
+                    "label": "Pause",
+                    "method": "animate"
+                }
+            ],
+            "direction": "left",
+            "pad": {"r": 10, "t": 87},
+            "showactive": False,
+            "type": "buttons",
+            "x": 0.1,
+            "xanchor": "right",
+            "y": 0,
+            "yanchor": "top"
+        }
+    ]
+
+    # Create the slider
+    sliders_dict = {
+        "active": 0,
+        "yanchor": "top",
+        "xanchor": "left",
+
+        "currentvalue": {
+            "font": {"size": 20},
+            "prefix": "Iteration #",
+            "visible": True,
+            "xanchor": "right"
+        },
+        "transition": {"duration": 300},
+        "pad": {"b": 10, "t": 50},
+        "len": 0.9,
+        "x": 0.1,
+        "y": 0,
+        "steps": []
+    }
+    
+    
+    # Get the node and edge scatter
+    node_scatter_list, edge_scatter_list = solution_evolution[0].drawPlotly(
+        depot_node_color=depot_node_color, node_size=node_size, 
+        route_color=route_color, show_legend_edge=show_legend_edge,
+        show_legend_node=show_legend_node
+    )
+    
+    # Create the first frame
+    fig_dict["data"] = [*node_scatter_list, *edge_scatter_list]
+    
+    # Save the solution
+    previous_soltuion = solution_evolution[0]
+    
+    # Make the frame
+    # For every iterations
+    for iteration, solution in enumerate(solution_evolution):
+        # Create the frame
+        frame = {"data": [], "name": str(iteration)}
+        
+        # The first element is the index, the second one is the node scatter
+        # and the third is the edge scatter
+        # Compare the route
+        # Since all the route should be at the same place in the solution
+        # We just have to compare every route index and if the route is not 
+        # the same it means that the route stored at an given index has changed
+        for route_index, route in enumerate(solution.route):
+            # If the route in the solution has changed
+            if route != previous_soltuion.route[route_index]:
+                # update the route
+                route.updateDrawPlotly(
+                        route_color=route_color[route_index],
+                        depot_node_color=depot_node_color, node_size=node_size,
+                        show_legend_edge=show_legend_edge,
+                        show_legend_node=show_legend_node, route_number=route_index,
+                        node_scatter_parent=node_scatter_list,
+                        edge_scatter_parent=edge_scatter_list
+                )
+
+        # Save in memory this solution
+        previous_soltuion = solution
+
+        # Add each scatter to the frame
+        frame["data"] = [*node_scatter_list, *edge_scatter_list]
+
+        # Create the frame
+        fig_dict["frames"].append(frame)
+        slider_step = {"args": [
+                [iteration],
+                {"frame": {"duration": 300, "redraw": True},
+                 "mode": "immediate",
+                 "transition": {"duration": 300, "ease": "cubic-in-out"}}
+            ],
+            "label": iteration,
+            "method": "animate"
+        }
+        sliders_dict["steps"].append(slider_step)
+
+    # Add the slider
+    fig_dict["layout"]["sliders"] = [sliders_dict]
+    # Build the figure
+    fig = go.Figure(fig_dict)
+
+    # return the figure
+    return fig
 
 def getHtmlSolutionEvolutionAnimationPlotly(
     solution_evolution: List[SolutionCvrp],depot_node_color: str = "#a6f68e",
@@ -285,7 +455,7 @@ def getHtmlSolutionEvolutionAnimationPlotly(
     :rtype: str
     """
 
-    fig = getSolutionEvolutionAnimationPlotly(
+    fig = getFastSolutionEvolutionAnimationPlotly(
         solution_evolution=solution_evolution,depot_node_color=depot_node_color,
         node_size=node_size, route_color=route_color,
         show_legend_edge=show_legend_edge, show_legend_node=show_legend_node

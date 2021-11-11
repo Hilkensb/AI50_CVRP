@@ -3,6 +3,7 @@
 from __future__ import annotations
 from typing import List, Dict, Tuple, Union
 from itertools import combinations
+import json
 
 # Modules
 from problem.cvrp.instance import Cvrp
@@ -12,6 +13,8 @@ from problem.cvrp.customer import CustomerCvrp
 from problem.cvrp.depot import DepotCvrp
 from problem.node import NodeWithCoord
 import utils.mathfunctions as mathfunc
+from gui.config import redis_server, SOLUTION_TOPIC, SHOW_SOLUTION
+from utils.redisutils import isRedisAvailable
 
 
 def clarkWrightSaving(cvrp: Cvrp) -> SolutionCvrp:
@@ -156,7 +159,9 @@ def clarkWrightSaving(cvrp: Cvrp) -> SolutionCvrp:
     # Return the solution
     return solution
    
-def clarkWrightSavingEvolution(cvrp: Cvrp) -> Tuple[List[SolutionCvrp], List[float]]:
+def clarkWrightSavingEvolution(
+    cvrp: Cvrp, publish_topic: str = SOLUTION_TOPIC
+) -> Tuple[List[SolutionCvrp], List[float]]:
     """
     clarkWrightSavingEvolution()
     
@@ -303,25 +308,34 @@ def clarkWrightSavingEvolution(cvrp: Cvrp) -> Tuple[List[SolutionCvrp], List[flo
 
         # For every route
         for index, solution in enumerate(solution_list):
-            # Get the route 1 that will be merged
-            route_in_solution: RouteCvrp = solution.getRouteOfCustomer(customer_id=route1.customers_route[1].node_id)
-            # get its index in the solution route
-            route_in_solution_index: int = solution.route.index(route_in_solution)
+            # Get the routes that will be merged
+            route1_in_solution: RouteCvrp = solution.getRouteOfCustomer(customer_id=route1.customers_route[1].node_id)
+            route2_in_solution: RouteCvrp = solution.getRouteOfCustomer(customer_id=route2.customers_route[1].node_id)
+            # get theirs index in the solution route
+            route1_in_solution_index: int = solution.route.index(route1_in_solution)
+            route2_in_solution_index: int = solution.route.index(route2_in_solution)
             
             # Get the actual customer's route
             new_route_order: List[RouteCvrp] = solution.route
             # Get the route to move at the end
-            route_add: RouteCvrp = new_route_order.pop(route_in_solution_index)
+            route_add: RouteCvrp = new_route_order.pop(max(route1_in_solution_index, route2_in_solution_index))
             # Move the route so that the route is removed when it is the last one
             new_route_order.insert(len(routes_list), route_add)
             solution.route = new_route_order
 
         # Update the route list
-        # Removes the previous lists
-        routes_list.remove(route1)
+        # Get the indexes of the routes
+        index_route1: int = routes_list.index(route1)
         index_route2: int = routes_list.index(route2)
+        
+        # Removes the previous lists
+        if(index_route1>index_route2):
+            routes_list.remove(route1)
+        else:
+            routes_list.remove(route2)
+
         # Add the new route
-        routes_list[index_route2] = new_route
+        routes_list[min(index_route1, index_route2)] = new_route
         # Set an empty route at the end to prevent a bad animation
         routes_list.append(RouteCvrp(route=[depot, depot]))
 
@@ -334,6 +348,18 @@ def clarkWrightSavingEvolution(cvrp: Cvrp) -> Tuple[List[SolutionCvrp], List[flo
         solution_cost: float = builded_solution.evaluation()
         # Add the cost of the solution to the list
         cost_list.append(solution_cost)
+        
+        # Send the upgrades to the web application
+        # if redis is on
+        if isRedisAvailable():
+            # Create the data
+            json_data = {
+                "algorithm_name": "Clark & Wright saving algorithm", "cost": round(solution_cost, 2),
+                "iteration":len(cost_list),
+                "graph": builded_solution.drawPlotlyJSON() if SHOW_SOLUTION else ""
+            }
+            # Publish
+            redis_server.publish(publish_topic, json.dumps(json_data))
         
     # Return the solution
     return solution_list, cost_list

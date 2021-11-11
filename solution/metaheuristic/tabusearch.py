@@ -36,7 +36,7 @@ def __getRouteSwapNeighbours(sol: SolutionCvrp, proximity_swaps: int = 1, total_
 def __getClosestPermutationNeighbours(sol: SolutionCvrp, proximity_swaps: int = 1, total_cost: int = None):
     """
     """
-    return sol.getClothestPermutationNeighbours(proximity_swaps=proximity_swaps, total_cost=total_cost) 
+    return sol.getClosestPermutationNeighbours(proximity_swaps=proximity_swaps, total_cost=total_cost) 
     
 def __getClosestInsertionNeighbours(sol: SolutionCvrp, proximity_swaps: int = 1, total_cost: int = None):
     """
@@ -153,12 +153,14 @@ class TabuSearch:
               
             # Find the best solution    
             neighbours.sort(key=lambda sol: sol[1], reverse=True)
+            # Get the best neighbours
             best_neighbours: Solution = neighbours.pop()
             
             # get the swap value (to be hashable)
             swap: str = best_neighbours[2]
+            # Reverse the swap to be sure that if the swap is tabu
+            # no matter how it is ordered the algorithm will catch it
             reverse_swap: str = "-".join(n for n in best_neighbours[2].split("-")[::1])
-            
             
             # If the aspiration as not been activated or the new solution does not upgrade the solution
             if not aspiration or best_neighbours[1] > best_eval:
@@ -184,6 +186,8 @@ class TabuSearch:
             current_eval = best_neighbours[1]
             # Make the swap tabu
             tabu_swaps.add(swap)
+            # Set the swap tabu in a list to keep the iteration where it should pop
+            # from the set
             tabu_index[iteration] = swap
             
             # Remove a tabu value
@@ -259,9 +263,12 @@ class TabuSearch:
               
             # Find the best solution    
             neighbours.sort(key=lambda sol: sol[1], reverse=True)
+            # Get the best solution
             best_neighbours: Solution = neighbours.pop()
             
+            # Get the swap realize
             swap: str = best_neighbours[2]
+            # Reverse the string of the maded swap
             reverse_swap: str = "-".join(n for n in best_neighbours[2].split("-")[::1])
             
             # If the aspiration as not been activated or the new solution does not upgrade the solution
@@ -269,11 +276,12 @@ class TabuSearch:
                 # While the swaps is tabu
                 while (swap in tabu_swaps or reverse_swap in tabu_swaps):
                     # find another good solution
-                    best_neighbours= neighbours.pop()
+                    best_neighbours = neighbours.pop()
                     swap: str = best_neighbours[2]
                     reverse_swap: str = "-".join(n for n in best_neighbours[2].split("-")[::1])
                 # If there's no solution non tabu go to next iteration
                 if len(neighbours):
+                    # Go to next iteration
                     continue
             # If the solution triggered the aspiration, check if it was tabu
             elif swap in tabu_swaps or reverse_swap in tabu_swaps:
@@ -385,7 +393,13 @@ class TabuSearch:
         # launch the thread  
         thread_tabu.start()
         # wait n seconds for the thread to finish its work
-        thread_tabu.join(max_second_run)     
+        thread_tabu.join(max_second_run)  
+        
+        # Check if the tabu thread is still alive
+        if thread_tabu.isAlive():
+            # If tth thread is alive, kill it
+            thread_tabu.join()
+               
 
     def __addNewSolution(self, solution: SolutionCvrp, evaluation: float, rounded_json: int = 2):
         """

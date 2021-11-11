@@ -36,5 +36,11 @@ mapping: List = [
         "endpoint_name": "result",
         "action": result, 
         "methods": None
+    },
+    {
+        "endpoint": "/download/<cvrp_id>/", 
+        "endpoint_name": "downloadFile",
+        "action": downloadFile, 
+        "methods": None
     }
 ]
