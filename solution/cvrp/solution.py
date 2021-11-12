@@ -776,7 +776,7 @@ class SolutionCvrp:
                 node_x = [x1]
                 node_y = [y1]
                 # Set his name
-                node_text = [f"{customer.node_id}"]
+                node_text = [f"Customer: {customer.node_id}<br>Demand: {customer.demand}"]
       
                 # Node of the trace
                 node_trace: Scatter = go.Scatter(
@@ -975,7 +975,7 @@ class SolutionCvrp:
             node_x = [x1]
             node_y = [y1]
             # Set his name
-            node_text = [f"{customer.node_id}"]
+            node_text = [f"{customer.node_id}<br>Demand: {customer.demand}"]
   
             # Node of the trace
             node_trace: Dict = {

@@ -31,8 +31,8 @@
                UTBM
             </a> 
           </li>
-          <li class="nav-item"> <a class="nav-link" href="#">
-               Documentation
+          <li class="nav-item"> <a class="nav-link" href="http://vrp.atd-lab.inf.puc-rio.br/index.php/en/">
+               CVRPLIB
             </a> 
           </li>
         </ul>
@@ -127,13 +127,86 @@
           <div class="row">
             <div class="col-md-12 w-100">
               <ul class="nav nav-pills">
+                <li class="nav-item" > <a href="" class="nav-link active" data-toggle="pill" data-target="#tabinstance">Instance</a> </li>
                 {%for index, algo in enumerate(algo_name)%}
-                <li class="nav-item" > <a href="" class="nav-link {% if index == 0 %}active {%endif%}" data-toggle="pill" data-target="#tab{{index}}">{{algo}}</a> </li>
+                <li class="nav-item" > <a href="" class="nav-link" data-toggle="pill" data-target="#tab{{index}}">{{algo}}</a> </li>
                 {%endfor%}
               </ul>
               <div class="tab-content mt-2">
+
+                <div class="tab-pane fade w-100 active show" id="tabinstance" role="tabpanel">
+	              <div class="row">
+                    <div class="col-md-9">
+                        <div class="card shadow mb-4">
+                        <!-- Card Header - Dropdown -->
+                        <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                          <h6 class="m-0 font-weight-bold text-primary">Instance graph</h6>
+                        </div>
+                      <!-- Card Body -->
+                      <div class="card-body">
+                        <div class="chart-area" style="height: 450px;">
+                          {{instance_graph}}
+                        </div>
+                      </div>
+                      </div>
+                    </div>
+                    <div class="col-md-3">
+                      <div class="col" style="height: 450px;">
+                        <div class="card shadow mb-4">
+                          <!-- Card Header - Dropdown -->
+                          <div class="card-header py-3 d-flex flex-row align-items-center justify-content-between">
+                            <h6 class="m-0 font-weight-bold text-primary">Parameters</h6>
+                          </div>
+                          <!-- Best solution cost card -->
+                          <div class="card border-left-primary shadow py-2" style="margin : 7px;">
+                            <div class="card-body">
+                              <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                  <div class="text-xs font-weight-bold text-primary text-uppercase mb-1"> Number of customers:</div>
+                                  <div class="h5 mb-0 font-weight-bold text-gray-800">{{nb_customer}}</div>
+                                </div>
+                                <div class="col-auto">
+                                  <i class="fas fa-users fa-2x text-gray-300"></i>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Number of iteration card -->
+                          <div class="card border-left-secondary shadow py-2" style="margin : 7px;">
+                            <div class="card-body">
+                              <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                  <div class="text-xs font-weight-bold text-secondary text-uppercase mb-1"> Vehicule capacity:</div>
+                                  <div class="h5 mb-0 font-weight-bold text-gray-800">{{vehicule_capacity}}</div>
+                                </div>
+                                <div class="col-auto">
+                                  <i class="fas fa-truck-moving fa-2x text-gray-300"></i>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                          <!-- Best solution cost card -->
+                          <div class="card border-left-warning shadow py-2" style="margin : 7px;">
+                            <div class="card-body">
+                              <div class="row no-gutters align-items-center">
+                                <div class="col mr-2">
+                                  <div class="text-xs font-weight-bold text-warning text-uppercase mb-1"> Demand:</div>
+                                  <div class="h5  font-weight-bold text-gray-800">{{customer_demand}}</div>
+                                </div>
+                                <div class="col-auto">
+                                  <i class="fas fa-shopping-cart fa-2x text-gray-300"></i>
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              
                 {%for index, algo in enumerate(algo_name)%}
-                <div class="tab-pane fade w-100 active {% if index == 0 %} show {% endif %}" id="tab{{index}}" role="tabpanel">
+                <div class="tab-pane fade w-100 active" id="tab{{index}}" role="tabpanel">
                   <div class="row">
                     <div class="col-md-9">
                         <div class="card shadow mb-4">
@@ -221,6 +294,7 @@
                   </div>
                 </div>
                 {%endfor%}
+                
               </div>
             </div>
   <div class="py-1">

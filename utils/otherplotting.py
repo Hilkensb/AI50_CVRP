@@ -125,7 +125,8 @@ def showSolutionEvolutionAnimationMatplotlib(
 def getSolutionEvolutionAnimationPlotly(
     solution_evolution: List[SolutionCvrp],depot_node_color: str = "#a6f68e",
     node_size: int = 15, route_color: List[str] = DEFAULT_COLOR_PALETTE,
-    show_legend_edge: bool = True, show_legend_node: bool = False
+    show_legend_edge: bool = True, show_legend_node: bool = False,
+    slider_from_end: bool = True
 ) -> Figure:
     """
     getSolutionEvolutionAnimationPlotly()
@@ -142,6 +143,8 @@ def getSolutionEvolutionAnimationPlotly(
     :type show_legend_edge: bool
     :param show_legend_node: Display or not the legend of nodes, default to False (opt.)
     :type show_legend_edge: bool
+    :param slider_from_end: True if the animation should start at the last frame
+    :type slider_from_end: bool
     :return: Animation Figure of the solution evolution
     :rtype: Figure
     """
@@ -251,6 +254,14 @@ def getSolutionEvolutionAnimationPlotly(
 
     # Add the slider
     fig_dict["layout"]["sliders"] = [sliders_dict]
+    
+    # If the animation should start from the last frame
+    if slider_from_end:
+        # Set the slider on the last frame
+        fig_dict["layout"]['sliders'][0]['active'] = len(fig_dict["frames"]) - 1
+        # Set the data frame to the last frame
+        fig_dict["data"] = fig_dict["frames"][-1]['data']
+    
     # Build the figure
     fig = go.Figure(fig_dict)
     
@@ -260,7 +271,8 @@ def getSolutionEvolutionAnimationPlotly(
 def getFastSolutionEvolutionAnimationPlotly(
     solution_evolution: List[SolutionCvrp],depot_node_color: str = "#a6f68e",
     node_size: int = 15, route_color: List[str] = DEFAULT_COLOR_PALETTE,
-    show_legend_edge: bool = True, show_legend_node: bool = False
+    show_legend_edge: bool = True, show_legend_node: bool = False,
+    slider_from_end: bool = True
 ) -> Figure:
     """
     getSolutionEvolutionAnimationPlotly()
@@ -277,6 +289,8 @@ def getFastSolutionEvolutionAnimationPlotly(
     :type show_legend_edge: bool
     :param show_legend_node: Display or not the legend of nodes, default to False (opt.)
     :type show_legend_edge: bool
+    :param slider_from_end: True if the animation should start at the last frame
+    :type slider_from_end: bool
     :return: Animation Figure of the solution evolution
     :rtype: Figure
     """
@@ -418,6 +432,14 @@ def getFastSolutionEvolutionAnimationPlotly(
 
     # Add the slider
     fig_dict["layout"]["sliders"] = [sliders_dict]
+    
+    # If the animation should start from the last frame
+    if slider_from_end:
+        # Set the slider on the last frame
+        fig_dict["layout"]['sliders'][0]['active'] = len(fig_dict["frames"]) - 1
+        # Set the data frame to the last frame
+        fig_dict["data"] = fig_dict["frames"][-1]['data']
+
     # Build the figure
     fig = go.Figure(fig_dict)
 

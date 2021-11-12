@@ -1142,7 +1142,7 @@ class Cvrp(VehiculeRootingProblem):
             x, y = customer.getCoordinates()
             node_x.append(x)
             node_y.append(y)
-            node_text.append(customer.node_id)
+            node_text.append(f"Customer: {customer.node_id}<br>Demand: {customer.demand}")
 
             # Set the color of the customer node
             color_map.append(customer_node_color)
@@ -1171,7 +1171,7 @@ class Cvrp(VehiculeRootingProblem):
         node_x.append(self.__depot.x)
         node_y.append(self.__depot.y)
         # Set its name
-        node_text.append(self.__depot.node_id)
+        node_text.append(f"{self.__depot.node_id} (depot)")
         # Set his color
         color_map.append(depot_node_color)
         # Set its size
@@ -1186,7 +1186,7 @@ class Cvrp(VehiculeRootingProblem):
         node_depot_size: int = 30, fixed_size: bool = True
     ) -> List[Dict]:
         """
-        __drawPlotly()
+        drawPlotlyJSON()
 
         Method to draw a matplotlib figure representing the graph of the cvrp.
         It will tne be use in method getFigure and showFigure (private)
@@ -1290,6 +1290,8 @@ class Cvrp(VehiculeRootingProblem):
                 color_map.append(depot_node_color)
                 # Set the size of the depot
                 size_map.append(node_depot_size)
+                # Set the name of the node
+                node_text = [f"{depot_node.node_id} (Depot)"]
             else:
                 # Set the color of the customer node
                 color_map.append(customer_node_color)
@@ -1314,6 +1316,8 @@ class Cvrp(VehiculeRootingProblem):
                     node_size = node_size * (node_max_size - node_min_size) + node_min_size
                 # Add the value to the size map
                 size_map.append(node_size)
+                # Set the name of the node
+                node_text = [f"Customer: {customer.node_id}<br>Demand: {customer.demand}"]
         
         # Node of the trace
         node_trace: Scatter = dict(
@@ -1324,7 +1328,8 @@ class Cvrp(VehiculeRootingProblem):
                 color=color_map,
                 size=size_map,
                 line_width=0.5
-            )
+            ),
+            text=node_text
         )
         
         # Add the node scatter
@@ -1831,6 +1836,24 @@ class Cvrp(VehiculeRootingProblem):
         customer_id: int = customer_id_list[customer_number - 1]
 
         return customer_id
+
+    def getMaxDemand(self) -> int:
+        """
+        getMaxDemand()
+        
+        :return: The maximum demand of a customer
+        :rtype: int
+        """
+        return max([customer.demand for customer in self.__customers])
+        
+    def getMinDemand(self) -> int:
+        """
+        getMaxDemand()
+        
+        :return: The minimum demand of a customer
+        :rtype: int
+        """
+        return min([customer.demand for customer in self.__customers])
 
 # ----------------------------- Getter / Setter ----------------------------- #
 

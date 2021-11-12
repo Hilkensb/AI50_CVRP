@@ -162,7 +162,11 @@ def result(cvrp_id: str):
         algorithm_iteration=instance_save[f'algorithm_iteration_{cvrp_id}'],
         best_overall_cost=instance_save[f'best_solution_cost_{cvrp_id}'],
         best_algorithm=instance_save[f'best_algorithm_{cvrp_id}'], round=round,
-        number_vehicles=instance_save[f'minimum_vehicles_{cvrp_id}'], instance_id=cvrp_id
+        number_vehicles=instance_save[f'minimum_vehicles_{cvrp_id}'], instance_id=cvrp_id,
+        instance_graph=instance_save[f'graph_instance_{cvrp_id}'], 
+        nb_customer=instance_save[f'nb_customer_{cvrp_id}'], 
+        vehicule_capacity=instance_save[f'vehicule_capacity_{cvrp_id}'],
+        customer_demand=instance_save[f'demand_{cvrp_id}']
     )
 
 def downloadFile(cvrp_id: str):
@@ -288,6 +292,19 @@ def algorithmTask(
     instance_save[f'best_algorithm_{cvrp_id}'] = algorithm_name[index_best_solution]
     # Minimum number of vehicles for the best solutions
     instance_save[f'minimum_vehicles_{cvrp_id}'] = len(algorithm_solution[index_best_solution][-1].route)
+    # Instance graph
+    instance_graph: str = cvrp_instance.getHtmlFigurePlotly(full_html=False)
+    # Convert it to markup to have the displayed
+    # if it is not made, the string of the html code will be displayed
+    html_instance_graph = Markup(instance_graph)
+    # Save the instance
+    instance_save[f'graph_instance_{cvrp_id}'] = html_instance_graph
+    # Save the number of customer in the instance
+    instance_save[f'nb_customer_{cvrp_id}'] = cvrp_instance.nb_customer
+    # Save the vehicule capacity
+    instance_save[f'vehicule_capacity_{cvrp_id}'] = cvrp_instance.vehicule_capacity
+    # Save the vehicule capacity
+    instance_save[f'demand_{cvrp_id}'] = f"[{cvrp_instance.getMinDemand()}, {cvrp_instance.getMaxDemand()}]"
         
     # Tell to the javsscript that the algorithm as ended
     redis_server.publish(f"{SOLUTION_TOPIC}_{cvrp_id}", "END")
