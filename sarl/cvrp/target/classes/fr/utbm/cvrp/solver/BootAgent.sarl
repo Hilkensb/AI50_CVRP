@@ -1,0 +1,53 @@
+/** 
+ * 
+ */
+package fr.utbm.cvrp.solver
+
+import io.sarl.core.AgentKilled
+import io.sarl.core.AgentSpawned
+import io.sarl.core.ContextJoined
+import io.sarl.core.ContextLeft
+import io.sarl.core.Destroy
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import io.sarl.core.MemberJoined
+import io.sarl.core.MemberLeft
+import io.sarl.core.ParticipantJoined
+import io.sarl.core.ParticipantLeft
+import io.sarl.core.SpaceCreated
+import io.sarl.core.SpaceDestroyed
+import java.util.concurrent.atomic.AtomicInteger
+import io.sarl.core.Lifecycle
+import java.util.concurrent.ConcurrentLinkedQueue
+
+/** 
+ * @author neil
+ * 
+ */
+agent BootAgent {
+	uses Lifecycle, Logging
+
+	on Initialize {
+		loggingName = "Boot agent"
+
+		// List of customers compose of
+		// id, x, y, demand
+		var customers_list : ConcurrentLinkedQueue<String> = new ConcurrentLinkedQueue<String>()
+		// Create the customers
+		customers_list.add("2 10 0 10")
+		customers_list.add("3 10 25 95")
+		customers_list.add("2 30 10 75")
+		customers_list.add("2 40 55 25")
+
+		// id, x, y of the depot node
+		var depot : String = "1 0 0"
+		// Set the vehicle capacity
+		var vehicle_capacity : AtomicInteger = new AtomicInteger(100)
+
+		// Spawn the agent SearchManager and SearchAgent
+		spawn(TaskAgent, depot, customers_list, vehicle_capacity)
+
+		// Kill it self
+		killMe
+	}
+}

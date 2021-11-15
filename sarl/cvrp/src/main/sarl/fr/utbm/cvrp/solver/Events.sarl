@@ -1,0 +1,102 @@
+package fr.utbm.cvrp.solver
+
+import java.util.ArrayList
+import java.util.UUID
+
+event nextCustomerRequest {
+}
+
+event nextCustomer {
+	val customer : String
+
+	new (customer_value : String) {
+		customer = customer_value
+	}
+}
+
+event finish {
+}
+
+event finishVehicle {
+}
+
+
+event insertionCostEstimation {
+	val cost : double
+	val source_id : UUID
+
+	new (cost_value : double, source_id_value : UUID) {
+		cost = cost_value
+		source_id = source_id_value
+	}
+}
+
+event insertCustomer {
+	val customer : String
+
+	new (customer_value : String) {
+		customer = customer_value
+	}
+}
+
+event customerInserted {
+}
+
+event insertCustomerEstimate {
+	val customer : String
+
+	new (customer_value : String) {
+		customer = customer_value
+	}
+}
+
+event solution {
+	val route : ArrayList<String>
+
+	new (route_value : ArrayList<String>) {
+		route = route_value
+	}
+}
+
+event die {
+}
+
+
+event removeAll{
+	
+}
+
+event relocate {
+	val customers : ArrayList<String>
+
+	new (customers_value : ArrayList<String>) {
+		customers = customers_value
+	}
+}
+
+event relocateCustomer {
+	val customer : String
+
+	new (customer_value : String) {
+		customer = customer_value
+	}
+}
+
+event customerRelocated {
+}
+
+event relocateCustomerEstimate {
+	val customer : String
+
+	new (customer_value : String) {
+		customer = customer_value
+	}
+}
+
+event relocateCostEstimation {
+	val cost : double
+
+	new (cost_value : double, source_id_value : UUID) {
+		cost = cost_value
+	}
+}
