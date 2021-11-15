@@ -40,6 +40,8 @@ def readInstance(instance_type: str, cvrp_id: str):
     
     :param instance_type: type of the instance type
     :type instance_type: str
+    :param cvrp_id: Instance id of the page
+    :type cvrp_id: str
     """
     
     if request.method == 'POST': 
@@ -74,6 +76,9 @@ def readInstance(instance_type: str, cvrp_id: str):
 def load(cvrp_id: str):
     """
     Function that will launch the algorithm choose by the user
+    
+    :param cvrp_id: Instance id of the page
+    :type cvrp_id: str
     """
     
     if request.method == 'POST':
@@ -143,6 +148,9 @@ def stream(cvrp_id):
     """
     Controller to get the message publish on the topic
     
+    :param cvrp_id: Instance id of the page
+    :type cvrp_id: str
+    
     .. note: Inspired by https://github.com/petronetto/flask-redis-realtime-chat/blob/master/app.py
     """
     return Response(event_stream(cvrp_id), mimetype="text/event-stream")
@@ -150,6 +158,9 @@ def stream(cvrp_id):
 def result(cvrp_id: str):
     """
     Controller to display the result of the algorithms
+    
+    :param cvrp_id: Instance id of the page
+    :type cvrp_id: str
     """
     
     return render_template(
@@ -171,6 +182,10 @@ def result(cvrp_id: str):
 
 def downloadFile(cvrp_id: str):
     """
+    Controller that will return the file to download (the report)
+    
+    :param cvrp_id: Instance id of the page
+    :type cvrp_id: str
     """
     # Get the current flask application
     flask_applaction = current_app._get_current_object()
@@ -196,6 +211,8 @@ def buildInstance(path: str, instance_type: str) -> Cvrp:
 def event_stream(cvrp_id: str) -> str:
     """
     Function to get the message publish on a topic
+    :param cvrp_id: Instance id of the page
+    :type cvrp_id: str
     
     :return: message publish into the wanted topic
     :rtype: byte string
@@ -226,6 +243,8 @@ def algorithmTask(
     :type algorithm_kargs: list of dictionnary
     :param algorithm_name: List of the algorithm name
     :type algorithm_name: List of strings
+    :param cvrp_id: Instance id of the page
+    :type cvrp_id: str
     """
        
     # Run the algorithm 
