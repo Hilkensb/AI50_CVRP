@@ -43,7 +43,8 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * @author neil
+ * VehicleAgent
+ * <br>His goal is to keep a valid solution route
  */
 @SarlSpecification("0.12")
 @SarlElementType(19)
@@ -92,8 +93,7 @@ public class VehicleAgent extends Agent {
       }
     }
     DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-    UUID _iD = this.getID();
-    insertionCostEstimation _insertionCostEstimation = new insertionCostEstimation(min_dist, _iD);
+    insertionCostEstimation _insertionCostEstimation = new insertionCostEstimation(min_dist);
     class $SerializableClosureProxy implements Scope<Address> {
       
       private final UUID $_allocationAgentUUID_1;
@@ -173,6 +173,8 @@ public class VehicleAgent extends Agent {
   }
   
   private void $behaviorUnit$finishVehicle$3(final finishVehicle occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Finish event received.");
     solution solutionEvt = new solution(this.customers);
     DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
     class $SerializableClosureProxy implements Scope<Address> {
@@ -200,8 +202,10 @@ public class VehicleAgent extends Agent {
       }
     };
     _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(solutionEvt, _function);
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Killing myself.");
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Solution sent.");
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info("Killing myself.");
     Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.killMe();
   }

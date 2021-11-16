@@ -3,10 +3,16 @@ package fr.utbm.cvrp.solver
 import java.util.ArrayList
 import java.util.UUID
 
+// All the events to able our agents to communicate
+
+// Event from AllocationAgent to TaskAgent to request a new customer to insert
 event nextCustomerRequest {
 }
 
+// Event from TaskAgent to allocationAgent to send a new customer to insert
+// It's a reply to the nextCustomerRequest
 event nextCustomer {
+	// Customer to insert
 	val customer : String
 
 	new (customer_value : String) {
@@ -14,24 +20,34 @@ event nextCustomer {
 	}
 }
 
+// Event from TaskAgent to AllocationAgent to indicates that there is no more
+// customers to insert
 event finish {
 }
 
+// Event from AllocationAgent to VehicleAgent to indicates that there is no
+// more customer to insert
 event finishVehicle {
 }
 
-
+// Event from VehicleAgent to AllocationAgent to tell what is the lowest 
+// cost of insertion for the customer
+// It is a reply from the insertCustomerEstimate event
 event insertionCostEstimation {
+	// Lowest cost of insertion in the VehicleAgent
 	val cost : double
-	val source_id : UUID
 
-	new (cost_value : double, source_id_value : UUID) {
+	new (cost_value : double) {
 		cost = cost_value
-		source_id = source_id_value
 	}
 }
 
+// Event from AllocationAgent to VehicleAgent to tell the vehicle to insert the given
+// customer
+// It's launched when all vehicle agents have send their insertion cost estimation
+// through insertionCostEstimation event
 event insertCustomer {
+	// Customer to insert
 	val customer : String
 
 	new (customer_value : String) {
@@ -39,10 +55,15 @@ event insertCustomer {
 	}
 }
 
+// Event from VehicleAgent to AllocationAgent to tell that the customer has been inserted
+// It is a reply to insertCustomer event
 event customerInserted {
 }
 
+// Event from AllocationAgent to VehicleAgent to get the lowest cost insertion of the
+// given customer in the vehicle agent
 event insertCustomerEstimate {
+	// Customer to insert
 	val customer : String
 
 	new (customer_value : String) {
@@ -50,7 +71,10 @@ event insertCustomerEstimate {
 	}
 }
 
+// Event from VehicleAgent to AllocationAgent and AllocationAgent to TaskAgent to get the 
+// solution build 
 event solution {
+	// Route build by the VehicleAgent
 	val route : ArrayList<String>
 
 	new (route_value : ArrayList<String>) {
@@ -58,10 +82,15 @@ event solution {
 	}
 }
 
+// Event from VehicleAgent to AllocationAgent and AllocationAgent to TaskAgent to
+// request the AllocationAgent and TaskAgent to kill themselves
+// The AllocationAgent will first look if it has no more agents in its inner context
 event die {
 }
 
-
+// Event from AllocationAgent to VehicleAgent to ask the VehicleAgent to remove and
+// return all the customers in its route
+// We follow the RA strategy
 event removeAll{
 	
 }

@@ -23,7 +23,11 @@ import org.eclipse.xtext.xbase.lib.Extension;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * @author neil
+ * Boot agent
+ * <br>His goal is just to launch the task agent and then die
+ * 
+ * <br>MAS Systems based on <a href=https://www.semanticscholar.org/paper/Agents-towards-vehicle-routing-problems-Vokr%C3%ADnek-Komenda/1d486f85f0810331c8feb203ac126a7c192d00e1#related-papers>Agents towards vehicle routing problems</a> article
+ * <br>Strategy implemented: FIFO-ITER-CNP-RA
  */
 @SarlSpecification("0.12")
 @SarlElementType(19)
@@ -32,11 +36,13 @@ public class BootAgent extends Agent {
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName("Boot agent");
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("The program has been launched.");
     ConcurrentLinkedQueue<String> customers_list = new ConcurrentLinkedQueue<String>();
     customers_list.add("2 10 0 10");
     customers_list.add("3 10 25 95");
-    customers_list.add("2 30 10 75");
-    customers_list.add("2 40 55 25");
+    customers_list.add("4 30 10 75");
+    customers_list.add("5 40 55 25");
     String depot = "1 0 0";
     AtomicInteger vehicle_capacity = new AtomicInteger(100);
     Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();

@@ -8,7 +8,6 @@ import fr.utbm.cvrp.solver.nextCustomer;
 import fr.utbm.cvrp.solver.nextCustomerRequest;
 import fr.utbm.cvrp.solver.solution;
 import io.sarl.core.AgentTask;
-import io.sarl.core.DefaultContextInteractions;
 import io.sarl.core.Initialize;
 import io.sarl.core.InnerContextAccess;
 import io.sarl.core.Lifecycle;
@@ -42,7 +41,9 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * @author neil
+ * Task Agent
+ * <br>His goal is to give the customers to the allocation agent
+ * <br>Strategies implemented: FIFO-ITER
  */
 @SarlSpecification("0.12")
 @SarlElementType(19)
@@ -89,6 +90,8 @@ public class TaskAgent extends Agent {
       if (this.allocation_agent_spawned) {
         boolean _isEmpty = this.customers.isEmpty();
         if ((!_isEmpty)) {
+          Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+          _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Sending the next customer.");
           String _nextCustomers = this.getNextCustomers();
           nextCustomer nextCustomerEvt = new nextCustomer(_nextCustomers);
           InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
@@ -118,8 +121,8 @@ public class TaskAgent extends Agent {
           };
           _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext().getDefaultSpace().emit(this.getID(), nextCustomerEvt, _function_1);
         } else {
-          Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-          _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("No more customer.");
+          Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+          _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info("No more customer.");
           finish finishEvt = new finish();
           InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
           class $SerializableClosureProxy_1 implements Scope<Address> {
@@ -239,20 +242,6 @@ public class TaskAgent extends Agent {
       this.$CAPACITY_USE$IO_SARL_CORE_LOGGING = $getSkill(Logging.class);
     }
     return $castSkill(Logging.class, this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
-  }
-  
-  @Extension
-  @ImportedCapacityFeature(DefaultContextInteractions.class)
-  @SyntheticMember
-  private transient AtomicSkillReference $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS;
-  
-  @SyntheticMember
-  @Pure
-  private DefaultContextInteractions $CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER() {
-    if (this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS == null || this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS.get() == null) {
-      this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS = $getSkill(DefaultContextInteractions.class);
-    }
-    return $castSkill(DefaultContextInteractions.class, this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS);
   }
   
   @Extension

@@ -3,32 +3,30 @@
  */
 package fr.utbm.cvrp.solver
 
-import io.sarl.core.AgentKilled
-import io.sarl.core.AgentSpawned
-import io.sarl.core.ContextJoined
-import io.sarl.core.ContextLeft
-import io.sarl.core.Destroy
+
 import io.sarl.core.Initialize
 import io.sarl.core.Logging
-import io.sarl.core.MemberJoined
-import io.sarl.core.MemberLeft
-import io.sarl.core.ParticipantJoined
-import io.sarl.core.ParticipantLeft
-import io.sarl.core.SpaceCreated
-import io.sarl.core.SpaceDestroyed
 import java.util.concurrent.atomic.AtomicInteger
 import io.sarl.core.Lifecycle
 import java.util.concurrent.ConcurrentLinkedQueue
 
 /** 
- * @author neil
+ * Boot agent
+ * <br>His goal is just to launch the task agent and then die
+ * 
+ * <br>MAS Systems based on <a href=https://www.semanticscholar.org/paper/Agents-towards-vehicle-routing-problems-Vokr%C3%ADnek-Komenda/1d486f85f0810331c8feb203ac126a7c192d00e1#related-papers>Agents towards vehicle routing problems</a> article
+ * <br>Strategy implemented: FIFO-ITER-CNP-RA
  * 
  */
 agent BootAgent {
 	uses Lifecycle, Logging
 
 	on Initialize {
+		// His logging name
 		loggingName = "Boot agent"
+		
+		// Logging info
+		info("The program has been launched.")
 
 		// List of customers compose of
 		// id, x, y, demand
@@ -36,8 +34,8 @@ agent BootAgent {
 		// Create the customers
 		customers_list.add("2 10 0 10")
 		customers_list.add("3 10 25 95")
-		customers_list.add("2 30 10 75")
-		customers_list.add("2 40 55 25")
+		customers_list.add("4 30 10 75")
+		customers_list.add("5 40 55 25")
 
 		// id, x, y of the depot node
 		var depot : String = "1 0 0"

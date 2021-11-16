@@ -51,7 +51,9 @@ import org.eclipse.xtext.xbase.lib.Procedures.Procedure1;
 import org.eclipse.xtext.xbase.lib.Pure;
 
 /**
- * @author neil
+ * AllocationAgent
+ * <br>His goal is to insert customers where the insertion cost is minimized
+ * <br>Strategies: CNP-RA
  */
 @SarlSpecification("0.12")
 @SarlElementType(19)
@@ -166,17 +168,21 @@ public class AllocationAgent extends Agent {
   }
   
   private void $behaviorUnit$die$3(final die occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("A VehicleAgent request me to die.");
     InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
     int _memberAgentCount = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getMemberAgentCount();
     if ((_memberAgentCount == 0)) {
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Killing myself.");
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Killing myself.");
       Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
       _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.killMe();
     }
   }
   
   private void $behaviorUnit$solution$4(final solution occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Solution received.");
     DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
     solution _solution = new solution(occurrence.route);
     class $SerializableClosureProxy implements Scope<Address> {
@@ -253,6 +259,8 @@ public class AllocationAgent extends Agent {
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Empty vehicle.");
       boolean _isEmpty_1 = this.vehicle_agents.isEmpty();
       if ((!_isEmpty_1)) {
+        Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+        _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info("Go for the next VehicleAgent.");
         UUID vehicle_customer_relocate = this.vehicle_agents.poll();
         InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
         removeAll _removeAll = new removeAll();
@@ -282,6 +290,8 @@ public class AllocationAgent extends Agent {
         };
         _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext().getDefaultSpace().emit(this.getID(), _removeAll, _function);
       } else {
+        Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+        _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3.info("No more VehicleAgent to relocate customers");
         DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
         nextCustomerRequest _nextCustomerRequest = new nextCustomerRequest();
         class $SerializableClosureProxy_1 implements Scope<Address> {
@@ -322,8 +332,12 @@ public class AllocationAgent extends Agent {
   }
   
   private void $behaviorUnit$customerRelocated$7(final customerRelocated occurrence) {
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Customer relocated.");
     boolean _isEmpty = this.vehicle_agents.isEmpty();
     if ((!_isEmpty)) {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Go for the next VehicleAgent.");
       UUID vehicle_customer_relocate = this.vehicle_agents.poll();
       InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
       removeAll _removeAll = new removeAll();
@@ -353,6 +367,8 @@ public class AllocationAgent extends Agent {
       };
       _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext().getDefaultSpace().emit(this.getID(), _removeAll, _function);
     } else {
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info("No more VehicleAgent to relocate customers");
       DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
       nextCustomerRequest _nextCustomerRequest = new nextCustomerRequest();
       class $SerializableClosureProxy_1 implements Scope<Address> {
