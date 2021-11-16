@@ -153,7 +153,7 @@ agent AllocationAgent {
 		// If there is no customer to insert
 		// For example it happen when the first customer has been inserted
 		// Then one VehicleAgent have one customer and others have nothing
-		if (occurrence.customers.isEmpty) {
+		if (occurrence.customers.isEmpty()) {
 			// Logging info
 			info("Empty vehicle.")
 
@@ -187,18 +187,26 @@ agent AllocationAgent {
 	on customerRelocated {
 		info("Customer relocated.")
 		
-		if (!this.vehicle_agents.isEmpty()) {
-			info("Go for the next VehicleAgent.")
+		if (this.customer_relocate.isEmpty()) {
+			if (!this.vehicle_agents.isEmpty()) {
+				info("Go for the next VehicleAgent.")
 			
 			// Ask the next VehicleAgent to remove all its customers
-			var vehicle_customer_relocate : UUID = this.vehicle_agents.poll()
-			innerContext.defaultSpace.emit(this.ID, new removeAll())[it.ID == vehicle_customer_relocate]
-		} else {
-			info("No more VehicleAgent to relocate customers")
+				var vehicle_customer_relocate : UUID = this.vehicle_agents.poll()
+				innerContext.defaultSpace.emit(this.ID, new removeAll())[it.ID == vehicle_customer_relocate]
+			} else {
+				info("No more VehicleAgent to relocate customers")
 			
-			// Emit a new customer request
-			emit(new nextCustomerRequest())[it.ID == taskAgentUUID]
+				// Emit a new customer request
+				emit(new nextCustomerRequest())[it.ID == taskAgentUUID]
+			}
+		} else {
+			actual_customer_insert = this.customer_relocate.poll()
+			
+			// Emit the event in the default space of inner context
+			innerContext.defaultSpace.emit(this.ID, new relocateCustomerEstimate(actual_customer_insert))
 		}
+
 	}
 
 	on relocateCostEstimation {

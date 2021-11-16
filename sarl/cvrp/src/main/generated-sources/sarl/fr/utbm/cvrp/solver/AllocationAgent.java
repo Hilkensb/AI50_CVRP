@@ -334,68 +334,76 @@ public class AllocationAgent extends Agent {
   private void $behaviorUnit$customerRelocated$7(final customerRelocated occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Customer relocated.");
-    boolean _isEmpty = this.vehicle_agents.isEmpty();
-    if ((!_isEmpty)) {
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Go for the next VehicleAgent.");
-      UUID vehicle_customer_relocate = this.vehicle_agents.poll();
-      InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-      removeAll _removeAll = new removeAll();
-      class $SerializableClosureProxy implements Scope<Address> {
-        
-        private final UUID vehicle_customer_relocate;
-        
-        public $SerializableClosureProxy(final UUID vehicle_customer_relocate) {
-          this.vehicle_customer_relocate = vehicle_customer_relocate;
+    boolean _isEmpty = this.customer_relocate.isEmpty();
+    if (_isEmpty) {
+      boolean _isEmpty_1 = this.vehicle_agents.isEmpty();
+      if ((!_isEmpty_1)) {
+        Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+        _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Go for the next VehicleAgent.");
+        UUID vehicle_customer_relocate = this.vehicle_agents.poll();
+        InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+        removeAll _removeAll = new removeAll();
+        class $SerializableClosureProxy implements Scope<Address> {
+          
+          private final UUID vehicle_customer_relocate;
+          
+          public $SerializableClosureProxy(final UUID vehicle_customer_relocate) {
+            this.vehicle_customer_relocate = vehicle_customer_relocate;
+          }
+          
+          @Override
+          public boolean matches(final Address it) {
+            UUID _iD = it.getID();
+            return Objects.equal(_iD, vehicle_customer_relocate);
+          }
         }
-        
-        @Override
-        public boolean matches(final Address it) {
-          UUID _iD = it.getID();
-          return Objects.equal(_iD, vehicle_customer_relocate);
+        final Scope<Address> _function = new Scope<Address>() {
+          @Override
+          public boolean matches(final Address it) {
+            UUID _iD = it.getID();
+            return Objects.equal(_iD, vehicle_customer_relocate);
+          }
+          private Object writeReplace() throws ObjectStreamException {
+            return new SerializableProxy($SerializableClosureProxy.class, vehicle_customer_relocate);
+          }
+        };
+        _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext().getDefaultSpace().emit(this.getID(), _removeAll, _function);
+      } else {
+        Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+        _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info("No more VehicleAgent to relocate customers");
+        DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
+        nextCustomerRequest _nextCustomerRequest = new nextCustomerRequest();
+        class $SerializableClosureProxy_1 implements Scope<Address> {
+          
+          private final UUID $_taskAgentUUID_1;
+          
+          public $SerializableClosureProxy_1(final UUID $_taskAgentUUID_1) {
+            this.$_taskAgentUUID_1 = $_taskAgentUUID_1;
+          }
+          
+          @Override
+          public boolean matches(final Address it) {
+            UUID _iD = it.getID();
+            return Objects.equal(_iD, $_taskAgentUUID_1);
+          }
         }
+        final Scope<Address> _function_1 = new Scope<Address>() {
+          @Override
+          public boolean matches(final Address it) {
+            UUID _iD = it.getID();
+            return Objects.equal(_iD, AllocationAgent.this.taskAgentUUID);
+          }
+          private Object writeReplace() throws ObjectStreamException {
+            return new SerializableProxy($SerializableClosureProxy_1.class, AllocationAgent.this.taskAgentUUID);
+          }
+        };
+        _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_nextCustomerRequest, _function_1);
       }
-      final Scope<Address> _function = new Scope<Address>() {
-        @Override
-        public boolean matches(final Address it) {
-          UUID _iD = it.getID();
-          return Objects.equal(_iD, vehicle_customer_relocate);
-        }
-        private Object writeReplace() throws ObjectStreamException {
-          return new SerializableProxy($SerializableClosureProxy.class, vehicle_customer_relocate);
-        }
-      };
-      _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext().getDefaultSpace().emit(this.getID(), _removeAll, _function);
     } else {
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info("No more VehicleAgent to relocate customers");
-      DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-      nextCustomerRequest _nextCustomerRequest = new nextCustomerRequest();
-      class $SerializableClosureProxy_1 implements Scope<Address> {
-        
-        private final UUID $_taskAgentUUID_1;
-        
-        public $SerializableClosureProxy_1(final UUID $_taskAgentUUID_1) {
-          this.$_taskAgentUUID_1 = $_taskAgentUUID_1;
-        }
-        
-        @Override
-        public boolean matches(final Address it) {
-          UUID _iD = it.getID();
-          return Objects.equal(_iD, $_taskAgentUUID_1);
-        }
-      }
-      final Scope<Address> _function_1 = new Scope<Address>() {
-        @Override
-        public boolean matches(final Address it) {
-          UUID _iD = it.getID();
-          return Objects.equal(_iD, AllocationAgent.this.taskAgentUUID);
-        }
-        private Object writeReplace() throws ObjectStreamException {
-          return new SerializableProxy($SerializableClosureProxy_1.class, AllocationAgent.this.taskAgentUUID);
-        }
-      };
-      _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_nextCustomerRequest, _function_1);
+      this.actual_customer_insert = this.customer_relocate.poll();
+      InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
+      relocateCustomerEstimate _relocateCustomerEstimate = new relocateCustomerEstimate(this.actual_customer_insert);
+      _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1.getInnerContext().getDefaultSpace().emit(this.getID(), _relocateCustomerEstimate, null);
     }
   }
   

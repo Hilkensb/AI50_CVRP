@@ -1715,6 +1715,39 @@ class SolutionCvrp:
         instance.fromJSON(json=object_dict["instance"])
         self.__cvrp_instance = instance
 
+    def fromSarl(self, sarl_response: List[List[str]]) -> None:
+        """
+        fromSarl()
+        
+        Method to convert the sarl response into a solution
+        
+        :param sarl_response: Response made by sarl programm to convert into python solution
+        :type: str
+        """
+        
+        # Reset the routes of this solution
+        self.__route = []
+        
+        # The first list contains all the route in the solution
+        for sarl_route in sarl_response:
+            route_list: List[NodeWithCoord] = []
+            # The list in it contain all the customers in the route
+            for sarl_customer in sarl_route:
+                # Get the node id of the node (customer or depot)
+                # The first element is the node id, so get the first element
+                # Since every data is separed by a space use split method
+                node_id: int = int(sarl_customer.split(" ")[0])
+                # Search the customer with the given id in the cvrp instance
+                node: NodeWithCoord = self.__cvrp_instance.getNodeById(id_searched=node_id)
+                # Add the node to the list
+                route_list.append(node)
+
+            # Create a new route
+            route: RouteCvrp = RouteCvrp(route=route_list)
+            # Add the route to the solution
+            self.__route.append(RouteCvrp)
+        
+
 # ----------------------------- Getter / Setter ----------------------------- #
 
     @property 

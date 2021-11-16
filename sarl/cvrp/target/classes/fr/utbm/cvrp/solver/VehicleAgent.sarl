@@ -77,6 +77,7 @@ agent VehicleAgent {
 	
 	on insertCustomer {
 		info("Inserting customer")
+		info(occurrence.customer)
 
 		// Determine the minimum cost of insertion
 		var min_dist : double = Integer.MAX_VALUE
@@ -102,13 +103,18 @@ agent VehicleAgent {
 		synchronized (this) {
 			this.customers.add(best_index + 1, customer_to_insert)
 		}
-		
+
+
+
+		info(this.customers.toString())
 		// emit a new event to tell that the customer have been inserted
 		emit(new customerInserted())[it.ID == allocationAgentUUID]
 	}
 
 	on finishVehicle {
 		info("Finish event received.")
+		// Show to the log his route
+		info(this.customers.toString())
 		
 		// Return the solution
 		var solutionEvt = new solution(this.customers)
@@ -127,6 +133,7 @@ agent VehicleAgent {
 	
 	on removeAll {
 		info("Removing all my customers")
+		info(this.customers.toString())
 		
 		// Create a new Array that contains every customers
 		var customers_copy : ArrayList<String> = new ArrayList<String>
@@ -141,7 +148,10 @@ agent VehicleAgent {
 		// Start and end the route with a depot
 		this.customers.add(depot)
 		this.customers.add(depot)
+		// Reset the demand supplied
+		this.demand_supplied.set(0)
 
+		info(customers_copy)
 		emit(new relocate(customers_copy))[it.ID == allocationAgentUUID]
 	}
 
@@ -171,6 +181,8 @@ agent VehicleAgent {
 
 	on relocateCustomer {
 		info("Relocating customer")
+		info(occurrence.customer)
+		info(this.customers.toString())
 
 		// Determine the minimum cost of insertion
 		var min_dist : double = Integer.MAX_VALUE
@@ -192,11 +204,16 @@ agent VehicleAgent {
 			}
 		}
 
+		// update the demand supplied
+		var new_demand : int = this.demand_supplied.get() + this.getDemand(customer_to_insert)
+		this.demand_supplied.set(new_demand)
+
 		// Insert the customer at the given index
 		synchronized (this) {
 			this.customers.add(best_index + 1, customer_to_insert)
 		}
 
+		info(this.customers.toString())
 		// emit a new event to tell that the customer have been inserted
 		emit(new customerRelocated())[it.ID == allocationAgentUUID]
 	}
