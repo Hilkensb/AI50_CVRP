@@ -44,7 +44,9 @@ def readInstance(instance_type: str, cvrp_id: str):
     :type cvrp_id: str
     """
     
+    # If the method is post (posting form)
     if request.method == 'POST': 
+        # If the instance come from the web
         if instance_type == "web": 
             # Get the instance type
             instance_path: str = request.form['instance']
@@ -57,7 +59,9 @@ def readInstance(instance_type: str, cvrp_id: str):
             cvrp_instance: Cvrp = buildInstance(path=instance_string, instance_type="string")
             
         # Save the instance in session
-        session['instance'] = cvrp_instance.toJSON()
+        # Session object can't handle big instance of cvrp
+        # session['instance'] = cvrp_instance.toJSON()
+        instance_save[f'instance_{cvrp_id}'] = cvrp_instance.toJSON()
         # Html representation of the instance graph
         instance_graph: str = cvrp_instance.getHtmlFigurePlotly(full_html=False)
         # Convert it to markup to have the displayed
@@ -85,7 +89,8 @@ def load(cvrp_id: str):
       
         # Cvrp instance that we were asked for 
         cvrp_instance = Cvrp()
-        cvrp_instance.fromJSON(json.loads(session['instance']))
+        # cvrp_instance.fromJSON(json.loads(session['instance']))
+        cvrp_instance.fromJSON(json.loads(instance_save[f'instance_{cvrp_id}']))
       
         # List for algorithm function
         algo_function: List = []
@@ -93,6 +98,8 @@ def load(cvrp_id: str):
         algo_name: List = []
         # List for algorithm kwarg
         algo_kwargs: List = []
+        # Create a list to know if the solution provided contains evolution
+        instance_save[f'has_evolution_{cvrp_id}']: List = []
         
         # if the clark wright should be runned
         if len(request.form.getlist("Clarck_Wright")) > 0:
@@ -104,6 +111,8 @@ def load(cvrp_id: str):
             algo_kwargs.append({
                 "cvrp": cvrp_instance, "publish_topic": f"{SOLUTION_TOPIC}_{cvrp_id}"
             })
+            # Is there evolution in the solution
+            instance_save[f'has_evolution_{cvrp_id}'].append(True)
    
         # if the tabu search should be runned
         if len(request.form.getlist("Tabu_Search")) > 0:
@@ -120,11 +129,14 @@ def load(cvrp_id: str):
                 "max_second_run": int(request.form['RunTimeTabu']),
                 "publish_topic": f"{SOLUTION_TOPIC}_{cvrp_id}"
             })
+            # Is there evolution in the solution
+            instance_save[f'has_evolution_{cvrp_id}'].append(True)
         
         # Get the flask application
         flask_applaction = current_app._get_current_object()
 
         # Create the thread
+        # It's a daemon thread, so it will run in background
         threaded_task = threading.Thread(
             target=algorithmTask,
             kwargs={
@@ -177,7 +189,8 @@ def result(cvrp_id: str):
         instance_graph=instance_save[f'graph_instance_{cvrp_id}'], 
         nb_customer=instance_save[f'nb_customer_{cvrp_id}'], 
         vehicule_capacity=instance_save[f'vehicule_capacity_{cvrp_id}'],
-        customer_demand=instance_save[f'demand_{cvrp_id}']
+        customer_demand=instance_save[f'demand_{cvrp_id}'],
+        multiple=instance_save[f'has_evolution_{cvrp_id}']
     )
 
 def downloadFile(cvrp_id: str):
@@ -192,6 +205,7 @@ def downloadFile(cvrp_id: str):
     # Set the file name
     pdf_name: str = cvrp_id + ".pdf"
     
+    # Get the generated pdf
     path = os.path.join(flask_applaction.config["CLIENT_PDF"], pdf_name)
     return send_file(path, as_attachment=True)
 
@@ -219,7 +233,9 @@ def event_stream(cvrp_id: str) -> str:
     
     .. note: Inspired by https://github.com/petronetto/flask-redis-realtime-chat/blob/master/app.py
     """
+    # Create a publisher subscriber patern using redis
     pubsub = redis_server.pubsub(ignore_subscribe_messages=True)
+    # Subscribe to the topic where the cvrp_id is
     pubsub.subscribe(f"{SOLUTION_TOPIC}_{cvrp_id}")
     # TODO: handle client disconnection.
     for message in pubsub.listen():
@@ -326,5 +342,12 @@ def algorithmTask(
     instance_save[f'demand_{cvrp_id}'] = f"[{cvrp_instance.getMinDemand()}, {cvrp_instance.getMaxDemand()}]"
         
     # Tell to the javsscript that the algorithm as ended
-    redis_server.publish(f"{SOLUTION_TOPIC}_{cvrp_id}", "END")
+    # If no subscribers receive the message
+    while redis_server.publish(f"{SOLUTION_TOPIC}_{cvrp_id}", "END") != 1:
+        # Wait 50ms and then resend the message
+        # By doing that we are sure that every time the subscriber will receive the message
+        # Because it may appear some case where python algorithm have finished
+        # before the web page have finished to load. If that case arrived
+        # the user will stay forever on the loading page
+        time.sleep(0.05)
    

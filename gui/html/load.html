@@ -157,10 +157,22 @@
                 alertPlaceholder.append(wrapper)
             }
         
-            Algorithm_name.innerHTML = json_obj.algorithm_name;
-            Cost.innerHTML = json_obj.cost;
-            Iteration.innerHTML = json_obj.iteration;
-            Plotly.newPlot('graph', json_obj.graph);
+            if(json_obj.algorithm_name){
+                 Algorithm_name.innerHTML = json_obj.algorithm_name;
+            }
+
+            if(json_obj.cost){
+                Cost.innerHTML = json_obj.cost;
+            }   
+            
+            if(json_obj.iteration){
+                Iteration.innerHTML = json_obj.iteration;
+            }
+            
+            if(json_obj.graph){
+                Plotly.newPlot('graph', json_obj.graph);
+            }
+            
           };
     }
     sse();
