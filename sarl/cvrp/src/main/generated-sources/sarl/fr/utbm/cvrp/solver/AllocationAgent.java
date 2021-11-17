@@ -4,7 +4,6 @@ import com.google.common.base.Objects;
 import fr.utbm.cvrp.solver.VehicleAgent;
 import fr.utbm.cvrp.solver.customerInserted;
 import fr.utbm.cvrp.solver.customerRelocated;
-import fr.utbm.cvrp.solver.die;
 import fr.utbm.cvrp.solver.finish;
 import fr.utbm.cvrp.solver.finishVehicle;
 import fr.utbm.cvrp.solver.insertCustomer;
@@ -20,11 +19,11 @@ import fr.utbm.cvrp.solver.removeAll;
 import fr.utbm.cvrp.solver.solution;
 import io.sarl.core.AgentTask;
 import io.sarl.core.DefaultContextInteractions;
-import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
 import io.sarl.core.InnerContextAccess;
 import io.sarl.core.Lifecycle;
 import io.sarl.core.Logging;
+import io.sarl.core.MemberLeft;
 import io.sarl.core.Schedules;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
 import io.sarl.lang.annotation.PerceptGuardEvaluator;
@@ -167,9 +166,9 @@ public class AllocationAgent extends Agent {
     _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext().getDefaultSpace().emit(this.getID(), _finishVehicle, null);
   }
   
-  private void $behaviorUnit$die$3(final die occurrence) {
+  private void $behaviorUnit$MemberLeft$3(final MemberLeft occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("A VehicleAgent request me to die.");
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("A VehicleAgent has die.");
     InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
     int _memberAgentCount = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getMemberAgentCount();
     if ((_memberAgentCount == 0)) {
@@ -452,37 +451,7 @@ public class AllocationAgent extends Agent {
     }
   }
   
-  private void $behaviorUnit$Destroy$9(final Destroy occurrence) {
-    die dieEvt = new die();
-    DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-    class $SerializableClosureProxy implements Scope<Address> {
-      
-      private final UUID $_taskAgentUUID_1;
-      
-      public $SerializableClosureProxy(final UUID $_taskAgentUUID_1) {
-        this.$_taskAgentUUID_1 = $_taskAgentUUID_1;
-      }
-      
-      @Override
-      public boolean matches(final Address it) {
-        UUID _iD = it.getID();
-        return Objects.equal(_iD, $_taskAgentUUID_1);
-      }
-    }
-    final Scope<Address> _function = new Scope<Address>() {
-      @Override
-      public boolean matches(final Address it) {
-        UUID _iD = it.getID();
-        return Objects.equal(_iD, AllocationAgent.this.taskAgentUUID);
-      }
-      private Object writeReplace() throws ObjectStreamException {
-        return new SerializableProxy($SerializableClosureProxy.class, AllocationAgent.this.taskAgentUUID);
-      }
-    };
-    _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(dieEvt, _function);
-  }
-  
-  private void $behaviorUnit$insertionCostEstimation$10(final insertionCostEstimation occurrence) {
+  private void $behaviorUnit$insertionCostEstimation$9(final insertionCostEstimation occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Estimation received.");
     synchronized (this) {
@@ -678,10 +647,10 @@ public class AllocationAgent extends Agent {
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$die(final die occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+  private void $guardEvaluator$MemberLeft(final MemberLeft occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$die$3(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$MemberLeft$3(occurrence));
   }
   
   @SyntheticMember
@@ -697,15 +666,7 @@ public class AllocationAgent extends Agent {
   private void $guardEvaluator$insertionCostEstimation(final insertionCostEstimation occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$insertionCostEstimation$10(occurrence));
-  }
-  
-  @SyntheticMember
-  @PerceptGuardEvaluator
-  private void $guardEvaluator$Destroy(final Destroy occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
-    assert occurrence != null;
-    assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Destroy$9(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$insertionCostEstimation$9(occurrence));
   }
   
   @SyntheticMember
@@ -722,15 +683,14 @@ public class AllocationAgent extends Agent {
     super.$getSupportedEvents(toBeFilled);
     toBeFilled.add(customerInserted.class);
     toBeFilled.add(customerRelocated.class);
-    toBeFilled.add(die.class);
     toBeFilled.add(finish.class);
     toBeFilled.add(insertionCostEstimation.class);
     toBeFilled.add(nextCustomer.class);
     toBeFilled.add(relocate.class);
     toBeFilled.add(relocateCostEstimation.class);
     toBeFilled.add(solution.class);
-    toBeFilled.add(Destroy.class);
     toBeFilled.add(Initialize.class);
+    toBeFilled.add(MemberLeft.class);
   }
   
   @SyntheticMember
@@ -740,9 +700,6 @@ public class AllocationAgent extends Agent {
       return true;
     }
     if (customerRelocated.class.isAssignableFrom(event)) {
-      return true;
-    }
-    if (die.class.isAssignableFrom(event)) {
       return true;
     }
     if (finish.class.isAssignableFrom(event)) {
@@ -763,10 +720,10 @@ public class AllocationAgent extends Agent {
     if (solution.class.isAssignableFrom(event)) {
       return true;
     }
-    if (Destroy.class.isAssignableFrom(event)) {
+    if (Initialize.class.isAssignableFrom(event)) {
       return true;
     }
-    if (Initialize.class.isAssignableFrom(event)) {
+    if (MemberLeft.class.isAssignableFrom(event)) {
       return true;
     }
     return false;
@@ -783,10 +740,6 @@ public class AllocationAgent extends Agent {
     if (event instanceof customerRelocated) {
       final customerRelocated occurrence = (customerRelocated) event;
       $guardEvaluator$customerRelocated(occurrence, callbacks);
-    }
-    if (event instanceof die) {
-      final die occurrence = (die) event;
-      $guardEvaluator$die(occurrence, callbacks);
     }
     if (event instanceof finish) {
       final finish occurrence = (finish) event;
@@ -812,13 +765,13 @@ public class AllocationAgent extends Agent {
       final solution occurrence = (solution) event;
       $guardEvaluator$solution(occurrence, callbacks);
     }
-    if (event instanceof Destroy) {
-      final Destroy occurrence = (Destroy) event;
-      $guardEvaluator$Destroy(occurrence, callbacks);
-    }
     if (event instanceof Initialize) {
       final Initialize occurrence = (Initialize) event;
       $guardEvaluator$Initialize(occurrence, callbacks);
+    }
+    if (event instanceof MemberLeft) {
+      final MemberLeft occurrence = (MemberLeft) event;
+      $guardEvaluator$MemberLeft(occurrence, callbacks);
     }
   }
   

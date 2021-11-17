@@ -82,12 +82,6 @@ event solution {
 	}
 }
 
-// Event from VehicleAgent to AllocationAgent and AllocationAgent to TaskAgent to
-// request the AllocationAgent and TaskAgent to kill themselves
-// The AllocationAgent will first look if it has no more agents in its inner context
-event die {
-}
-
 // Event from AllocationAgent to VehicleAgent to ask the VehicleAgent to remove and
 // return all the customers in its route
 // We follow the RA strategy

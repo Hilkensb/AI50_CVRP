@@ -2,7 +2,6 @@ package fr.utbm.cvrp.solver;
 
 import com.google.common.base.Objects;
 import fr.utbm.cvrp.solver.AllocationAgent;
-import fr.utbm.cvrp.solver.die;
 import fr.utbm.cvrp.solver.finish;
 import fr.utbm.cvrp.solver.nextCustomer;
 import fr.utbm.cvrp.solver.nextCustomerRequest;
@@ -12,6 +11,7 @@ import io.sarl.core.Initialize;
 import io.sarl.core.InnerContextAccess;
 import io.sarl.core.Lifecycle;
 import io.sarl.core.Logging;
+import io.sarl.core.MemberLeft;
 import io.sarl.core.ParticipantJoined;
 import io.sarl.core.Schedules;
 import io.sarl.lang.annotation.ImportedCapacityFeature;
@@ -171,7 +171,7 @@ public class TaskAgent extends Agent {
     return _equals;
   }
   
-  private void $behaviorUnit$die$3(final die occurrence) {
+  private void $behaviorUnit$MemberLeft$3(final MemberLeft occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Killing myself.");
     Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
@@ -312,10 +312,10 @@ public class TaskAgent extends Agent {
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$die(final die occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
+  private void $guardEvaluator$MemberLeft(final MemberLeft occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$die$3(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$MemberLeft$3(occurrence));
   }
   
   @SyntheticMember
@@ -332,19 +332,16 @@ public class TaskAgent extends Agent {
   @Override
   public void $getSupportedEvents(final Set<Class<? extends Event>> toBeFilled) {
     super.$getSupportedEvents(toBeFilled);
-    toBeFilled.add(die.class);
     toBeFilled.add(nextCustomerRequest.class);
     toBeFilled.add(solution.class);
     toBeFilled.add(Initialize.class);
+    toBeFilled.add(MemberLeft.class);
     toBeFilled.add(ParticipantJoined.class);
   }
   
   @SyntheticMember
   @Override
   public boolean $isSupportedEvent(final Class<? extends Event> event) {
-    if (die.class.isAssignableFrom(event)) {
-      return true;
-    }
     if (nextCustomerRequest.class.isAssignableFrom(event)) {
       return true;
     }
@@ -352,6 +349,9 @@ public class TaskAgent extends Agent {
       return true;
     }
     if (Initialize.class.isAssignableFrom(event)) {
+      return true;
+    }
+    if (MemberLeft.class.isAssignableFrom(event)) {
       return true;
     }
     if (ParticipantJoined.class.isAssignableFrom(event)) {
@@ -364,10 +364,6 @@ public class TaskAgent extends Agent {
   @Override
   public void $evaluateBehaviorGuards(final Object event, final Collection<Runnable> callbacks) {
     super.$evaluateBehaviorGuards(event, callbacks);
-    if (event instanceof die) {
-      final die occurrence = (die) event;
-      $guardEvaluator$die(occurrence, callbacks);
-    }
     if (event instanceof nextCustomerRequest) {
       final nextCustomerRequest occurrence = (nextCustomerRequest) event;
       $guardEvaluator$nextCustomerRequest(occurrence, callbacks);
@@ -379,6 +375,10 @@ public class TaskAgent extends Agent {
     if (event instanceof Initialize) {
       final Initialize occurrence = (Initialize) event;
       $guardEvaluator$Initialize(occurrence, callbacks);
+    }
+    if (event instanceof MemberLeft) {
+      final MemberLeft occurrence = (MemberLeft) event;
+      $guardEvaluator$MemberLeft(occurrence, callbacks);
     }
     if (event instanceof ParticipantJoined) {
       final ParticipantJoined occurrence = (ParticipantJoined) event;

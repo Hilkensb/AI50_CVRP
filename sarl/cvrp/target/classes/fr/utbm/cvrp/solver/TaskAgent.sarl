@@ -14,6 +14,7 @@ import io.sarl.core.InnerContextAccess
 import io.sarl.core.Schedules
 import java.util.UUID
 import java.util.ArrayList
+import io.sarl.core.MemberLeft
 
 /** 
  * Task Agent
@@ -104,7 +105,7 @@ agent TaskAgent {
 		this.allocation_agent_spawned = true
 	}
 
-	on die {
+	on MemberLeft {
 		// The vehicles agents and the allocation agents has been killed
 		// The agent can kill itself 
 		// Logging info

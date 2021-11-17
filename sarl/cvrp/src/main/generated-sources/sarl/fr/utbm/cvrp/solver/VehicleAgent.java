@@ -3,7 +3,6 @@ package fr.utbm.cvrp.solver;
 import com.google.common.base.Objects;
 import fr.utbm.cvrp.solver.customerInserted;
 import fr.utbm.cvrp.solver.customerRelocated;
-import fr.utbm.cvrp.solver.die;
 import fr.utbm.cvrp.solver.finishVehicle;
 import fr.utbm.cvrp.solver.insertCustomer;
 import fr.utbm.cvrp.solver.insertCustomerEstimate;
@@ -15,7 +14,6 @@ import fr.utbm.cvrp.solver.relocateCustomerEstimate;
 import fr.utbm.cvrp.solver.removeAll;
 import fr.utbm.cvrp.solver.solution;
 import io.sarl.core.DefaultContextInteractions;
-import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
 import io.sarl.core.Lifecycle;
 import io.sarl.core.Logging;
@@ -216,37 +214,7 @@ public class VehicleAgent extends Agent {
     _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.killMe();
   }
   
-  private void $behaviorUnit$Destroy$4(final Destroy occurrence) {
-    die dieEvt = new die();
-    DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-    class $SerializableClosureProxy implements Scope<Address> {
-      
-      private final UUID $_allocationAgentUUID_1;
-      
-      public $SerializableClosureProxy(final UUID $_allocationAgentUUID_1) {
-        this.$_allocationAgentUUID_1 = $_allocationAgentUUID_1;
-      }
-      
-      @Override
-      public boolean matches(final Address it) {
-        UUID _iD = it.getID();
-        return Objects.equal(_iD, $_allocationAgentUUID_1);
-      }
-    }
-    final Scope<Address> _function = new Scope<Address>() {
-      @Override
-      public boolean matches(final Address it) {
-        UUID _iD = it.getID();
-        return Objects.equal(_iD, VehicleAgent.this.allocationAgentUUID);
-      }
-      private Object writeReplace() throws ObjectStreamException {
-        return new SerializableProxy($SerializableClosureProxy.class, VehicleAgent.this.allocationAgentUUID);
-      }
-    };
-    _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(dieEvt, _function);
-  }
-  
-  private void $behaviorUnit$removeAll$5(final removeAll occurrence) {
+  private void $behaviorUnit$removeAll$4(final removeAll occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Removing all my customers");
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
@@ -290,7 +258,7 @@ public class VehicleAgent extends Agent {
     _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_relocate, _function);
   }
   
-  private void $behaviorUnit$relocateCustomerEstimate$6(final relocateCustomerEstimate occurrence) {
+  private void $behaviorUnit$relocateCustomerEstimate$5(final relocateCustomerEstimate occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("New customer to relocate received.");
     double min_dist = Integer.MAX_VALUE;
@@ -337,7 +305,7 @@ public class VehicleAgent extends Agent {
     _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_relocateCostEstimation, _function);
   }
   
-  private void $behaviorUnit$relocateCustomer$7(final relocateCustomer occurrence) {
+  private void $behaviorUnit$relocateCustomer$6(final relocateCustomer occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Relocating customer");
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
@@ -517,18 +485,10 @@ public class VehicleAgent extends Agent {
   
   @SyntheticMember
   @PerceptGuardEvaluator
-  private void $guardEvaluator$Destroy(final Destroy occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
-    assert occurrence != null;
-    assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Destroy$4(occurrence));
-  }
-  
-  @SyntheticMember
-  @PerceptGuardEvaluator
   private void $guardEvaluator$removeAll(final removeAll occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$removeAll$5(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$removeAll$4(occurrence));
   }
   
   @SyntheticMember
@@ -536,7 +496,7 @@ public class VehicleAgent extends Agent {
   private void $guardEvaluator$relocateCustomerEstimate(final relocateCustomerEstimate occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$relocateCustomerEstimate$6(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$relocateCustomerEstimate$5(occurrence));
   }
   
   @SyntheticMember
@@ -544,7 +504,7 @@ public class VehicleAgent extends Agent {
   private void $guardEvaluator$relocateCustomer(final relocateCustomer occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
     assert occurrence != null;
     assert ___SARLlocal_runnableCollection != null;
-    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$relocateCustomer$7(occurrence));
+    ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$relocateCustomer$6(occurrence));
   }
   
   @SyntheticMember
@@ -565,7 +525,6 @@ public class VehicleAgent extends Agent {
     toBeFilled.add(relocateCustomer.class);
     toBeFilled.add(relocateCustomerEstimate.class);
     toBeFilled.add(removeAll.class);
-    toBeFilled.add(Destroy.class);
     toBeFilled.add(Initialize.class);
   }
   
@@ -588,9 +547,6 @@ public class VehicleAgent extends Agent {
       return true;
     }
     if (removeAll.class.isAssignableFrom(event)) {
-      return true;
-    }
-    if (Destroy.class.isAssignableFrom(event)) {
       return true;
     }
     if (Initialize.class.isAssignableFrom(event)) {
@@ -626,10 +582,6 @@ public class VehicleAgent extends Agent {
     if (event instanceof removeAll) {
       final removeAll occurrence = (removeAll) event;
       $guardEvaluator$removeAll(occurrence, callbacks);
-    }
-    if (event instanceof Destroy) {
-      final Destroy occurrence = (Destroy) event;
-      $guardEvaluator$Destroy(occurrence, callbacks);
     }
     if (event instanceof Initialize) {
       final Initialize occurrence = (Initialize) event;
