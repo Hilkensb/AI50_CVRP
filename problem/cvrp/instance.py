@@ -420,7 +420,7 @@ class Cvrp(VehiculeRootingProblem):
             for customer in self.__customers
         ])
         # Add a return carriage
-         instance_string += "\n"
+        instance_string += "\n"
          
         # demand section
         instance_string += "DEMAND_SECTION\n"
@@ -432,7 +432,7 @@ class Cvrp(VehiculeRootingProblem):
             for customer in self.__customers
         ])
         # Add a return carriage
-         instance_string += "\n"
+        instance_string += "\n"
         
         # Depot section
         # Add the node id of the depot and then end the file
@@ -1184,8 +1184,18 @@ class Cvrp(VehiculeRootingProblem):
                 edge_y.append(None)
 
         # List of nodes
-        node_x = []
-        node_y = []
+        node_x = [
+            customer.x
+            for customer in self.__customers
+        ]
+        node_y = [
+            customer.y
+            for customer in self.__customers
+        ]
+        # Create the representation of the depot node
+        # Set its coordinates
+        node_x.append(self.__depot.x)
+        node_y.append(self.__depot.y)
         
         # color map
         # Set the color of the customers nodes
@@ -1194,7 +1204,17 @@ class Cvrp(VehiculeRootingProblem):
         color_map.append(depot_node_color)
 
         # Size map
-        size_map: List[int] = []
+        # If the sized is fixed
+        if fixed_size:
+            # Set for customers and the depot the depot node size
+            size_map: List[int] = [node_depot_size] * (len(self.__customers) + 1)
+        # If the node size depend on the customer demand
+        else:
+            size_map: List[int] = self.__createSizeMapPlotly(
+                minimum_demand=minimum_demand, maximum_demand=maximum_demand,
+                node_max_size=node_max_size, node_min_size=node_min_size,
+                node_depot_size=node_depot_size
+            )
 
         # Text when hovered
         node_text: List[str] = [
@@ -1204,39 +1224,7 @@ class Cvrp(VehiculeRootingProblem):
         # Set the text of the depot node
         node_text.append(f"{self.__depot.node_id} (depot)")
         
-        # For each nodes in the graph
-        for customer in self.__customers:
-            # Get every nodes
-            x, y = customer.getCoordinates()
-            node_x.append(x)
-            node_y.append(y)
 
-            # Get the demand of the node
-            # Then get the demand linked hiself
-            # Finaly we converrt this demand into float
-            # We convert it into float because two version of linear interpolation exists
-            # one with float (without any cast) and one with int (with cast to float)
-            # So it's time saving to cast them before (only 1 cast) than it would
-            # be to cast them for every node
-            node_demand: float = float(customer.demand)
-            
-            # Set the default size to the depot node size
-            node_size: float = node_depot_size
-            # If the size of the node should depend on his demand
-            if not fixed_size:
-                # Determine the node size using linear interpolation
-                node_size: float = mathfunc.linearInterpolation(minimum_demand, maximum_demand, node_demand)
-                # Finaly set the the node depend on the max and min size give
-                node_size = node_size * (node_max_size - node_min_size) + node_min_size
-            # Add the value to the size map
-            size_map.append(node_size)
-            
-        # Create the representation of the depot node
-        # Set its coordinates
-        node_x.append(self.__depot.x)
-        node_y.append(self.__depot.y)
-        # Set its size
-        size_map.append(node_depot_size)
         
         return edge_x, edge_y, node_x, node_y, color_map, size_map, node_text
         
@@ -1401,6 +1389,51 @@ class Cvrp(VehiculeRootingProblem):
         
         # Return the dictionnary of the scatters
         return scatter_list_json
+        
+    def __createSizeMapPlotly(
+        self, minimum_demand: int, maximum_demand: int, node_max_size: int,
+        node_min_size: int, node_depot_size: int
+    ) -> List[int]:
+        """
+        createSizeMap()
+        
+        Method to create a sze map for plotly for node depending on their customers demand
+        
+        :param minimum_demand: The minimum demand of a customer
+        :type minimum_demand: int
+        :param maximum_demand: The maximum demand of a customer
+        :type maximum_demand: int
+        :param node_min_size: Minimum size of customers node, default to 250 (opt.)
+        :type node_min_size: int
+        :param node_max_size: Maximum size of customers node, default to 500 (opt.)
+        :type node_max_size: int
+        :param node_depot_size: Size of customers node, default to 300 (opt.)
+        :type node_depot_size: int
+        :return: The size map depending on demand
+        :rtype: List[int]
+        """
+        
+        # For each nodes in the graph
+        for customer in self.__customers:
+            # Get the demand of the node
+            # Then get the demand linked hiself
+            # Finaly we converrt this demand into float
+            # We convert it into float because two version of linear interpolation exists
+            # one with float (without any cast) and one with int (with cast to float)
+            # So it's time saving to cast them before (only 1 cast) than it would
+            # be to cast them for every node
+            node_demand: float = float(customer.demand)
+            # Determine the node size using linear interpolation
+            node_size: float = mathfunc.linearInterpolation(minimum_demand, maximum_demand, node_demand)
+            # Finaly set the the node depend on the max and min size give
+            node_size = node_size * (node_max_size - node_min_size) + node_min_size
+            # Add the value to the size map
+            size_map.append(node_size)
+            
+        # Set the size of the depot
+        size_map.append(node_depot_size)
+        
+        return size_map
         
 
     def __drawLegend(

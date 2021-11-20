@@ -440,6 +440,7 @@ def getFastSolutionEvolutionAnimationPlotly(
         # Set the data frame to the last frame
         fig_dict["data"] = fig_dict["frames"][-1]['data']
 
+    # This is what take the most of time
     # Build the figure
     fig = go.Figure(fig_dict)
 

@@ -15,10 +15,20 @@ import solution.solver.solver as slv
 import numpy as np
 import problem.cvrp.customer as cust
 from gui.app import Application
+from utils.parseparameters import getOptions
+import sys
+from solution.constructive.clarkwrightsaving import clarkWrightSaving
+from solution.metaheuristic.tabusearch import easyTabuSearch
+from utils.otherplotting import showSolutionEvolutionAnimationMatplotlib
+
 
 def main():
+    getOptions(sys.argv[1:])
+
     app = Application()
     app.run()
+    
 
 if __name__ == "__main__":
     main()
+
