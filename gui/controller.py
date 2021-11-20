@@ -34,6 +34,13 @@ def index():
     # return the index.html template
     return render_template("index.html", instance_id=uuid.uuid1())
 
+def evaluateParams(
+    cvrp_id: str, TabuIteration: int = 0, TabuLength: int = 0, RunTimeTabu: int = 0
+):
+    """
+    """
+    return jsonify(good="0", output_message="All your parameters are good.")
+
 def readInstance(instance_type: str, cvrp_id: str):
     """
     Controller that will read an instance file and give to the user the choice of algorithm to use
@@ -57,6 +64,45 @@ def readInstance(instance_type: str, cvrp_id: str):
             instance_string: str = request.files['instance'].read().decode('ascii')
             # Build the instance
             cvrp_instance: Cvrp = buildInstance(path=instance_string, instance_type="string")
+            
+        # Save the instance in session
+        # Session object can't handle big instance of cvrp
+        # session['instance'] = cvrp_instance.toJSON()
+        instance_save[f'instance_{cvrp_id}'] = cvrp_instance.toJSON()
+        # Html representation of the instance graph
+        instance_graph: str = cvrp_instance.getHtmlFigurePlotly(full_html=False)
+        # Convert it to markup to have the displayed
+        # if it is not made, the string of the html code will be displayed
+        html_instance_graph = Markup(instance_graph)
+        
+        return render_template(
+            "instance_parameters.html", instance_graph=html_instance_graph,
+            nb_customer=cvrp_instance.nb_customer, round=round, min=min,
+            max=max, instance_id=cvrp_id
+        )
+    else:
+        # return the index.html template
+        return render_template('index.html')
+
+def randomInstance(cvrp_id: str):
+    """
+    Controller that will read an instance file and give to the user the choice of algorithm to use
+    
+    :param cvrp_id: Instance id of the page
+    :type cvrp_id: str
+    """
+    
+        # If the method is post (posting form)
+    if request.method == 'POST': 
+        # Build the instance
+        cvrp_instance: Cvrp = Cvrp()
+        # Set the param of the random instance
+        cvrp_instance.randomInstance(
+            nb_customer=int(request.form['nb_customer']),
+            vehicule_capacity=int(request.form['vehicule_capacity']),
+            customer_demand_lb=int(request.form['customer_demand_lb']),
+            customer_demand_ub=int(request.form['customer_demand_ub'])
+        )
             
         # Save the instance in session
         # Session object can't handle big instance of cvrp
@@ -276,7 +322,7 @@ def algorithmTask(
     
     # Tell to the user what is actually happening
     json_data = {
-        "messages": "Generating the results... Please wait", "type": "info"
+        "messages": "<b>INFO:<b> Generating the results... Please wait", "type": "info"
     }
     # Publish
     redis_server.publish(f"{SOLUTION_TOPIC}_{cvrp_id}", json.dumps(json_data))

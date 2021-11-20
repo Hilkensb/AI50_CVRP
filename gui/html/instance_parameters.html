@@ -8,6 +8,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/accordion.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/theme.css') }}" type="text/css">
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='image/logo_utbm_no_bg.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/round-button.css') }}" type="text/css">
   <title>AI50 - Algorithm</title>
 </head>
 
@@ -117,9 +118,6 @@
                 <div class="form-group row"><label class="col-10 py-1" style="font-size:18px;">Multi-agent solver</label>
                   <div class="col-2"><input type="checkbox" class="form-control text-left w-50" style="text-shadow: black 0px 0px 4px;" name="MAS_Solver"></div>
                 </div>
-                <div class="form-group row"><label class="col-10 py-1" style="font-size:18px;">Q-Learning</label>
-                  <div class="col-2"><input type="checkbox" class="form-control text-left w-50" style="text-shadow: black 0px 0px 4px;" name="Tabu_Search"></div>
-                </div>
               </div>
             </div>
             <div class="form-group row">
@@ -135,6 +133,65 @@
       </div>
     </div>
   </div>
+  
+  <a class="redondo" onclick="evalparam()">
+    &#129302;
+  </a>
+  
+  <script>
+  
+    function evalparam(){
+    
+        // Inputs
+        var TabuIteration = document.getElementById('TabuIteration').value;
+        var TabuLength = document.getElementById('TabuLength').value;
+        var RunTimeTabu = document.getElementById('RunTimeTabu').value;
+    
+        // Build the url
+        const url = "{{ url_for('evaluateParams', cvrp_id=instance_id) }}/" + TabuIteration + "/" + TabuLength + "/" + RunTimeTabu + "/"
+        
+        // Outputs
+        var message = document.getElementById('MlMessage');
+        var header = document.getElementById('MlHeader');
+        var headerBackground = document.getElementById('MlHeaderBG');
+        
+        // sending request
+        fetch(url).then((response)=>{
+          return response.json();  // converting byte data to json
+        }).then(data=>{
+
+            console.log(data);
+            message.innerHTML = data.output_message;
+            
+            if(data.good == "1"){
+                headerBackground.style="background-color:#20c997;"
+                header.innerHTML="Your parameters are good."
+            }else{
+                headerBackground.style="background-color:#dc3545;"
+                header.innerHTML="Your parameters are bad."
+            }
+
+        })
+        
+        document.getElementById('LoadFromWeb').style.display='block'
+    }
+  
+  </script>
+  
+  <div class="modal" id="LoadFromWeb">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header" id="MlHeaderBG">
+          <h5 class="modal-title" id="MlHeader">Loading ...</h5> 
+          <button type="button" class="close" data-dismiss="modal" onclick="document.getElementById('LoadFromWeb').style.display='none'"> <span>×</span> </button>
+        </div>
+        <div class="modal-body">
+          <p id="MlMessage"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <div class="py-3" style="">
     <div class="container">
       <div class="row">

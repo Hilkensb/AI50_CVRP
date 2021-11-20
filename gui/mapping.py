@@ -42,5 +42,23 @@ mapping: List = [
         "endpoint_name": "downloadFile",
         "action": downloadFile, 
         "methods": None
+    },
+    {
+        "endpoint": "/algorithm/<cvrp_id>/", 
+        "endpoint_name": "randomInstance",
+        "action": randomInstance, 
+        "methods": ['GET', 'POST']
+    },
+    {
+        "endpoint": "/evaluateParams/<cvrp_id>/<TabuIteration>/<TabuLength>/<RunTimeTabu>/", 
+        "endpoint_name": "evaluateParams",
+        "action": evaluateParams, 
+        "methods": ['GET', 'POST']
+    },
+    {
+        "endpoint": "/evaluateParams/<cvrp_id>/", 
+        "endpoint_name": "evaluateParams",
+        "action": evaluateParams, 
+        "methods": ['GET', 'POST']
     }
 ]
