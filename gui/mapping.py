@@ -56,7 +56,7 @@ mapping: List = [
         "methods": ['GET', 'POST']
     },
     {
-        "endpoint": "/evaluateParams/<cvrp_id>/", 
+        "endpoint": "/evaluateParams/<cvrp_id>", 
         "endpoint_name": "evaluateParams",
         "action": evaluateParams, 
         "methods": ['GET', 'POST']

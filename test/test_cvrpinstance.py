@@ -13,6 +13,7 @@ class WidgetTestCase(unittest.TestCase):
 
     def setUp(self):
         """
+        Method to set up the environment to run the test
         """
         self.cvrp_instance: Cvrp = Cvrp(
             file_path="http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.vrp",
@@ -21,6 +22,7 @@ class WidgetTestCase(unittest.TestCase):
 
     def test_numberCustomer(self):
         """
+        Test the number of customers
         """
 
         self.assertEqual(
@@ -30,6 +32,7 @@ class WidgetTestCase(unittest.TestCase):
 
     def test_depotCoordinates(self):
         """
+        Test the coordinates of the depot
         """
 
         self.assertEqual(
@@ -39,6 +42,7 @@ class WidgetTestCase(unittest.TestCase):
         
     def test_vehicleCapacity(self):
         """
+        Test the vehicle capacity
         """
 
         self.assertEqual(
@@ -48,6 +52,7 @@ class WidgetTestCase(unittest.TestCase):
         
     def test_numberOfVehicle(self):
         """
+        Test the number of vehicle
         """
 
         self.assertEqual(
@@ -57,6 +62,7 @@ class WidgetTestCase(unittest.TestCase):
 
     def test_JSON(self):
         """
+        Test the convertion to and from json
         """
 
         # Get the json

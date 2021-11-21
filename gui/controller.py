@@ -39,7 +39,7 @@ def evaluateParams(
 ):
     """
     """
-    return jsonify(good="0", output_message="All your parameters are good.")
+    return jsonify(messages=["All your parameters are good.", "Keep using them."])
 
 def readInstance(instance_type: str, cvrp_id: str):
     """
@@ -158,7 +158,7 @@ def load(cvrp_id: str):
                 "cvrp": cvrp_instance, "publish_topic": f"{SOLUTION_TOPIC}_{cvrp_id}"
             })
             # Is there evolution in the solution
-            instance_save[f'has_evolution_{cvrp_id}'].append(True)
+            instance_save[f'has_evolution_{cvrp_id}'].append(False)
    
         # if the tabu search should be runned
         if len(request.form.getlist("Tabu_Search")) > 0:
@@ -337,22 +337,35 @@ def algorithmTask(
     iteration_list: List[int] = []
     # dictionnary for all solution used
     for index in range(len(algorithm_name)):
-        # Generate the html of the graph
-        solution_representation: str = getHtmlSolutionEvolutionAnimationPlotly(
-            solution_evolution=algorithm_solution[index], full_html=False, default_height="750px"
-        )
-        # Append the html in the list
-        solution_list.append(solution_representation)
-        # Generate the line chart
-        cost_representation: str = getHtmlLineCostEvolution(
-            cost_evolution=cost_list[index], full_html=False
-        )
-        # append the html of the line chart
-        solution_cost_list.append(cost_representation)
-        # Get the number of iteration
-        iteration_number: int = len(cost_list[index])
-        # append it to the list
-        iteration_list.append(iteration_number)
+        # If the solution has evolution
+        if instance_save[f'has_evolution_{cvrp_id}'][index]:
+            # Generate the html of the graph
+            solution_representation: str = getHtmlSolutionEvolutionAnimationPlotly(
+                solution_evolution=algorithm_solution[index], full_html=False, default_height="750px"
+            )
+            # Append the html in the list
+            solution_list.append(solution_representation)
+            # Generate the line chart
+            cost_representation: str = getHtmlLineCostEvolution(
+                cost_evolution=cost_list[index], full_html=False
+            )
+            # append the html of the line chart
+            solution_cost_list.append(cost_representation)
+            # Get the number of iteration
+            iteration_number: int = len(cost_list[index])
+            # append it to the list
+            iteration_list.append(iteration_number)
+        else:
+            # Generate the html of the graph
+            solution_representation: str = algorithm_solution[index][-1].getHtmlFigurePlotly(
+                full_html=False, default_height="750px"
+            )
+            # Append the html in the list
+            solution_list.append(solution_representation)
+            # append the html of the line chart
+            solution_cost_list.append(None)
+            # append it to the list
+            iteration_list.append(1)
 
     # Save the solution provided by the algorithm
     instance_save[f'algorithm_solution_{cvrp_id}'] = solution_list

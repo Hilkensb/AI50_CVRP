@@ -9,6 +9,7 @@
   <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/theme.css') }}" type="text/css">
   <link rel="icon" type="image/png" href="{{ url_for('static', filename='image/logo_utbm_no_bg.png') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/round-button.css') }}" type="text/css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/chatbox.css') }}" type="text/css">
   <title>AI50 - Algorithm</title>
 </head>
 
@@ -152,46 +153,67 @@
         
         // Outputs
         var message = document.getElementById('MlMessage');
-        var header = document.getElementById('MlHeader');
-        var headerBackground = document.getElementById('MlHeaderBG');
         
         // sending request
         fetch(url).then((response)=>{
           return response.json();  // converting byte data to json
         }).then(data=>{
 
+            // Display in the console the data received
             console.log(data);
-            message.innerHTML = data.output_message;
             
-            if(data.good == "1"){
-                headerBackground.style="background-color:#20c997;"
-                header.innerHTML="Your parameters are good."
-            }else{
-                headerBackground.style="background-color:#dc3545;"
-                header.innerHTML="Your parameters are bad."
+            // Loop through every messages
+            for (var i=0; i < data.messages.length; i++) {
+                message.innerHTML += "<div class=\"d-flex flex-row justify-content-start mb-1\"><div style=\"width: 45px; height: 100%;\"></div><div class=\"p-3 ms-3\" style=\"border-radius: 15px; background-color: rgba(57, 192, 237,.2);\"><p class=\"small mb-0\">"  + data.messages[i] + "</p></div></div>"
             }
 
         })
         
-        document.getElementById('LoadFromWeb').style.display='block'
+        document.getElementById('Chat').style.display='block'
+    }
+    
+    function closechat(){
+    
+        document.getElementById('Chat').style.display='none'
+    
+        var message = document.getElementById('MlMessage');
+        
+        message.innerHTML="<div class=\"d-flex flex-row justify-content-start mb-1\"><img src=\"{{ url_for('static', filename='image/ai.jpg') }}\" alt=\"avatar 1\" style=\"width: 45px; height: 100%;\"><div class=\"p-3 ms-3\" style=\"border-radius: 15px; background-color: rgba(57, 192, 237,.2);\"><p class=\"small mb-0\">Analysing and optimizing your parameters ...</p></div></div>"
     }
   
   </script>
   
-  <div class="modal" id="LoadFromWeb">
-    <div class="modal-dialog" role="document">
-      <div class="modal-content">
-        <div class="modal-header" id="MlHeaderBG">
-          <h5 class="modal-title" id="MlHeader">Loading ...</h5> 
-          <button type="button" class="close" data-dismiss="modal" onclick="document.getElementById('LoadFromWeb').style.display='none'"> <span>×</span> </button>
+  <div class="chat-popup" id="Chat">
+    <div class="row d-flex">
+        <div class="card" id="chat1" style="">
+          <div
+            class="card-header d-flex justify-content-between align-items-center p-3 bg-info text-white border-bottom-0"
+            style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+            <p class="mb-0 fw-bold">AVA</p>
+            <button type="button" class="close" data-dismiss="modal" onclick="closechat()"> <span>×</span> </button>
+          </div>
+          <div class="card-body chat-body" id="MlMessage">
+
+            <div class="d-flex flex-row justify-content-start mb-1">
+              <img src="{{ url_for('static', filename='image/ai.jpg') }}" alt="avatar 1"
+                style="width: 45px; height: 100%;">
+              <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                    <p class="small mb-0">Analysing and optimizing your parameters ...</p>
+              </div>
+            </div>
+            
+            <!-- div class="d-flex flex-row justify-content-start mb-1" >
+              <div style="width: 45px; height: 100%;"></div>
+              <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                    <p class="small mb-0">Hello and thank you for visiting MDBootstrap. Please click the video below.</p>
+              </div>
+            </div -->
+
+          </div>
         </div>
-        <div class="modal-body">
-          <p id="MlMessage"></p>
-        </div>
-      </div>
     </div>
   </div>
-  
+      
   <div class="py-3" style="">
     <div class="container">
       <div class="row">
@@ -204,6 +226,7 @@
       </div>
     </div>
   </div>
+  
   <script style="">
     var acc = document.getElementsByClassName("accordion");
     var i;

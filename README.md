@@ -20,7 +20,7 @@ To launch the web application, run the main.py file. You can add one or more of 
 | -t or --unittest       | Run unit test before running the application  |
 | -s or --show_evolution | Display the current solution on the load page |
 
-The web application runned by default on http://localhost:8080/. 
+The web application runned by default on http://localhost:8080/. To be runned the application needs [Redis](https://redis.io/ 'redis.io') server available (version for windows and linux are present in the redis folder).
 
 ## Implemented Algorithm
 
