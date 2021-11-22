@@ -158,7 +158,7 @@ def load(cvrp_id: str):
                 "cvrp": cvrp_instance, "publish_topic": f"{SOLUTION_TOPIC}_{cvrp_id}"
             })
             # Is there evolution in the solution
-            instance_save[f'has_evolution_{cvrp_id}'].append(False)
+            instance_save[f'has_evolution_{cvrp_id}'].append(True)
    
         # if the tabu search should be runned
         if len(request.form.getlist("Tabu_Search")) > 0:
@@ -322,7 +322,7 @@ def algorithmTask(
     
     # Tell to the user what is actually happening
     json_data = {
-        "messages": "<b>INFO:<b> Generating the results... Please wait", "type": "info"
+        "messages": "<b>INFO:</b> Generating the results... Please wait", "type": "info"
     }
     # Publish
     redis_server.publish(f"{SOLUTION_TOPIC}_{cvrp_id}", json.dumps(json_data))
