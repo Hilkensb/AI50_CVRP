@@ -1,0 +1,323 @@
+/** 
+ * 
+ */
+package fr.utbm.vrp.agents
+
+
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import java.util.ArrayList
+import java.util.concurrent.atomic.AtomicInteger
+import java.util.UUID
+import io.sarl.core.DefaultContextInteractions
+import io.sarl.core.Lifecycle
+
+/** 
+ * VehicleAgent
+ * <br>His goal is to keep a valid solution route
+ * 
+ */
+agent VehicleAgent {
+	uses Logging, DefaultContextInteractions, Lifecycle
+
+	// id, x, y of the depot node
+	var depot : String
+	// Vehicle capacity
+	var vehicle_capacity : AtomicInteger = new AtomicInteger()
+	// List of customers to allocate
+	var customers : ArrayList<String> = new ArrayList<String>
+	// Demand supplied
+	var demand_supplied : AtomicInteger = new AtomicInteger(0)
+
+	// Allocation agent uuid
+	var allocationAgentUUID : UUID
+
+	on Initialize {
+		// Set the logging name of the agent
+		loggingName = "Vehicle Agent"
+		// Tell on logging that the agent started normally
+		info("The agent has started.")
+
+		// Save the allocation agent uuid
+		this.allocationAgentUUID = occurrence.parameters.get(2) as UUID // occurrence.source.ID
+
+		// Get the customers, depot and capacity
+		this.depot = occurrence.parameters.get(0) as String
+		this.vehicle_capacity = occurrence.parameters.get(1) as AtomicInteger
+
+		// Start and end the route with a depot
+		customers.add(depot)
+		customers.add(depot)
+	}
+
+	on insertCustomerEstimate {
+		info("New customer received.")
+
+		// Determine the minimum cost of insertion
+		var min_dist : double = Integer.MAX_VALUE
+		// Get the customer to estimate insertion
+		var customer_to_insert : String = occurrence.customer
+
+		// If the customer can't be inserted due to demand
+		if (this.demand_supplied.get() + this.getDemand(customer_to_insert) <= this.vehicle_capacity) {
+			for (var index = 0; index < ( this.customers.length() - 1 ); index++) {
+				// Compute the insertion cost
+				var insertion_cost : double = this.insertionCost(index, customer_to_insert)
+				// if the insertion cost is minimized
+				if (insertion_cost < min_dist) {
+					min_dist = insertion_cost
+				}
+			}
+		}
+
+		// Return the estimation insertion cost
+		emit(new insertionCostEstimation(min_dist))[it.ID == allocationAgentUUID]
+	}
+	
+	on insertCustomer {
+		info("Inserting customer")
+		debug(occurrence.customer)
+
+		// Determine the minimum cost of insertion
+		var min_dist : double = Integer.MAX_VALUE
+		// Get the customer to estimate insertion
+		var customer_to_insert : String = occurrence.customer
+		// Save the best index of insertion
+		var best_index : int = 0
+
+		// If the customer can't be inserted due to demand
+		if (this.demand_supplied.get() + this.getDemand(customer_to_insert) <= this.vehicle_capacity) {
+			for (var index = 0; index < ( this.customers.length() - 1 ); index++) {
+				// Compute the insertion cost
+				var insertion_cost : double = this.insertionCost(index, customer_to_insert)
+				// if the insertion cost is minimized
+				if (insertion_cost < min_dist) {
+					min_dist = insertion_cost
+					best_index = index
+				}
+			}
+		}
+
+		// Insert the customer at the given index
+		synchronized (this) {
+			this.customers.add(best_index + 1, customer_to_insert)
+		}
+
+
+
+		debug(this.customers.toString())
+		// emit a new event to tell that the customer have been inserted
+		emit(new customerInserted())[it.ID == allocationAgentUUID]
+	}
+
+	on finishVehicle {
+		info("Finish event received.")
+		// Show to the log his route
+		info(this.customers.toString())
+		
+		// Return the solution
+		var solutionEvt = new solution(this.customers)
+		emit(solutionEvt)[it.ID == allocationAgentUUID]
+
+		info("Solution sent.")
+		info("Killing myself.")
+		// killing itself
+		killMe
+	}
+	
+	on removeAll {
+		info("Removing all my customers")
+		debug(this.customers.toString())
+		
+		// Create a new Array that contains every customers
+		var customers_copy : ArrayList<String> = new ArrayList<String>
+		// For every customers in the route
+		for (var customer_index : int = 1; customer_index < ( this.customers.length() - 1 ); customer_index++) {
+			// Add them to the new route
+			customers_copy.add(this.customers.get(customer_index))
+		}
+
+		// Clear the route
+		this.customers.clear()
+		// Start and end the route with a depot
+		this.customers.add(depot)
+		this.customers.add(depot)
+		// Reset the demand supplied
+		this.demand_supplied.set(0)
+
+		debug(customers_copy)
+		emit(new relocate(customers_copy))[it.ID == allocationAgentUUID]
+	}
+
+	on relocateCustomerEstimate {
+		info("New customer to relocate received.")
+
+		// Determine the minimum cost of insertion
+		var min_dist : double = Integer.MAX_VALUE
+		// Get the customer to estimate insertion
+		var customer_to_insert : String = occurrence.customer
+
+		// If the customer can't be inserted due to demand
+		if (this.demand_supplied.get() + this.getDemand(customer_to_insert) <= this.vehicle_capacity) {
+			for (var index = 0; index < ( this.customers.length() - 1 ); index++) {
+				// Compute the insertion cost
+				var insertion_cost : double = this.insertionCost(index, customer_to_insert)
+				// if the insertion cost is minimized
+				if (insertion_cost < min_dist) {
+					min_dist = insertion_cost
+				}
+			}
+		}
+
+		// Return the estimation insertion cost
+		emit(new relocateCostEstimation(min_dist, this.ID))[it.ID == allocationAgentUUID]
+	}
+
+	on relocateCustomer {
+		info("Relocating customer")
+		debug(occurrence.customer)
+		debug(this.customers.toString())
+
+		// Determine the minimum cost of insertion
+		var min_dist : double = Integer.MAX_VALUE
+		// Get the customer to estimate insertion
+		var customer_to_insert : String = occurrence.customer
+		// Save the best index of insertion
+		var best_index : int = 0
+
+		// If the customer can't be inserted due to demand
+		if (this.demand_supplied.get() + this.getDemand(customer_to_insert) <= this.vehicle_capacity) {
+			for (var index = 0; index < ( this.customers.length() - 1 ); index++) {
+				// Compute the insertion cost
+				var insertion_cost : double = this.insertionCost(index, customer_to_insert)
+				// if the insertion cost is minimized
+				if (insertion_cost < min_dist) {
+					min_dist = insertion_cost
+					best_index = index
+				}
+			}
+		}
+
+		// update the demand supplied
+		var new_demand : int = this.demand_supplied.get() + this.getDemand(customer_to_insert)
+		this.demand_supplied.set(new_demand)
+
+		// Insert the customer at the given index
+		synchronized (this) {
+			this.customers.add(best_index + 1, customer_to_insert)
+		}
+
+		debug(this.customers.toString())
+		// emit a new event to tell that the customer have been inserted
+		emit(new customerRelocated())[it.ID == allocationAgentUUID]
+	}
+
+	/*************************** TaskAgent methods behavior **************************
+	 */
+
+	def getId(customer_string : String) : int {
+		/** 
+		 * Method to get the id from a string that represent a customer
+		 * 
+		 * @param customer_string: String that represent the customer
+		 * @return The id of the given customer
+		 * 
+		 */
+		
+		// Get the demand as string first
+		var customer_id_string : String = customer_string.split(" ").get(0)
+		// Convert it to int
+		var customer_id : int = Integer.parseInt(customer_id_string)
+
+		return customer_id
+	}
+
+	def getX(customer_string : String) : int {
+		/** 
+		 * Method to get the X coordinate of the given customer
+		 * 
+		 * @param customer_string: String that represent the customer
+		 * @return The X coordinates of the given customer
+		 * 
+		 */ 
+		
+		// Get the demand as string first
+		var customer_x_string : String = customer_string.split(" ").get(1)
+		// Convert it to int
+		var customer_x : int = Integer.parseInt(customer_x_string)
+
+		return customer_x
+	}
+
+	def getY(customer_string : String) : int {
+		/** 
+		 * Method to get the Y coordinate of the given customer
+		 * 
+		 * @param customer_string: String that represent the customer
+		 * @return The Y coordinates of the given customer
+		 * 
+		 */ 
+		
+		// Get the demand as string first
+		var customer_y_string : String = customer_string.split(" ").get(2)
+		// Convert it to int
+		var customer_y : int = Integer.parseInt(customer_y_string)
+
+		return customer_y
+	}
+
+	def getDemand(customer_string : String) : int {
+		/** 
+		 * Method to get the demand of the given customer
+		 * 
+		 * @param customer_string: String that represent the customer
+		 * @return The demand coordinates of the given customer
+		 * 
+		 */ 
+		
+		// Get the demand as string first
+		var customer_demand_string : String = customer_string.split(" ").get(3)
+		// Convert it to int
+		var customer_demand : int = Integer.parseInt(customer_demand_string)
+
+		return customer_demand
+	}
+
+	def getDistance(x1 : int, x2 : int, y1 : int, y2 : int) : double {
+		/**
+		 * Method to compute
+		 * 
+		 * @param x1 x coordinate of point 1
+		 * @param x2 x coordinate of point 2
+		 * @param y1 y coordinate of point 1
+		 * @param y2 y coordinate of point 2
+		 * 
+		 * @return the euclidean distance between point 1 and 2
+		 * 
+		 ***/
+
+		return Math.sqrt(Math.pow(x1 - x2, 2.0) + Math.pow(y1 - y2, 2.0))
+	}
+
+	def insertionCost(index : int, customer : String) {
+		/**
+		 * Method to compute the insertion cost
+		 * 
+		 * @param index Position where we will insert the customer
+		 * @param customer Customer to insert
+		 * 
+		 * @return Insertion cost
+		 * 
+		 */
+		synchronized (this) {
+			var distance_1 : double = getDistance(getX(this.customers.get(index)), getX(this.customers.get(index + 1)),
+				getY(this.customers.get(index)), getY(this.customers.get(index + 1)))
+			var distance_2 : double = getDistance(getX(customer), getX(this.customers.get(index + 1)), getY(customer),
+				getY(this.customers.get(index + 1)))
+			var distance_3 : double = getDistance(getX(this.customers.get(index)), getY(customer),
+				getY(this.customers.get(index)), getY(customer))
+
+			return distance_1 + distance_2 - distance_3
+		}
+	}
+}

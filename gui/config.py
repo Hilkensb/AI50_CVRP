@@ -38,6 +38,8 @@ SECRET_KEY: str = 'SECRET_KEY'
 SOLUTION_ADDRESS: str = "/stream"
 # Topic where the solution is publish
 SOLUTION_TOPIC: str = "solution_stream"
+# Topic where the sarl final solution is publish
+SARL_SOLUTION_TOPIC: str = "sarl_final_solution"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~  Maps Address settings ~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
