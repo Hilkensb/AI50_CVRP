@@ -411,9 +411,9 @@ public class VehicleAgent extends Agent {
         this.getY(this.customers.get(index)), this.getY(this.customers.get((index + 1))));
       double distance_2 = this.getDistance(this.getX(customer), this.getX(this.customers.get((index + 1))), this.getY(customer), 
         this.getY(this.customers.get((index + 1))));
-      double distance_3 = this.getDistance(this.getX(this.customers.get(index)), this.getY(customer), 
+      double distance_3 = this.getDistance(this.getX(this.customers.get(index)), this.getX(customer), 
         this.getY(this.customers.get(index)), this.getY(customer));
-      return ((distance_1 + distance_2) - distance_3);
+      return ((distance_3 + distance_2) - distance_1);
     }
   }
   

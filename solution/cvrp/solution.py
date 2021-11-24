@@ -1745,7 +1745,7 @@ class SolutionCvrp:
             # Create a new route
             route: RouteCvrp = RouteCvrp(route=route_list)
             # Add the route to the solution
-            self.__route.append(RouteCvrp)
+            self.__route.append(route)
         
 
 # ----------------------------- Getter / Setter ----------------------------- #

@@ -67,6 +67,8 @@ public class AllocationAgent extends Agent {
   
   private AtomicInteger number_vehicle;
   
+  private AtomicInteger num_of_solution_returned = new AtomicInteger(0);
+  
   private String actual_customer_insert;
   
   private int number_agent_returned = 0;
@@ -78,6 +80,8 @@ public class AllocationAgent extends Agent {
   private ConcurrentLinkedQueue<UUID> vehicle_agents = new ConcurrentLinkedQueue<UUID>();
   
   private ConcurrentLinkedQueue<String> customer_relocate = new ConcurrentLinkedQueue<String>();
+  
+  private Boolean dying = Boolean.valueOf(false);
   
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
@@ -170,17 +174,29 @@ public class AllocationAgent extends Agent {
   private void $behaviorUnit$MemberLeft$3(final MemberLeft occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("A VehicleAgent has die.");
-    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-    int _memberAgentCount = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getMemberAgentCount();
-    if ((_memberAgentCount == 0)) {
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Killing myself.");
-      Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.killMe();
+    synchronized (this) {
+      if (((this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER().getMemberAgentCount() == 0) && (!((this.dying) == null ? false : (this.dying).booleanValue())))) {
+        this.dying = Boolean.valueOf(true);
+        Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
+        final AgentTask task = _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER.task("waiting_for_solution_sent");
+        Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
+        final Procedure1<Agent> _function = (Agent it) -> {
+          if ((this.num_of_solution_returned.doubleValue() >= this.number_vehicle.doubleValue())) {
+            Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+            _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Killing myself.");
+            Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
+            _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_2.cancel(task);
+            Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+            _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.killMe();
+          }
+        };
+        _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1.every(task, 100, _function);
+      }
     }
   }
   
   private void $behaviorUnit$solution$4(final solution occurrence) {
+    this.num_of_solution_returned.incrementAndGet();
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Solution received.");
     DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
@@ -826,6 +842,13 @@ public class AllocationAgent extends Agent {
       return false;
     if (!java.util.Objects.equals(this.best_vehicle_insert, other.best_vehicle_insert))
       return false;
+    if (other.dying == null) {
+      if (this.dying != null)
+        return false;
+    } else if (this.dying == null)
+      return false;
+    if (other.dying != null && other.dying.booleanValue() != this.dying.booleanValue())
+      return false;
     return super.equals(obj);
   }
   
@@ -841,6 +864,7 @@ public class AllocationAgent extends Agent {
     result = prime * result + Integer.hashCode(this.number_agent_returned);
     result = prime * result + Double.hashCode(this.best_insertion_cost);
     result = prime * result + java.util.Objects.hashCode(this.best_vehicle_insert);
+    result = prime * result + java.util.Objects.hashCode(this.dying);
     return result;
   }
   

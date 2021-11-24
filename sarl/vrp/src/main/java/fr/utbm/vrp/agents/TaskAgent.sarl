@@ -136,6 +136,7 @@ agent TaskAgent {
 		val task = task("waiting_for_route")
 		task.every(100) [
 			// Wait until all route have been all added to the list
+			info(solution_found.length())
 			if (solution_found.length() >= this.num_of_route) {
 				// Convert the solution to a string to publish it
 				val solution_string : String = this.solution_found.toArray().toString();

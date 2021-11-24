@@ -34,6 +34,8 @@ agent AllocationAgent {
 	var taskAgentUUID : UUID
 	// Number of vehicle
 	var number_vehicle : AtomicInteger
+	// Count the number of route returned
+	var num_of_solution_returned : AtomicInteger = new AtomicInteger(0)
 
 	// The customer actually insert
 	var actual_customer_insert : String
@@ -49,6 +51,9 @@ agent AllocationAgent {
 	// List of customers to relocate
 	var customer_relocate : ConcurrentLinkedQueue<String> = new ConcurrentLinkedQueue<String>
 
+	// Bool to know if the vehicle agent has start to die
+	var dying: Boolean = false
+	
 	on Initialize {
 		// Set the logging name of the agent
 		loggingName = "Allocation Agent"
@@ -114,17 +119,32 @@ agent AllocationAgent {
 		// Logging info
 		info("A VehicleAgent has die.")
 		
-		// Check if there's more than 0 VehicleAgent in the inner context
-		if (getMemberAgentCount() == 0) {
-			// If there's no more VehicleAgent
-			// Logging info
-			info("Killing myself.")
-			// Kill itself
-			killMe
+		synchronized (this) {
+			// Check if there's more than 0 VehicleAgent in the inner context
+			// And has not already entered in it
+			if (getMemberAgentCount() == 0 && !this.dying) {
+				this.dying = true
+
+				val task = task("waiting_for_solution_sent")
+				task.every(100) [
+					if (num_of_solution_returned >= number_vehicle) {
+					// If there's no more VehicleAgent
+					// Logging info
+						info("Killing myself.")
+
+					// Cancel the task
+						task.cancel
+					// Kill itself
+						killMe
+					}
+				]
+
+			}
 		}
 	}
 	
-	on solution{
+	on solution {
+		num_of_solution_returned.incrementAndGet()
 		// Logging info
 		info("Solution received.")
 		// Redirect the solution to the TaskAgent

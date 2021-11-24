@@ -314,10 +314,10 @@ agent VehicleAgent {
 				getY(this.customers.get(index)), getY(this.customers.get(index + 1)))
 			var distance_2 : double = getDistance(getX(customer), getX(this.customers.get(index + 1)), getY(customer),
 				getY(this.customers.get(index + 1)))
-			var distance_3 : double = getDistance(getX(this.customers.get(index)), getY(customer),
+			var distance_3 : double = getDistance(getX(this.customers.get(index)), getX(customer),
 				getY(this.customers.get(index)), getY(customer))
 
-			return distance_1 + distance_2 - distance_3
+			return distance_3 + distance_2 - distance_1
 		}
 	}
 }
