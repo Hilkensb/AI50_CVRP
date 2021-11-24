@@ -11,6 +11,11 @@ import redis as red
 # If not showed it will improved time cost of the algorithms
 SHOW_SOLUTION: bool = False
 
+# Redis auto-launching
+AUTO_LAUNCH_REDIS: bool = True
+# Redis folder
+WINDOWS_REDIS_FOLDER: str = "redis\Windows\Redis-x64-3.0.504\\"
+
 # _____________________________ Flask Parameter _____________________________ #
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~~  Flask Folder setting ~~~~~~~~~~~~~~~~~~~~~~~~~~ #
