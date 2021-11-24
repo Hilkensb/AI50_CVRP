@@ -28,13 +28,23 @@ public class Main {
     private JedisPubSub setupSubscriber() {
         final JedisPubSub jedisPubSub = new JedisPubSub() {
             @Override
-            public void onMessage(String channel, String message) {
-                System.out.println(message);
-            }
+        	public void onMessage (String channel, String message) {
+        		System.out.println("Channel: " + channel + " Message: " + message);
+        	    SREBootstrap bootstrap = SRE.getBootstrap();
+        	    try {
+					bootstrap.startAgent(BootAgent.class);
+				} catch (Exception e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+        	}
+//            public void onMessage(String channel, String message) {
+//                System.out.println(message);
+//            }
         };
         new Thread(() -> {
             Jedis jedis = new Jedis(JEDIS_HOST, JEDIS_PORT);
-            jedis.subscribe(jedisPubSub, "tpoic ici");
+            jedis.subscribe(jedisPubSub, "sarlTopic");
             while(true){
             }
         }, "subscriberThread").start();
@@ -43,9 +53,6 @@ public class Main {
     /**
 	 * Callback after receiving the message
 	 */
-	public void onMessage (String channel, String message)throws Exception {
-	    SREBootstrap bootstrap = SRE.getBootstrap();
-	    bootstrap.startAgent(BootAgent.class);
-	}
+
 
 }
