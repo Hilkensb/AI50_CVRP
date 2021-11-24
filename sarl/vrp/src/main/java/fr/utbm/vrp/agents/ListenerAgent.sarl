@@ -1,0 +1,40 @@
+package fr.utbm.vrp.agents
+
+import io.sarl.core.Logging
+import io.sarl.core.Initialize
+import redis.clients.jedis.Jedis
+import redis.clients.jedis.JedisPubSub
+import io.sarl.core.Destroy
+import io.sarl.core.Lifecycle
+
+/** 
+ * ListenerAgent
+ * <br>Subscribes to an JEDIS topic and spawns BootAgent when topic is active
+ * 
+ * 
+ */
+agent ListenerAgent {
+	uses Logging, Lifecycle
+
+	on Initialize {
+		// Event trigger before the agent begin to live or to be used.
+		// You should put all the initialization statements in this block of code.
+		info("The agent was started.")
+
+		var jSubscriber:Jedis = new Jedis();
+		jSubscriber.subscribe(new JedisPubSub() {
+
+			def onMessage(channel : String, message : String) {
+				info("channel: " + channel + " message: " + message)
+				spawn(BootAgent,message)
+			}
+		}, "sarlTopic");
+    }
+
+    on Destroy {
+        // Event trigger when the agent is destroyed from the system.
+		// You should put all the resource releasing statements in this block of code.
+        info("The agent was stopped.")
+	}
+
+}
