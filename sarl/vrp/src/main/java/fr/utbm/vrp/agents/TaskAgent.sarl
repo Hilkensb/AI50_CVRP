@@ -16,7 +16,6 @@ import java.util.UUID
 import java.util.ArrayList
 import io.sarl.core.MemberLeft
 import redis.clients.jedis.Jedis
-import io.sarl.core.Destroy
 
 /** 
  * Task Agent
