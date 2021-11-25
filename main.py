@@ -14,6 +14,7 @@ import solution.cvrp.solution as sol
 import solution.solver.solver as slv
 import numpy as np
 import problem.cvrp.customer as cust
+import ML as ml
 
 class test():
 
@@ -32,16 +33,19 @@ def main():
     #s = sol.SolutionCvrp(c)
     #s.readSolutionWeb(url="http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.sol")
     #print(s.showFigure())
+
+
+    #S = slv.Solver(c.customers,c.minVehiculeNumber(),c.vehicule_capacity,c.distanceMatrix())
+    #S.run()
+    #S.show()
+
+    #test
+    data=np.array([(1,10),(1.5,2),(1,6),(2,1.5),(2,10),(3,2.5),(3,6),(4,2)])
+    classes=np.array([1,2,1,2,1,2,1,2],dtype=np.int)
+
+    KM = ml.K_means(2,1,1,1,1,data)
+    KM.run(2)
     
-
-    S = slv.Solver(c.customers,c.minVehiculeNumber(),c.vehicule_capacity,c.distanceMatrix())
-    #cust = [customer(2,1,1,10),customer(3,1,1,10),customer(4,1,1,20),customer(5,1,1,30),customer(6,1,1,10),customer(7,1,1,20),customer(8,1,1,20)]
-    #Md = [[0,2]]
-    #S = slv.Solver(cust,3,50,Md)
-
-    S.run()
-    S.show()
-
     """
     root = Tk.Tk()
     root.wm_title("Animated Graph embedded in TK")
