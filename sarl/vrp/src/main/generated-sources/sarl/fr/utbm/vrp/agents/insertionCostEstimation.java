@@ -7,6 +7,13 @@ import io.sarl.lang.core.Event;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Event from VehicleAgent to AllocationAgent to tell what is the lowest
+ * cost of insertion for the customer
+ * <br>It is a reply from the insertCustomerEstimate event
+ * 
+ * @param cost Cost of the insertion of the given customer
+ */
 @SarlSpecification("0.12")
 @SarlElementType(15)
 @SuppressWarnings("all")

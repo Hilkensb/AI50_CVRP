@@ -60,6 +60,11 @@ agent AllocationAgent {
 		// Tell on logging that the agent started normally
 		info("The agent has started.")
 
+		// Change the logging level to warning to gain some time to not display
+		// all messages published by the agents
+		// level - 0 or lower for no logging, 1 for error, 2 for warning, 3 for info, 4 or higher for debug.
+		setLogLevel(2)
+
 		// Get the customers, depot and capacity
 		depot = occurrence.parameters.get(0) as String
 		vehicle_capacity = occurrence.parameters.get(1) as AtomicInteger

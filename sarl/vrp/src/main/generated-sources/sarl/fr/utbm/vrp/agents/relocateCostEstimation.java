@@ -8,6 +8,12 @@ import java.util.UUID;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Event from VehicleAgent to AllocationAgent to tell the relocation
+ * cost estimated by the VehicleAgent
+ * 
+ * @param cost Cost of the relocation
+ */
 @SarlSpecification("0.12")
 @SarlElementType(15)
 @SuppressWarnings("all")

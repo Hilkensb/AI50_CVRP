@@ -8,6 +8,11 @@ import java.util.Objects;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Event from AllocationAgent to VehicleAgent to insert a customers
+ * 
+ * @param customer The customer to relocate
+ */
 @SarlSpecification("0.12")
 @SarlElementType(15)
 @SuppressWarnings("all")

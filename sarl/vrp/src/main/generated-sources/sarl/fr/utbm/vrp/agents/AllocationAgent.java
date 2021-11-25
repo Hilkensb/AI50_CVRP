@@ -88,6 +88,8 @@ public class AllocationAgent extends Agent {
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName("Allocation Agent");
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("The agent has started.");
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.setLogLevel(2);
     Object _get = occurrence.parameters[0];
     this.depot = (_get == null ? null : _get.toString());
     Object _get_1 = occurrence.parameters[1];
@@ -98,10 +100,10 @@ public class AllocationAgent extends Agent {
     this.number_vehicle = _atomicInteger;
     Object _get_3 = occurrence.parameters[3];
     this.taskAgentUUID = ((UUID) _get_3);
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info(occurrence.getSource().getID());
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3.info(this.taskAgentUUID);
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3.info(occurrence.getSource().getID());
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_4 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_4.info(this.taskAgentUUID);
     for (int vehicle_i = 1; (vehicle_i <= number_vehicle_int.doubleValue()); vehicle_i++) {
       {
         UUID vehicleUUID = UUID.randomUUID();
@@ -118,8 +120,8 @@ public class AllocationAgent extends Agent {
       int _memberAgentCount = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getMemberAgentCount();
       int _get_4 = this.number_vehicle.get();
       if ((_memberAgentCount == _get_4)) {
-        Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_4 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-        _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_4.info("New customer is requested.");
+        Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_5 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+        _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_5.info("New customer is requested.");
         DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
         nextCustomerRequest _nextCustomerRequest = new nextCustomerRequest();
         class $SerializableClosureProxy implements Scope<Address> {

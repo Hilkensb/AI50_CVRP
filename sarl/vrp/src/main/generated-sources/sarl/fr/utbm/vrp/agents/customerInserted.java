@@ -6,6 +6,10 @@ import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Event;
 
+/**
+ * Event from VehicleAgent to AllocationAgent to tell that the customer has been inserted
+ * <br>It is a reply to insertCustomer event
+ */
 @SarlSpecification("0.12")
 @SarlElementType(15)
 @SuppressWarnings("all")

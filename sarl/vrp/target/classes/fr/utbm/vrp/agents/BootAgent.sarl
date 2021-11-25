@@ -26,12 +26,25 @@ import java.util.Iterator
 agent BootAgent {
 	uses Lifecycle, Logging
 
+	/**
+	 * Initialize event handler
+	 * 
+	 * <br> Waiting for one parameters, the json string published in redis
+	 * 
+	 * <br> It's job is to parse the json string and then give all arguments 
+	 * needed to the TaskAgent
+	 */
 	on Initialize {
 		// His logging name
 		loggingName = "Boot agent"
 		
 		// Logging info
 		info("The program has been launched.")
+
+		// Change the logging level to warning to gain some time to not display
+		// all messages published by the agents
+		// level - 0 or lower for no logging, 1 for error, 2 for warning, 3 for info, 4 or higher for debug.
+		setLogLevel(2)
 
 		// Get the json string
 		var json_string = occurrence.parameters.get(0) as String

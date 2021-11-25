@@ -60,6 +60,19 @@
           <encoding>${project.build.sourceEncoding}</encoding>
         </configuration>
       </plugin>
+       	<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-javadoc-plugin</artifactId>
+
+            <configuration>
+                <doclet>io.sarl.docs.doclet.SarlDoclet</doclet>
+                <docletArtifact>
+                    <groupId>io.sarl.docs</groupId>
+                    <artifactId>io.sarl.docs.doclet</artifactId>
+                    <version>${sarl.version}</version>
+                </docletArtifact>
+            </configuration>
+        </plugin>
     </plugins>
   </build>
 </project>

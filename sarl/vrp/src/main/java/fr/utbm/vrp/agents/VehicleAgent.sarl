@@ -38,6 +38,11 @@ agent VehicleAgent {
 		// Tell on logging that the agent started normally
 		info("The agent has started.")
 
+		// Change the logging level to warning to gain some time to not display
+		// all messages published by the agents
+		// level - 0 or lower for no logging, 1 for error, 2 for warning, 3 for info, 4 or higher for debug.
+		setLogLevel(2)
+
 		// Save the allocation agent uuid
 		this.allocationAgentUUID = occurrence.parameters.get(2) as UUID // occurrence.source.ID
 

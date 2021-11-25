@@ -8,6 +8,12 @@ import java.util.Objects;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Event from AllocationAgent to VehicleAgent to get the estimation cost of an relocation
+ * of the customer to relocate it
+ * 
+ * @param customer Customer to estimate the relocation
+ */
 @SarlSpecification("0.12")
 @SarlElementType(15)
 @SuppressWarnings("all")

@@ -8,6 +8,12 @@ import java.util.ArrayList;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Event from VehicleAgent to AllocationAgent and AllocationAgent to TaskAgent to get the
+ * solution build
+ * 
+ * @param route The solution in the VehicleAgent
+ */
 @SarlSpecification("0.12")
 @SarlElementType(15)
 @SuppressWarnings("all")

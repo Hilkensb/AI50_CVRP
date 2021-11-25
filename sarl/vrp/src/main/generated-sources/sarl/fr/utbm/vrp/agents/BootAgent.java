@@ -46,6 +46,8 @@ public class BootAgent extends Agent {
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.setLoggingName("Boot agent");
       Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
       _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("The program has been launched.");
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.setLogLevel(2);
       Object _get = occurrence.parameters[0];
       String json_string = (_get == null ? null : _get.toString());
       json_string = json_string.replace("\'", "\"");
@@ -106,6 +108,14 @@ public class BootAgent extends Agent {
     return $castSkill(Logging.class, this.$CAPACITY_USE$IO_SARL_CORE_LOGGING);
   }
   
+  /**
+   * Initialize event handler
+   * 
+   * <br> Waiting for one parameters, the json string published in redis
+   * 
+   * <br> It's job is to parse the json string and then give all arguments
+   * needed to the TaskAgent
+   */
   @SyntheticMember
   @PerceptGuardEvaluator
   private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {

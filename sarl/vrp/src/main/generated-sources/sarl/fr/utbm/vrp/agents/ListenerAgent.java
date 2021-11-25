@@ -1,5 +1,6 @@
 package fr.utbm.vrp.agents;
 
+import com.google.common.base.Objects;
 import fr.utbm.vrp.agents.BootAgent;
 import io.sarl.core.Destroy;
 import io.sarl.core.Initialize;
@@ -38,13 +39,21 @@ public class ListenerAgent extends Agent {
     
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The agent was started.");
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.setLogLevel(2);
     Jedis jSubscriber = new Jedis();
     __ListenerAgent_0 ___ListenerAgent_0 = new __ListenerAgent_0() {
       public void onMessage(final String channel, final String message) {
         Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = ListenerAgent.this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
         _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("channel: " + channel) + " message: ") + message));
-        Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = ListenerAgent.this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
-        _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.spawn(BootAgent.class, message);
+        boolean _equals = Objects.equal(message, "stop");
+        if (_equals) {
+          Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = ListenerAgent.this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+          _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.killMe();
+        } else {
+          Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER_1 = ListenerAgent.this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
+          _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER_1.spawn(BootAgent.class, message);
+        }
       }
     };
     jSubscriber.subscribe(___ListenerAgent_0, "sarlTopic");
@@ -83,6 +92,9 @@ public class ListenerAgent extends Agent {
     return $castSkill(Lifecycle.class, this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE);
   }
   
+  /**
+   * Initialize event handler
+   */
   @SyntheticMember
   @PerceptGuardEvaluator
   private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
@@ -91,6 +103,9 @@ public class ListenerAgent extends Agent {
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialize$0(occurrence));
   }
   
+  /**
+   * Destroy event handler
+   */
   @SyntheticMember
   @PerceptGuardEvaluator
   private void $guardEvaluator$Destroy(final Destroy occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {

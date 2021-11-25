@@ -6,6 +6,10 @@ import io.sarl.lang.annotation.SyntheticMember;
 import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Event;
 
+/**
+ * Event triggered by AllocationAgent to TaskAgent to prevent that
+ * a new vehicle has been inserted
+ */
 @SarlSpecification("0.12")
 @SarlElementType(15)
 @SuppressWarnings("all")

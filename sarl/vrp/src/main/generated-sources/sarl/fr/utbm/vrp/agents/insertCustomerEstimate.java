@@ -8,6 +8,12 @@ import java.util.Objects;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Event from AllocationAgent to VehicleAgent to get the lowest cost insertion of the
+ * given customer in the vehicle agent
+ * 
+ * @param customer The customer to estimate the insertion
+ */
 @SarlSpecification("0.12")
 @SarlElementType(15)
 @SuppressWarnings("all")

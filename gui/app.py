@@ -41,6 +41,19 @@ class Application:
         if not isRedisAvailable():
             # Display a warning message
             print(Fore.YELLOW + "/!\ WARNING: Redis server is not available for the application. Some functionnalities will not work." + Style.RESET_ALL)
+  
+    def __del__(self):
+        """
+        Destructor. It used to stop the sarl application
+        """
+        
+        # Call the super destructor if there's one
+        super()
+        
+        # Send a stop on sarl topic if needed
+        if STOP_JAVA:
+            # Publish stop on sarlTopic to tell the sarl agent to kill it self
+            redis_server.publish("sarlTopic", "stop")
         
     def __mapActions(self) -> None:
         """

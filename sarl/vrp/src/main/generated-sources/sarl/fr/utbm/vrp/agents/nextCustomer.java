@@ -8,6 +8,12 @@ import java.util.Objects;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Event from TaskAgent to allocationAgent to send a new customer to insert
+ * It's a reply to the nextCustomerRequest
+ * 
+ * @param customer The customer that will be inserted by the AllocationAgent
+ */
 @SarlSpecification("0.12")
 @SarlElementType(15)
 @SuppressWarnings("all")

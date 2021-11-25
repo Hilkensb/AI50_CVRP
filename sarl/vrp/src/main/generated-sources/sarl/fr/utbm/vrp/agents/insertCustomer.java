@@ -8,6 +8,14 @@ import java.util.Objects;
 import org.eclipse.xtext.xbase.lib.Pure;
 import org.eclipse.xtext.xbase.lib.util.ToStringBuilder;
 
+/**
+ * Event from AllocationAgent to VehicleAgent to tell the vehicle to insert the given
+ * customer
+ * <br>It's launched when all vehicle agents have send their insertion cost estimation
+ * through insertionCostEstimation event
+ * 
+ * @param customer The customer to insert
+ */
 @SarlSpecification("0.12")
 @SarlElementType(15)
 @SuppressWarnings("all")
