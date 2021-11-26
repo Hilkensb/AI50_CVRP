@@ -36,8 +36,6 @@ class RouteCvrp:
        
        :param route: Route to build
        :type route: List[NodeWithCoord]
-       
-       
        """
        
        # List of customers representing the route made by one vehicule
@@ -128,6 +126,14 @@ class RouteCvrp:
       
     def __eq__(self, other: RouteCvrp) -> bool:
         """
+        eq
+        
+        Equality operator. Enable us to know if two routes are the same.
+        
+        :param other: Route to compare with
+        :type other: RouteCvrp
+        :return: True if the 2 routes are the same, else False
+        :rtype: bool
         """
         
         # We do not compare their cost because it's an heavy operation, which would cost
@@ -158,6 +164,11 @@ class RouteCvrp:
     @singledispatchmethod  
     def __getitem__(self, indices) -> NodeWithCoord:
         """
+        getitem
+        
+        Method to indices the route
+        
+        :param indices: indices of cutomers in route wanted
         """
         raise TypeError(f"The method __getitem__ is not implemented with the {type(indices)} type.")
        
@@ -196,6 +207,9 @@ class RouteCvrp:
     
     def __hash__(self):
         """
+        hash
+        
+        Method to hash the route
         """
         return hash(self.__str__)
     
@@ -266,7 +280,6 @@ class RouteCvrp:
         # To be a valid solution there's should none non valid nodes
         return len(non_valid_customers) == 0
        
-    # TODO   
     def getAllNeighboursSwap(
         self, solution_evaluation: float = 0
     ) -> List[Tuple[RouteCvrp, int]]:

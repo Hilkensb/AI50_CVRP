@@ -54,6 +54,7 @@
       </div>
     </div>
   </div>
+  
   <div class="modal" id="LoadFromLocal">
     <div class="modal-dialog" role="document">
       <div class="modal-content">
@@ -69,6 +70,32 @@
       </div>
     </div>
   </div>
+  
+  <div class="modal" id="Random">
+    <div class="modal-dialog" role="document">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Random instance</h5> <button type="button" class="close" data-dismiss="modal" onclick="document.getElementById('Random').style.display='none'"> <span>×</span> </button>
+        </div>
+        <div class="modal-body">
+          <form class="" action ="{{ url_for('randomInstance', cvrp_id=instance_id) }}" method = "POST">
+            <div class="form-group"> 
+              <label>Number of clients</label> 
+              <input type="number" class="form-control" placeholder="" required="required", name="nb_customer"  value="250"> 
+              <label>Vehicle capacity</label> 
+              <input type="number" class="form-control" placeholder="" required="required", name="vehicule_capacity" value="100"> 
+              <label>Lower bound of customer's demand</label> 
+              <input type="number" class="form-control" placeholder="" required="required", name="customer_demand_lb" value="10"> 
+              <label>Upper bound of customer's demand</label> 
+              <input type="number" class="form-control" placeholder="" required="required", name="customer_demand_ub"  value="50"> 
+            </div>
+            <button type="submit" class="btn btn-primary">Generate</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+  
   <div class="py-5">
     <div class="container">
       <div class="row">
@@ -77,8 +104,10 @@
           <p class="mb-3 lead">The application use multiple algorithm to find a short path for an instance of the Capacited Vehicule Routing Porblem. Use can use tabu search, genetic algorithm, and more. You can then compare the different result obtained by each algorithm.</p>
           <div class="btn-group">
             <button class="btn btn-primary dropdown-toggle" data-toggle="dropdown"> Upload file</button>
-            <div class="dropdown-menu"> <a class="dropdown-item" href="#" onclick="document.getElementById('LoadFromWeb').style.display='block'">From web<br></a>
-              <a class="dropdown-item" href="#" onclick="document.getElementById('LoadFromLocal').style.display='block'">From local</a></div>
+            <div class="dropdown-menu"> 
+              <a class="dropdown-item" href="#" onclick="document.getElementById('LoadFromWeb').style.display='block'">From web<br></a>
+              <a class="dropdown-item" href="#" onclick="document.getElementById('LoadFromLocal').style.display='block'">From local</a>
+              <a class="dropdown-item" href="#" onclick="document.getElementById('Random').style.display='block'">Random</a></div>
           </div>
         </div>
         <div class="col-lg-6" style="">

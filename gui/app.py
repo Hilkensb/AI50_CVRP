@@ -2,6 +2,8 @@
 # Standard Library
 from __future__ import annotations
 import os
+from sys import platform
+import subprocess
 
 # Other Library
 from flask import Flask, render_template
@@ -37,11 +39,6 @@ class Application:
         # Set the folder where the pdf will be stored
         self.app.config["CLIENT_PDF"] = os.path.join(os.getcwd(), PDF_FOLDER)
         
-        # Check if redis is available
-        if not isRedisAvailable():
-            # Display a warning message
-            print(Fore.YELLOW + "/!\ WARNING: Redis server is not available for the application. Some functionnalities will not work." + Style.RESET_ALL)
-  
     def __del__(self):
         """
         Destructor. It used to stop the sarl application
@@ -103,6 +100,22 @@ class Application:
         :param debug: True if the server should be in debug mode, default to DEBUG value (opt.)
         :type debug: bool
         """
+
+        # Check if redis is available
+        if not isRedisAvailable():
+            # Display a warning message
+            print(Fore.YELLOW + "/!\ WARNING: Redis server is not available for the application. Some functionnalities will not work." + Style.RESET_ALL)
+            
+            # If we should launch redis 
+            if AUTO_LAUNCH_REDIS:
+                # Check the os
+                # If it's windows
+                if platform == "win32":
+                    # Run redis server
+                    subprocess.Popen(os.path.join(WINDOWS_REDIS_FOLDER, "redis-server.exe"))
+                    print(Fore.GREEN + "Redis has been launched." + Style.RESET_ALL)
+                else:
+                   print(Fore.YELLOW + "/!\ WARNING: Functionnality unavailable for your os. You need to launch redis manually." + Style.RESET_ALL)
 
         self.app.run(host=host, port=port, debug=debug, threaded=True)
 

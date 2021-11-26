@@ -103,6 +103,12 @@ class SolutionCvrp:
         
     def __str__(self) -> str:
         """
+        str
+        
+        Method to get the string of the CVRP solution
+        
+        :return: All the route that are in the solution
+        :rtype: str
         """
         
         return "\n".join(f"Route #{index+1}: {route}" for index, route in enumerate(self.__route))
@@ -275,16 +281,46 @@ class SolutionCvrp:
 
 # _____________________________ Writter Methods _____________________________ #
 
-    # TODO
     def writeInstanceVrp(self, file_path: str) -> None:  
         """
+        Method to write the soution in a file
+        
+        :param file_path: Path to the file where we want to write in
+        :type file_path: str
         """
-        pass
+        # Open the file
+        file_solution = open(file_path, "w")
+        
+        # String that will be written
+        solution_string: str = ""
+        
+        # Write every route
+        solution_string += "\n".join([
+            f"Route #{index}: " + " ".join([
+                str(customer)
+                for customer in route.customers_route
+            ])
+            for index, route in enumerate(self.__route)
+        ])
+
+        # Write the cost of the solution
+        solution_string += f"Cost {self.evaluation()}"
+        
+        # Write the string into the file
+        file_solution.write(solution_string)
+        # Close the file
+        file_solution.close()
 
 # ______________________________ Search Method ______________________________ #
 
-    def getRouteOfCustomer(self, customer_id: int) -> Route:
+    def getRouteOfCustomer(self, customer_id: int) -> RouteCvrp:
         """
+        Method to find the route of a given customer
+        
+        :param customer_id: Node id of the customer we search for
+        :type customer_id: int
+        :return: The route of the customer
+        :rtype: RouteCvrp
         """
         
         # for every route in the solution
@@ -1680,6 +1716,9 @@ class SolutionCvrp:
         toJSON()
         
         Method to get the JSON value of the class
+        
+        :return: The data of the solution in json format
+        :rtype: str
         """
     
         return json.dumps(self.__dict__())
