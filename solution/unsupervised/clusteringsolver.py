@@ -21,6 +21,16 @@ from problem.node import NodeWithCoord
 
 def clusteringSolver(cvrp: Cvrp, iteration: int = 75) -> Tuple[List[SolutionCvrp], List[float]]:
     """
+    clusteringSolver()
+    
+    Function to solve the cvrp by designing cluster and building route around it
+    
+    :param cvrp: The cvrp instance to find a solution
+    :type cvrp: Cvrp
+    :param iteration: Number of iteration to run
+    :type iteration: int
+    :return: Solution found and the evaluation
+    :rtype: Tuple[List[SolutionCvrp], List[float]]
     """
     
     # Create a first cluster center
@@ -59,6 +69,16 @@ def clusteringSolver(cvrp: Cvrp, iteration: int = 75) -> Tuple[List[SolutionCvrp
     
 def buildClusterRoute(cluster_customer: List[Customer], depot: DepotCvrp) -> List[NodeWithCoord]:
     """
+    buildClusterRoute()
+    
+    Method to build route from the cluster
+    
+    :param cluster_customer: Customer in the cluster
+    :type cluster_customer: List[Customer]
+    :param depot: Depot of the cvrp instance
+    :type depot: DepotCvrp
+    :return: List of NodeWithCoord ordered representing the route
+    :rtype: List[NodeWithCoord]
     """
     
     # Build a list that will represent the route
@@ -75,6 +95,16 @@ def buildClusterRoute(cluster_customer: List[Customer], depot: DepotCvrp) -> Lis
     
 def findBestPlace(customer: CustomerCvrp, route: List[NodeWithCoord]) -> float:
     """
+    findBestPlace()
+    
+    Method to find the best place to insert a customer in the route
+    
+    :param customer: Customer to insert in the route
+    :type customer: CustomerCvrp
+    :param route: Route to insert customer
+    :type route:  List[NodeWithCoord]
+    :return: The best place to insert the customer
+    :rtype: int
     """
     
     # Place where the insertion cost is minimized
@@ -97,6 +127,18 @@ def findBestPlace(customer: CustomerCvrp, route: List[NodeWithCoord]) -> float:
         
 def costInsertion(customer: CustomerCvrp, route: List[NodeWithCoord], place: int) -> float:
     """
+    costInsertion()
+    
+    Method to compute the insertion cost of a customer
+    
+    :param customer: Customer to insert in the route
+    :type customer: CustomerCvrp
+    :param route: Route to insert customer
+    :type route:  List[NodeWithCoord]
+    :param place: Place to estimate the insertion of the customer
+    :type place: int
+    :return: The cost of the insertion at the given place
+    :rtype: float
     """
     
     # Compute all the distances
@@ -111,6 +153,18 @@ def kMeanCapacited(
     cvrp: Cvrp, cluster_center: List[Tuple[float, float]] = None
 ) -> Tuple[List[Tuple[float, float]], List[List[CustomerCvrp]]]:
     """
+    kMeanCapacited()
+    
+    Function to run the capacited kmean algorithm
+    
+    :param cvrp: Cvrp instance
+    :type cvrp: Cvrp
+    :param cluster_center: List of cluster center, default to None (opt.)
+    :type cluster_center: List[Tuple[float, float]]
+    :param update_centers: Boolean to know if the centers should be updated or not
+    :type update_centers: bool
+    :return: The cluster center and the customer assign to clusters
+    :rtype: Tuple[List[Tuple[float, float]], List[List[CustomerCvrp]]]
     """
     
     # Get the minimum number of vehicles
@@ -188,6 +242,16 @@ def euclideanDistanceCluster(
     customer: CustomerCvrp, cluster_centers: List[Tuple[float, float]]
 ) -> List[float]:
     """
+    euclideanDistanceCluster()
+    
+    Compute the euclidean distance between a cutomer and the clusters
+    
+    :param customer: Customer
+    :type customer: CustomerCvrp
+    :param cluster_centers: List of clusters center
+    :type cluster_centers: List[Tuple[float, float]]
+    :return: LIst of distance between customer and clusters center
+    :rtype: List[float]
     """
     
     distances: List[float] = []
@@ -208,6 +272,16 @@ def euclideanDistance(
     customer1: CustomerCvrp, customer2: CustomerCvrp
 ) -> float:
     """
+    euclideanDistance()
+    
+    Function to compute the euclidean distance between 2 customers
+    
+    :param customer1: First customer
+    :type customer1: CustomerCvrp
+    :param customer2: Second customer
+    :type customer2: CustomerCvrp
+    :return: The distance between the 2 customers
+    :rtype: float
     """
     
     # Compute the euclidean distance
@@ -222,6 +296,14 @@ def updateClusterCenter(
     point_assignment: List[CustomerCvrp]
 ) -> Tuple[float, float]:
     """
+    updateClusterCenter()
+    
+    Method to update the cluster center
+    
+    :param point_assignment: Cluster of customer assignment
+    :type point_assignment: List[CustomerCvrp]
+    :return: The update cluster center
+    :rtype: Tuple[float, float]
     """
     
     # Sum of x and y and get then there avg

@@ -21,16 +21,38 @@ from problem.node import NodeWithCoord
 
 # wolf class
 class Wolf:
-    def __init__(self, cvrp: Cvrp):
+    def __init__(self, cvrp: Cvrp, penalty: int = 10):
         """
         Constructor
         
         :param cvrp: Cvrp instance to solve
         :type cvrp: Cvrp
+        :param penalty: Penalty if the demand supplied is greater than the vehicle capacity
+        :type penalty: int
         """
         
+        # Get the x and y values of customer in the cvrp
+        x_values: List[int] = [customer.x for customer in cvrp.customers]
+        y_values: List[int] = [customer.y for customer in cvrp.customers]
+        
+        # Determine the max and min value of x and y
+        max_x: int = max(x_values)
+        min_x: int = min(x_values)
+        max_y: int = max(y_values)
+        min_y: int = min(y_values)
+        
+        # Create random cluster center
+        self.cluster_center: List[Tuple[float]] = [tuple([
+            (random.uniform(0,1) * (max_x - min_x)) + min_x,
+            (random.uniform(0,1) * (max_y - min_y)) + min_y
+        ]) for i in range(cvrp.minVehiculeNumber())]
+
         # Create random cluster
-        self.cluster_center, self.assignment = kMeanCapacited(cvrp)
+        self.cluster_center, self.assignment = kMeanCapacited(cvrp=cvrp, cluster_center=self.cluster_center, update_centers=False)
+        
+        self.penalty: int = penalty
+        # Compute the fitness
+        self.fitness: float = self.computeFitness()
  
     def computeFitness(self) -> float:
         """
@@ -53,6 +75,14 @@ class Wolf:
                 # center of the cluster
                 fitness += euclideanDistancePoint(customer, cluster_center)
                 
+            # Get the sum of all the demands
+            sum_demand: int = sum([
+                customer.demand for self.assignment[index]
+            ])
+            
+            # Add the penalty
+            fitness += max(0, sum_demand - cvrp.vehicule_capacity) * self.penalty
+             
         return fitness
 
 def greyWolfSolver(cvrp: Cvrp, iteration: int = 100, wolf_number: int = 20) -> Tuple[List[SolutionCvrp], List[float]]:
@@ -67,12 +97,14 @@ def greyWolfSolver(cvrp: Cvrp, iteration: int = 100, wolf_number: int = 20) -> T
     :type iteration: int
     :param wolf_number: Number of wolf
     :type wolf_number: int
+    :return: Solution found and the evaluation
+    :rtype: Tuple[List[SolutionCvrp], List[float]]
 
-    .. note: based on: https://iopscience.iop.org/article/10.1088/1757-899X/83/1/012014/pdf
+    .. note: Based on: https://iopscience.iop.org/article/10.1088/1757-899X/83/1/012014/pdf
     """
     
     # Run the greyWolfOptimizer
-    wolf = gwo(max_iter=iteration, cvrp=cvrp, wolf_number=wolf_number)
+    wolf: Wolf = gwo(max_iter=iteration, cvrp=cvrp, wolf_number=wolf_number)
     # Get the assigment and the cluster centers
     customer_assignment = wolf.assignment
     customer_cluster = wolf.cluster_center
@@ -192,10 +224,10 @@ def gwo(max_iter: int, wolf_number: int, cvrp: Cvrp) -> Wolf:
     :return: The alpha wolf
     :rtype: Wolf
     """
-    rnd = random.Random(0)
+    rnd: random.Random = random.Random(0)
  
     # create n random wolves
-    population = [ Wolf(cvrp) for i in range(wolf_number)]
+    population: List[Wolf] = [ Wolf(cvrp) for i in range(wolf_number)]
  
     # On the basis of fitness values of wolves
     # sort the population in asc order
@@ -209,50 +241,58 @@ def gwo(max_iter: int, wolf_number: int, cvrp: Cvrp) -> Wolf:
     cluster_number: int = cvrp.minVehiculeNumber()
  
     # main loop of gwo
-    Iter = 0
+    Iter: int = 0
     while Iter < max_iter:
  
         # linearly decreased from 2 to 0
-        a = 2*(1 - Iter/max_iter)
+        a: float = 2.0 * (1.0 - Iter/max_iter)
  
         # updating each population member with the help of best three members
         for i in range(wolf_number):
+        
+            r1: float = rnd.random()
             # Compute the A
-            A1, A2, A3 = a * (2 * rnd.random() - 1), a * (
-              2 * rnd.random() - 1), a * (2 * rnd.random() - 1)
-            C1, C2, C3 = 2 * rnd.random(), 2*rnd.random(), 2*rnd.random()
+            A1: float = 2.0 * a * r1 - a
+            A2: float = 2.0 * a * r1 - a
+            A3: float = 2.0 * a * r1 - a
+            
+            r2: float = rnd.random()
+            # Compute the c values
+            C1: float = 2.0 * r2
+            C2: float = 2.0 * r2
+            C3: float = 2.0 * r2
  
             # Create vectors 0
-            X1 = [tuple([0.0, 0.0]) for i in range(cluster_number)]
-            X2 = [tuple([0.0, 0.0]) for i in range(cluster_number)]
-            X3 = [tuple([0.0, 0.0]) for i in range(cluster_number)]
-            Xnew = [tuple([0.0, 0.0]) for i in range(cluster_number)]
+            X1: List[Tuple[float]] = [tuple([0.0, 0.0]) for i in range(cluster_number)]
+            X2: List[Tuple[float]] = [tuple([0.0, 0.0]) for i in range(cluster_number)]
+            X3: List[Tuple[float]] = [tuple([0.0, 0.0]) for i in range(cluster_number)]
+            Xnew: List[Tuple[float]] = [tuple([0.0, 0.0]) for i in range(cluster_number)]
             
             # For each cluster
             for j in range(cluster_number):
                 # Update the position values with given alpha, beta and gamma position
                 X1[j] = tuple(
                     cluster_center - A1 * abs(
-                        C1 - cluster_center - population[i].cluster_center[j][index]
+                        C1 * cluster_center - population[i].cluster_center[j][index]
                     )
                     for index, cluster_center in enumerate(alpha_wolf.cluster_center[j])
                 )
                 
                 X2[j] = tuple(
                     cluster_center - A2 * abs(
-                        C2 - cluster_center - population[i].cluster_center[j][index]
+                        C2 * cluster_center - population[i].cluster_center[j][index]
                     )
                     for index, cluster_center in enumerate(beta_wolf.cluster_center[j])
                 )
                 
                 X3[j] = tuple(
                     cluster_center - A3 * abs(
-                        C3 - cluster_center - population[i].cluster_center[j][index]
+                        C3 * cluster_center - population[i].cluster_center[j][index]
                     )
                     for index, cluster_center in enumerate(gamma_wolf.cluster_center[j])
                 )
                 
-                Xnew[j] = tuple(Xnew[j][val] + X1[j][val] + X2[j][val] + X3[j][val] for val in range(len(Xnew[j])))
+                Xnew[j] = tuple(X1[j][val] + X2[j][val] + X3[j][val] for val in range(len(Xnew[j])))
              
             # Create a new wolf 
             for j in range(cluster_number):
@@ -273,9 +313,9 @@ def gwo(max_iter: int, wolf_number: int, cvrp: Cvrp) -> Wolf:
  
             # greedy selection
             # If the fitness is better
-            if fnew < population[i].computeFitness():
-                population[i].position = Xnew
-                population[i].fitness = fnew
+            if fnew < population[i].fitness:
+                population[i].cluster_center = Xnew
+                population[i].fitness = fnew 
                  
         # On the basis of fitness values of wolves
         # sort the population in asc order
@@ -298,6 +338,18 @@ def kMeanCapacited(
     update_centers: bool = True
 ) -> Tuple[List[Tuple[float, float]], List[List[CustomerCvrp]]]:
     """
+    kMeanCapacited()
+    
+    Function to run the capacited kmean algorithm
+    
+    :param cvrp: Cvrp instance
+    :type cvrp: Cvrp
+    :param cluster_center: List of cluster center, default to None (opt.)
+    :type cluster_center: List[Tuple[float, float]]
+    :param update_centers: Boolean to know if the centers should be updated or not
+    :type update_centers: bool
+    :return: The cluster center and the customer assign to clusters
+    :rtype: Tuple[List[Tuple[float, float]], List[List[CustomerCvrp]]]
     """
     
     # Get the minimum number of vehicles
@@ -377,6 +429,16 @@ def euclideanDistanceCluster(
     customer: CustomerCvrp, cluster_centers: List[Tuple[float, float]]
 ) -> List[float]:
     """
+    euclideanDistanceCluster()
+    
+    Compute the euclidean distance between a cutomer and the clusters
+    
+    :param customer: Customer
+    :type customer: CustomerCvrp
+    :param cluster_centers: List of clusters center
+    :type cluster_centers: List[Tuple[float, float]]
+    :return: LIst of distance between customer and clusters center
+    :rtype: List[float]
     """
     
     distances: List[float] = []
@@ -397,6 +459,16 @@ def euclideanDistance(
     customer1: CustomerCvrp, customer2: CustomerCvrp
 ) -> float:
     """
+    euclideanDistance()
+    
+    Function to compute the euclidean distance between 2 customers
+    
+    :param customer1: First customer
+    :type customer1: CustomerCvrp
+    :param customer2: Second customer
+    :type customer2: CustomerCvrp
+    :return: The distance between the 2 customers
+    :rtype: float
     """
     
     # Compute the euclidean distance
@@ -411,6 +483,14 @@ def updateClusterCenter(
     point_assignment: List[CustomerCvrp]
 ) -> Tuple[float, float]:
     """
+    updateClusterCenter()
+    
+    Method to update the cluster center
+    
+    :param point_assignment: Cluster of customer assignment
+    :type point_assignment: List[CustomerCvrp]
+    :return: The update cluster center
+    :rtype: Tuple[float, float]
     """
     
     # Sum of x and y and get then there avg
@@ -425,6 +505,12 @@ def updateClusterCenter(
 
 def euclideanDistancePoint(customer: CustomerCvrp, point: Tuple[int]) -> float:
     """
+    euclideanDistancePoint()
+    
+    :param customer: Customer to compute the distance
+    :type customer: CustomerCvrp
+    :param point: Point to compute the distance
+    :type point: Tuple[int]
     """
     
     # Compute the euclidean distance

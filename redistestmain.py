@@ -17,7 +17,7 @@ import math
 from solution.metaheuristic.gwo import greyWolfSolver
 
 
-c = Cvrp("http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n76-k5.vrp", "web")
+c = Cvrp("http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/CMT/CMT11.vrp", "web")
 # s = sarlSender("aa", c)
 s = greyWolfSolver(c)[0][0]
 print(s.evaluation())
