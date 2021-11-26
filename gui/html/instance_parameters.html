@@ -1,0 +1,250 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/accordion.css') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/theme.css') }}" type="text/css">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='image/logo_utbm_no_bg.png') }}">
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/round-button.css') }}" type="text/css">
+  <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/chatbox.css') }}" type="text/css">
+  <title>AI50 - Algorithm</title>
+</head>
+
+<body>
+  <nav class="navbar navbar-expand-md navbar-dark bg-dark">
+    <div class="container"> <button class="navbar-toggler navbar-toggler-right border-0" type="button" data-toggle="collapse" data-target="#navbar13">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbar13"> <a class="navbar-brand d-none d-md-block" href="{{ url_for('index') }}">
+          <b> AI50</b>
+        </a>
+        <ul class="navbar-nav mx-auto"></ul>
+        <ul class="navbar-nav">
+          <li class="nav-item">
+            <a class="nav-link" href="https://github.com/Hilkensb/AI50_CVRP">
+              Github
+            </a>
+          </li>
+          <li class="nav-item"> <a class="nav-link" href="https://www.utbm.fr/">
+               UTBM
+            </a> 
+          </li>
+          <li class="nav-item"> <a class="nav-link" href="http://vrp.atd-lab.inf.puc-rio.br/index.php/en/">
+               CVRPLIB
+            </a> 
+          </li>
+        </ul>
+      </div>
+    </div>
+  </nav>
+  <div class="py-5">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-5">
+          <form class="" action ="{{ url_for('load', cvrp_id=instance_id) }}" method = "POST">
+            <div class="row">
+              <div class="col-md-12">
+                <div class="form-group row">
+                  <label class="col-10 py-1" style="font-size:18px;">Clark Wright saving algorithm</label>
+                  <div class="col-2"><input type="checkbox" class="form-control text-left w-50" style="text-shadow: black 0px 0px 4px;" name="Clarck_Wright" checked="checked"></div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-10 py-1" style="font-size:18px;">Tabu Search</label>
+                  <div class="col-2"><input type="checkbox" class="form-control text-left w-50" style="text-shadow: black 0px 0px 4px;" name="Tabu_Search"></div>
+                  <div class="row">
+                    <a class="accordion ml-3" href="#" style="width:85%;">Tabu search options</a>
+                    <div class="panel" style="">
+                      <div class="">
+                        <div class="container">
+                          <div class="row">
+                            <div class="col-md-12 mt-2">
+                              <label>Number of iteration: </label>
+                              <input type="number" id="TabuIteration" name="TabuIteration" value="{{round(min(max(100, nb_customer*0.8), 500))}}" class="mr-1 mt-1 ml-3" required="required" style="width:75px">
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12 mt-2">
+                              <label>With aspiration: </label>
+                              <input type="radio" id="TrueAspiration" name="Aspiration" value="True" class="ml-3 mt-1 mr-1" checked="checked">
+                              <label for="True">True</label>
+                              <input type="radio" id="FalseAspiration" name="Aspiration" value="False" class="mr-1 mt-1 ml-3">
+                              <label for="False">False</label>
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12 mt-2">
+                              <label>Length of the tabu list: </label>
+                              <input type="number" id="TabuLength" name="TabuLength" value="{{round(nb_customer*0.2)}}" class="mr-1 mt-1 ml-3" required="required" style="width:75px">
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12 mt-2">
+                              <label>Maximum run time (in seconds): </label>
+                              <input type="number" id="RunTimeTabu" name="RunTimeTabu" value="60" class="mr-1 mt-1 ml-3" required="required" style="width:75px">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row">
+                  <label class="col-10 py-1" style="font-size:18px;">Genetic Algorithm</label>
+                  <div class="col-2"><input type="checkbox" class="form-control text-left w-50" style="text-shadow: black 0px 0px 4px;" name="Genetic"></div>
+                  <div class="row">
+                    <a class="accordion ml-3" href="#" style="width:85%;">Genetic algorihtm options</a>
+                    <div class="panel" style="">
+                      <div class="">
+                        <div class="container">
+                          <div class="row">
+                            <div class="col-md-12 mt-2">
+                              <label>Number of iteration: </label>
+                              <input type="number" id="GeneticIteration" name="GeneticIteration" value="100" class="mr-1 mt-1 ml-3" required="required" style="width:75px">
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12 mt-2">
+                              <label>Maximum run time (in seconds): </label>
+                              <input type="number" id="RunTimeGenetic" name="RunTimeGenetic" value="60" class="mr-1 mt-1 ml-3" required="required" style="width:75px">
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                <div class="form-group row"><label class="col-10 py-1" style="font-size:18px;">Multi-agent solver</label>
+                  <div class="col-2"><input type="checkbox" class="form-control text-left w-50" style="text-shadow: black 0px 0px 4px;" name="MAS_Solver"></div>
+                </div>
+              </div>
+            </div>
+            <div class="form-group row">
+            </div>
+            <button type="submit" class="btn btn-primary">Submit</button>
+          </form>
+        </div>
+        <div class="col-md-7">
+            <div class="row">
+                {{instance_graph}}
+            </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <!-- a class="redondo" onclick="evalparam()">
+    &#129302;
+  </a-->
+  
+  <script>
+  
+    function evalparam(){
+    
+        // Inputs
+        var TabuIteration = document.getElementById('TabuIteration').value;
+        var TabuLength = document.getElementById('TabuLength').value;
+        var RunTimeTabu = document.getElementById('RunTimeTabu').value;
+    
+        // Build the url
+        const url = "{{ url_for('evaluateParams', cvrp_id=instance_id) }}/" + TabuIteration + "/" + TabuLength + "/" + RunTimeTabu + "/"
+        
+        // Outputs
+        var message = document.getElementById('MlMessage');
+        
+        // sending request
+        fetch(url).then((response)=>{
+          return response.json();  // converting byte data to json
+        }).then(data=>{
+
+            // Display in the console the data received
+            console.log(data);
+            
+            // Loop through every messages
+            for (var i=0; i < data.messages.length; i++) {
+                message.innerHTML += "<div class=\"d-flex flex-row justify-content-start mb-1\"><div style=\"width: 45px; height: 100%;\"></div><div class=\"p-3 ms-3\" style=\"border-radius: 15px; background-color: rgba(57, 192, 237,.2);\"><p class=\"small mb-0\">"  + data.messages[i] + "</p></div></div>"
+            }
+
+        })
+        
+        document.getElementById('Chat').style.display='block'
+    }
+    
+    function closechat(){
+    
+        document.getElementById('Chat').style.display='none'
+    
+        var message = document.getElementById('MlMessage');
+        
+        message.innerHTML="<div class=\"d-flex flex-row justify-content-start mb-1\"><img src=\"{{ url_for('static', filename='image/ai.jpg') }}\" alt=\"avatar 1\" style=\"width: 45px; height: 100%;\"><div class=\"p-3 ms-3\" style=\"border-radius: 15px; background-color: rgba(57, 192, 237,.2);\"><p class=\"small mb-0\">Analysing and optimizing your parameters ...</p></div></div>"
+    }
+  
+  </script>
+  
+  <div class="chat-popup" id="Chat">
+    <div class="row d-flex">
+        <div class="card" id="chat1" style="">
+          <div
+            class="card-header d-flex justify-content-between align-items-center p-3 bg-info text-white border-bottom-0"
+            style="border-top-left-radius: 15px; border-top-right-radius: 15px;">
+            <p class="mb-0 fw-bold">AVA</p>
+            <button type="button" class="close" data-dismiss="modal" onclick="closechat()"> <span>×</span> </button>
+          </div>
+          <div class="card-body chat-body" id="MlMessage">
+
+            <div class="d-flex flex-row justify-content-start mb-1">
+              <img src="{{ url_for('static', filename='image/ai.jpg') }}" alt="avatar 1"
+                style="width: 45px; height: 100%;">
+              <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                    <p class="small mb-0">Analysing and optimizing your parameters ...</p>
+              </div>
+            </div>
+            
+            <!-- div class="d-flex flex-row justify-content-start mb-1" >
+              <div style="width: 45px; height: 100%;"></div>
+              <div class="p-3 ms-3" style="border-radius: 15px; background-color: rgba(57, 192, 237,.2);">
+                    <p class="small mb-0">Hello and thank you for visiting MDBootstrap. Please click the video below.</p>
+              </div>
+            </div -->
+
+          </div>
+        </div>
+    </div>
+  </div>
+      
+  <div class="py-3" style="">
+    <div class="container">
+      <div class="row">
+        <div class="col-md-6">
+          <img class="img-fluid d-block" src="{{ url_for('static', filename='image/logo_utbm_alone.png') }}" height="59" width="55">
+        </div>
+        <div class="col-md-6 text-right">
+          <p class="py-1 my-2">AI50 Project - UTBM</p>
+        </div>
+      </div>
+    </div>
+  </div>
+  
+  <script style="">
+    var acc = document.getElementsByClassName("accordion");
+    var i;
+    for (i = 0; i < acc.length; i++) {
+      acc[i].addEventListener("click", function() {
+        this.classList.toggle("active");
+        var panel = this.nextElementSibling;
+        if (panel.style.maxHeight) {
+          panel.style.maxHeight = null;
+        } else {
+          panel.style.maxHeight = panel.scrollHeight + "px";
+        }
+      });
+    }
+  </script>
+  <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.6/umd/popper.min.js" integrity="sha384-wHAiFfRlMFy6i5SRaxvfOCifBUQy1xHdJ/yoi7FRNXMRBu5WHdZYu1hA6ZOblgut" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+</body>
+
+</html>

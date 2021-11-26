@@ -2,9 +2,11 @@
 # Standard Library
 from __future__ import annotations
 from typing import Tuple
+import json
 
 # Modules
 from problem.node import NodeWithCoord
+from gui.config import DEFAULT_LATITUDE, DEFAULT_LONGITUDE, UNITS_MAP
 
 
 class CustomerCvrp(NodeWithCoord):
@@ -88,6 +90,27 @@ class CustomerCvrp(NodeWithCoord):
         """
         return hash((self.__node_id, self.__x, self.__y, self.__demand))
 
+    def __dict__(self):
+        """
+        dict
+        
+        Create the dictionnary of the object
+        
+        :return: The dictionnary with al values of the object
+        :rtype: dict
+        """
+        
+        # Create the dictionnary
+        object_dict: Dict = {}
+        
+        # Set every variable of it
+        object_dict["id"] = self.__node_id
+        object_dict["x"] = self.__x
+        object_dict["y"] = self.__y
+        object_dict["demand"] = int(self.__demand)
+        
+        return object_dict
+
 # --------------------------------- Methods --------------------------------- #
 
     def getCoordinates(self) -> Tuple[int, int]:
@@ -99,7 +122,45 @@ class CustomerCvrp(NodeWithCoord):
         :return: A tuple of int representing the x and y position of the customer node
         :rtype: Tuple[int, int]
         """
-        return self.x, self.y
+        return self.__x, self.__y
+     
+    def getMapCoordinates(self) -> Tuple[float, float]:
+        """
+        getCoordinates()
+        
+        Method to get the coordinates (the x and y position of the node)
+        
+        :return: A tuple of int representing the latitude and longitude position of the depot node
+        :rtype: Tuple[int, int]
+
+        """
+        return (DEFAULT_LATITUDE + (self.__y * UNITS_MAP)), (DEFAULT_LONGITUDE + (self.__x * UNITS_MAP))
+     
+    def toJSON(self) -> str:
+        """
+        toJSON()
+        
+        Method to get the JSON value of the class
+        """
+    
+        return json.dumps(self.__dict__())
+        
+    def fromJSON(self, json: dict) -> None:
+        """
+        fromJSON()
+        
+        Method to transform a JSON into an object
+        
+        :param json: Json data of the object
+        :type json: dict
+        :raises: KeyValueError if the json is incomplete
+        """
+    
+        # Set every variable of it
+        self.__node_id = json["id"]
+        self.__x = json["x"]
+        self.__y = json["y"]
+        self.__demand = json["demand"]
      
 # ----------------------------- Getter / Setter ----------------------------- #
    
@@ -130,4 +191,12 @@ class CustomerCvrp(NodeWithCoord):
     @demand.setter
     def demand(self, value: int) -> None:
         self.__demand = value
+
+    @property 
+    def latitude(self) -> float:
+        return DEFAULT_LATITUDE + (self.__y * UNITS_MAP)
+        
+    @property 
+    def longitude(self) -> float:
+        return DEFAULT_LONGITUDE + (self.__x * UNITS_MAP)
 

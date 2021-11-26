@@ -48,7 +48,7 @@ class SolutionCvrp:
         # The instance of cvrp problem linked to this solution
         self.__cvrp_instance: Cvrp = instance
         # List of all route used
-        self.__route: List[RouteCvrp] = route
+        self.__route: List[RouteCvrp] = route[:]
     
     def __copy__(self) -> SolutionCvrp:
         """
@@ -103,6 +103,12 @@ class SolutionCvrp:
         
     def __str__(self) -> str:
         """
+        str
+        
+        Method to get the string of the CVRP solution
+        
+        :return: All the route that are in the solution
+        :rtype: str
         """
         
         return "\n".join(f"Route #{index+1}: {route}" for index, route in enumerate(self.__route))
@@ -164,6 +170,28 @@ class SolutionCvrp:
         """
         """
         return hash(self.__str__)
+        
+    def __dict__(self):
+        """
+        dict()
+        
+        Create the dictionnary of the object
+        
+        :return: The dictionnary with al values of the object
+        :rtype: dict
+        """  
+        
+        # Create the dictionnary
+        object_dict: Dict = {}
+        
+        # Set every variable of it
+        # Convert every route into dictionnary before putting them inside
+        # the dictionnary of the solution
+        # it will then be easier to generate the json string
+        object_dict["route"] = [route.__dict__() for route in self.__route]
+        object_dict["instance"] = self.__cvrp_instance.__dict__()
+        
+        return object_dict 
                 
 # --------------------------------- Methods --------------------------------- #
 
@@ -253,11 +281,56 @@ class SolutionCvrp:
 
 # _____________________________ Writter Methods _____________________________ #
 
-    # TODO
     def writeInstanceVrp(self, file_path: str) -> None:  
         """
+        Method to write the soution in a file
+        
+        :param file_path: Path to the file where we want to write in
+        :type file_path: str
         """
-        pass
+        # Open the file
+        file_solution = open(file_path, "w")
+        
+        # String that will be written
+        solution_string: str = ""
+        
+        # Write every route
+        solution_string += "\n".join([
+            f"Route #{index}: " + " ".join([
+                str(customer)
+                for customer in route.customers_route
+            ])
+            for index, route in enumerate(self.__route)
+        ])
+
+        # Write the cost of the solution
+        solution_string += f"Cost {self.evaluation()}"
+        
+        # Write the string into the file
+        file_solution.write(solution_string)
+        # Close the file
+        file_solution.close()
+
+# ______________________________ Search Method ______________________________ #
+
+    def getRouteOfCustomer(self, customer_id: int) -> RouteCvrp:
+        """
+        Method to find the route of a given customer
+        
+        :param customer_id: Node id of the customer we search for
+        :type customer_id: int
+        :return: The route of the customer
+        :rtype: RouteCvrp
+        """
+        
+        # for every route in the solution
+        for route in self.__route:
+            # Build a set by comprehension of the customers node id
+            route_customer_id: Set = {customer.node_id for customer in route.customers_route}
+            # If the customer is in the rouet
+            if customer_id in route_customer_id:
+                # Return the route found
+                return route
 
 # ______________________________ Diplay Method ______________________________ #
 
@@ -685,9 +758,172 @@ class SolutionCvrp:
         
         # List of scatter plot 
         # List of the nodes
-        node_scatter_list: List[Scatter] = []
+        node_scatter_list: List[Scatter] = [None] * (self.__cvrp_instance.nb_customer + 1)
         # List of edges
         edge_scatter_list: List[Scatter] = []
+        
+        # List of edges
+        edge_x = []
+        edge_y = []
+        # List of nodes
+        node_x = []
+        node_y = []
+        # Text when hovered
+        node_text: List[str] = []
+        # Dictionnary of nodes color
+        node_route_index: Dict[int, int] = {}
+
+        # For every route of the solution
+        for index, route in enumerate(self.__route):
+        
+            # Reset the list
+            # List of edges
+            edge_x = []
+            edge_y = []
+            # List of nodes
+            node_x = []
+            node_y = []
+            # Name of the nodes
+            node_text = []
+        
+            # Set the previous node to the depot node, so every route start at the depot
+            previous_node = depot_node
+            x1, y1 = depot_node.getCoordinates()
+            # For every customer in the solution (excluding the depot, so excluding the first and last node of the route)
+            for customer in route.customers_route[1:-1]:
+                # Get the x and y position of the departure of the route
+                x0, y0 = x1, y1
+                # Get the x and y position of the arrival of the route
+                x1, y1 = customer.getCoordinates()
+                
+                # Set the coloration of the node
+                node_route_index[customer.node_id] = index
+                
+                # Set the positions of the ege
+                edge_x.append(x0)
+                edge_x.append(x1)
+                edge_x.append(None)
+                edge_y.append(y0)
+                edge_y.append(y1)
+                edge_y.append(None)
+                
+                # Set the node
+                # Set is position
+                node_x = [x1]
+                node_y = [y1]
+                # Set his name
+                node_text = [f"Customer: {customer.node_id}<br>Demand: {customer.demand}"]
+      
+                # Node of the trace
+                node_trace: Scatter = go.Scatter(
+                    x=node_x, y=node_y,
+                    showlegend=show_legend_node,
+                    mode='markers',
+                    hoverinfo='text',
+                    marker=dict(
+                        color=route_color[node_route_index[customer.node_id]],
+                        size=node_size,
+                        line_width=0.5
+                    ),
+                    name=f"Customers in route #{node_route_index[customer.node_id] + 1}",
+                    text = node_text
+                )
+                # Add the node scatter 
+                # Garrentee that each node will be in the same oreder
+                node_scatter_list[customer.node_id - 1] = node_trace
+                                
+                # Update the previous node to the actual node value for the next iteration
+                previous_node = customer
+
+            # Set the returning edge to the depot
+            # Get the x and y position of last customer
+            x0, y0 = x1, y1
+            # Get the x and y position of the depot
+            x1, y1 = depot_node.getCoordinates()
+            # Set the positions of the ege
+            edge_x.append(x0)
+            edge_x.append(x1)
+            edge_x.append(None)
+            edge_y.append(y0)
+            edge_y.append(y1)
+            edge_y.append(None)
+
+            # Edge of the trace
+            edge_trace: Scatter = go.Scatter(
+                x=edge_x, y=edge_y,
+                showlegend=show_legend_edge,
+                line=dict(width=0.5, color=route_color[index]),
+                hoverinfo='none',
+                mode='lines',
+                name=f"Route #{index + 1}"
+            )
+            # Add the edge scatter
+            edge_scatter_list.append(edge_trace)
+            
+        # Create the node of the depot
+        depot_trace: Scatter = go.Scatter(
+            x=[depot_node.x], y=[depot_node.y],
+            showlegend=show_legend_node,
+            mode='markers',
+            hoverinfo='text',
+            marker=dict(
+                color=depot_node_color,
+                size=node_size,
+                line_width=0.5
+            ),
+            name=f"Depot",
+            text = [f"{depot_node.node_id} (Depot)"]
+        )
+        # Add the depot scatter 
+        node_scatter_list[depot_node.node_id - 1] = depot_trace
+
+        return node_scatter_list, edge_scatter_list
+
+    def drawPlotlyJSON(
+        self, depot_node_color: str = "#a6f68e", node_size: int = 15, 
+        route_color: List[str] = DEFAULT_COLOR_PALETTE, show_legend_edge: bool = True,
+        show_legend_node: bool = False
+    ) -> Dict:
+        """
+        drawPlotly()
+        
+        Method to create the scatter that compose the graph made with plotly
+        
+        :param route_color: List of colors of the routes in the solution, default the DEFAULT_COLOR_PALETTE (utils.colorpallete) (opt.)
+        :tyoe route_color: List[str]
+        :param depot_node_color: Color of the node depot, default to \"#a6f68e\" (opt.)
+        :type depot_node_color: str
+        :param node_size: Size of the nodes, default to 15 (opt)
+        :type node_size: int
+        :param show_legend_edge: Display or not the legend of edges, default to True (opt.)
+        :type show_legend_edge: bool
+        :param show_legend_node: Display or not the legend of nodes, default to False (opt.)
+        :type show_legend_edge: bool
+        :return: List of dictionnary to draw scatters
+        :rtype: 
+        """
+        
+        # Get the number of routes
+        number_of_routes: int = len(self.__route)
+        # Get the number of colors passed by the user
+        number_of_colors: int = len(route_color)
+        # if there's not enougth color (in other words if there's more route than color)
+        if number_of_routes > number_of_colors:
+            # Generate random color by choosing randomly char the string
+            # Create the right amount of color to color every route
+            route_color += [
+                "#"+''.join([
+                    random.choice('0123456789abcdef') for rgb in range(6)
+                ])
+                for color in range(number_of_routes - number_of_colors)
+            ]
+        
+        # Get the depot node 
+        depot_node = self.__cvrp_instance.depot
+        
+        # List of scatter plot 
+        # List of the nodes
+        scatter_list_json: List[Scatter] = []
         
         # List of edges
         edge_x = []
@@ -750,17 +986,16 @@ class SolutionCvrp:
             edge_y.append(None)
 
             # Edge of the trace
-            edge_trace: Scatter = go.Scatter(
-                x=edge_x, y=edge_y,
-                showlegend=show_legend_edge,
-                line=dict(width=0.5, color=route_color[index]),
-                hoverinfo='none',
-                mode='lines',
-                name=f"Route #{index + 1}"
-            )
+            edge_trace: Dict = {
+                "x":edge_x, "y":edge_y,
+                "showlegend":show_legend_edge,
+                "line":{"width":0.5, "color":route_color[index]},
+                "hoverinfo":"none",
+                "mode":"lines",
+                "name":f"Route #{index + 1}"
+            }
             # Add the edge scatter
-            edge_scatter_list.append(edge_trace)
-         
+            scatter_list_json.append(edge_trace)
          
          # We create separatly the customer to garentee that all the time
          # The customers will be in the same order
@@ -776,46 +1011,44 @@ class SolutionCvrp:
             node_x = [x1]
             node_y = [y1]
             # Set his name
-            node_text = [f"{customer.node_id}"]
+            node_text = [f"{customer.node_id}<br>Demand: {customer.demand}"]
   
             # Node of the trace
-            node_trace: Scatter = go.Scatter(
-                x=node_x, y=node_y,
-                showlegend=show_legend_node,
-                mode='markers',
-                hoverinfo='text',
-                marker=dict(
-                    color=route_color[node_route_index[customer.node_id]],
-                    size=node_size,
-                    line_width=0.5
-                ),
-                name=f"Customers in route #{node_route_index[customer.node_id] + 1}"
-            )
-            # Set the node id when hovered
-            node_trace.text = node_text
+            node_trace: Dict = {
+                "x":node_x, "y":node_y,
+                "showlegend":show_legend_node,
+                "mode":"markers",
+                "hoverinfo":"text",
+                "marker":{
+                    "color":route_color[node_route_index[customer.node_id]],
+                    "size":node_size,
+                    "line_width":0.5
+                },
+                "name":f"Customers in route #{node_route_index[customer.node_id] + 1}",
+                "text":node_text
+            }
             # Add the node scatter 
-            node_scatter_list.append(node_trace)
+            scatter_list_json.append(node_trace)
             
         # Create the node of the depot
-        depot_trace: Scatter = go.Scatter(
-            x=[depot_node.x], y=[depot_node.y],
-            showlegend=show_legend_node,
-            mode='markers',
-            hoverinfo='text',
-            marker=dict(
-                color=depot_node_color,
-                size=node_size,
-                line_width=0.5
-            ),
-            name=f"Depot"
-        )
-        # Set the name of the depot node
-        # Set the node id when hovered
-        depot_trace.text = [f"{depot_node.node_id} (Depot)"]
+        depot_trace: Dict = {
+            "x":[depot_node.x], "y":[depot_node.y],
+            "showlegend":show_legend_node,
+            "mode":"markers",
+            "hoverinfo":"text",
+            "marker":{
+                "color":depot_node_color,
+                "size":node_size,
+                "line_width":0.5
+            },
+            "name":f"Depot",
+            "text":[f"{depot_node.node_id} (Depot)"]
+        }
         # Add the depot scatter 
-        node_scatter_list.append(depot_trace)
+        scatter_list_json.append(depot_trace)
 
-        return node_scatter_list, edge_scatter_list
+        return scatter_list_json
+
 
 # ____________________________ Evaluation Method ____________________________ #
 
@@ -1262,8 +1495,7 @@ class SolutionCvrp:
             neighboors_list: List[Route]= base_route.getNeighboursRouteSwap(
                 other_route=other_route,
                 vehicule_capacity=self.__cvrp_instance.vehicule_capacity,
-                proximity_swaps=proximity_swaps, self_route_cost=self_route_cost, 
-                other_route_cost=other_route_cost
+                proximity_swaps=proximity_swaps
              )
                 
             # look for every neighboors
@@ -1340,8 +1572,8 @@ class SolutionCvrp:
                     other_route: RouteCvrp = second_route
                     first_index: int = index
                     second_index: int = index2 + index + 1
-                    self_route_cost: float = second_route_cost
-                    other_route_cost: float = route_cost
+                    self_route_cost: float = route_cost
+                    other_route_cost: float = second_route_cost
                 else:
                     base_route: RouteCvrp = second_route
                     other_route: RouteCvrp = route
@@ -1425,7 +1657,7 @@ class SolutionCvrp:
             # Get the route cost
             second_route_cost: int = second_route.evaluation()
             # Cost with the route removed
-            solution_cost: int = route_removed_cost - route_cost
+            solution_cost: int = route_removed_cost - second_route_cost
             # Choose the base route and the other route
             # because route1.getNeighboursRouteInsertion(route2) !=
             # route2.getNeighboursRouteInsertion(route1)
@@ -1435,8 +1667,8 @@ class SolutionCvrp:
                 other_route: RouteCvrp = second_route
                 first_index: int = index
                 second_index: int = ((index+1) % len(self.__route))
-                self_route_cost: float = second_route_cost
-                other_route_cost: float = route_cost
+                self_route_cost: float = route_cost
+                other_route_cost: float = second_route_cost
             else:
                 base_route: RouteCvrp = second_route
                 other_route: RouteCvrp = route
@@ -1476,6 +1708,84 @@ class SolutionCvrp:
                 neighborhood.append(solution_costs_tuple)
                 
         return neighborhood
+
+# _____________________________ Extract Methods _____________________________ #
+
+    def toJSON(self) -> str:
+        """
+        toJSON()
+        
+        Method to get the JSON value of the class
+        
+        :return: The data of the solution in json format
+        :rtype: str
+        """
+    
+        return json.dumps(self.__dict__())
+        
+    def fromJSON(self, json: dict) -> None:
+        """
+        fromJSON()
+        
+        Method to transform a JSON into an object
+        
+        :param json: Json data of the object
+        :type json: dict
+        :raises: KeyValueError if the json is incomplete
+        """
+    
+        # Create a list of routes
+        route_list: List[RouteCvrp] = []
+        # Iterate through the json data
+        for route_json in object_dict["route"]:
+            # Create a new route
+            route: RouteCvrp = RouteCvrp(route=[])
+            # Update the route with the json data
+            route.fromJSON(json=route_json)
+            # add it to the list
+            route_list.append(route)
+        
+        # Set the attribute
+        self.__route = route_list
+        
+        # Create the cvrp instance
+        instance: Cvrp = Cvrp()
+        # Read the json data and update the object
+        instance.fromJSON(json=object_dict["instance"])
+        self.__cvrp_instance = instance
+
+    def fromSarl(self, sarl_response: List[List[str]]) -> None:
+        """
+        fromSarl()
+        
+        Method to convert the sarl response into a solution
+        
+        :param sarl_response: Response made by sarl programm to convert into python solution
+        :type: str
+        """
+        
+        # Reset the routes of this solution
+        self.__route = []
+        
+        # The first list contains all the route in the solution
+        for sarl_route in sarl_response:
+            route_list: List[NodeWithCoord] = []
+            # The list in it contain all the customers in the route
+            for sarl_customer in sarl_route:
+                # Get the node id of the node (customer or depot)
+                # The first element is the node id, so get the first element
+                # Since every data is separed by a space use split method
+                node_id: int = int(sarl_customer.split(" ")[0])
+                # Search the customer with the given id in the cvrp instance
+                node: NodeWithCoord = self.__cvrp_instance.getNodeById(id_searched=node_id)
+                # Add the node to the list
+                route_list.append(node)
+
+            # Create a new route
+            route: RouteCvrp = RouteCvrp(route=route_list)
+            # Add the route to the solution
+            self.__route.append(route)
+        
 
 # ----------------------------- Getter / Setter ----------------------------- #
 
