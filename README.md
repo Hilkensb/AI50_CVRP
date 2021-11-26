@@ -37,5 +37,5 @@ Two metaheuristics have been implemented:
 
 Both metaheuristics start from a solution provided by the Clark & Wright saving algorithm and try to improve it. Here's a small example of the result provided by the tabu search algorithm.
 
-![](C:\Users\neil\Documents\Neil\UTBM\Semestre 5\IA50\git\AI50_CVRP\misc\tabu_search.gif)
+![](./misc/tabu_search.gif)
 
