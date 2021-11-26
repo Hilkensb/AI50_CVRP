@@ -1719,6 +1719,47 @@ class Cvrp(VehiculeRootingProblem):
         self.__customers = customer_list_raw
         self.__depot = depot_obj
         self.__vehicule_capacity = json["vehicule_capacity"]
+        
+    def customersForSarl(self) -> List[str]:
+        """
+        customersForSarl()
+        
+        Method to get the list of customers. Each customers is represented by a string and has all information needed to sarl program to be runned.
+        
+        :return: A list of string to be then read by sarl MAS program, it represent each customers
+        :rtype: List[str]
+        """
+        
+        # Create a list of customers as string odered like:
+        # index, x, y, demand
+        # Build the string using fstrings
+        # The separator of data is a space
+        customers_str_list: List[str] = [
+            f"{customer.node_id} {customer.x} {customer.y} {customer.demand}"
+            for customer in self.__customers
+        ]
+        
+        # Return the list builded
+        return customers_str_list
+        
+    def depotForSarl(self) -> str:
+        """
+        depotForSarl()
+
+         Method to get string representation of the depot for sarl program and all the informations needed to sarl program to be runned.
+       
+        :return: A string to be then read by sarl MAS program, it represent the depot
+        :rtype: str
+        """
+        
+        # Create a string for the depot odered like:
+        # index, x, y, demand
+        # Build the string using fstrings
+        # The separator of data is a space
+        depot_str: str = f"{self.__depot.node_id} {self.__depot.x} {self.__depot.y} {self.__depot.demand}"
+        
+        # Return the list builded
+        return depot_str
 
 # ____________________________ Searching Methods ____________________________ #
 

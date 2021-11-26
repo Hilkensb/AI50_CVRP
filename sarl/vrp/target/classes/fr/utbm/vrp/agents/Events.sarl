@@ -1,0 +1,192 @@
+package fr.utbm.vrp.agents
+
+import java.util.ArrayList
+import java.util.UUID
+
+// All the events to able our agents to communicate
+
+/**
+ * Event from AllocationAgent to TaskAgent to request a new customer to insert
+ */
+event nextCustomerRequest {
+}
+
+/**
+ * Event from TaskAgent to allocationAgent to send a new customer to insert
+ * It's a reply to the nextCustomerRequest
+ * 
+ * @param customer The customer that will be inserted by the AllocationAgent
+ */
+event nextCustomer {
+	// Customer to insert
+	val customer : String
+
+	new (customer_value : String) {
+		customer = customer_value
+	}
+}
+
+/**
+ * Event from TaskAgent to AllocationAgent to indicates that there is no more
+ * customers to insert
+ */
+event finish {
+}
+
+/**
+ * Event from AllocationAgent to VehicleAgent to indicates that there is no
+ * more customer to insert
+ */
+event finishVehicle {
+}
+
+/**
+ * Event from VehicleAgent to AllocationAgent to tell what is the lowest 
+ * cost of insertion for the customer
+ * <br>It is a reply from the insertCustomerEstimate event
+ * 
+ * @param cost Cost of the insertion of the given customer
+ */
+event insertionCostEstimation {
+	// Lowest cost of insertion in the VehicleAgent
+	val cost : double
+
+	new (cost_value : double) {
+		cost = cost_value
+	}
+}
+
+/**
+ * Event from AllocationAgent to VehicleAgent to tell the vehicle to insert the given
+ * customer
+ * <br>It's launched when all vehicle agents have send their insertion cost estimation
+ * through insertionCostEstimation event
+ * 
+ * @param customer The customer to insert
+ */
+event insertCustomer {
+	// Customer to insert
+	val customer : String
+
+	new (customer_value : String) {
+		customer = customer_value
+	}
+}
+
+/**
+ * Event from VehicleAgent to AllocationAgent to tell that the customer has been inserted
+ * <br>It is a reply to insertCustomer event
+ */
+event customerInserted {
+}
+
+/**
+ * Event from AllocationAgent to VehicleAgent to get the lowest cost insertion of the
+ * given customer in the vehicle agent
+ * 
+ * @param customer The customer to estimate the insertion
+ */
+event insertCustomerEstimate {
+	// Customer to insert
+	val customer : String
+
+	new (customer_value : String) {
+		customer = customer_value
+	}
+}
+
+/**
+ * Event from VehicleAgent to AllocationAgent and AllocationAgent to TaskAgent to get the 
+ * solution build 
+ * 
+ * @param route The solution in the VehicleAgent
+ */
+event solution {
+	// Route build by the VehicleAgent
+	val route : ArrayList<String>
+
+	new (route_value : ArrayList<String>) {
+		route = route_value
+	}
+}
+
+/**
+ * Event from AllocationAgent to VehicleAgent to ask the VehicleAgent to remove and
+ * return all the customers in its route
+ * <br>We follow the RA strategy
+ */
+event removeAll{
+	
+}
+
+/**
+ * Event from VehicleAgent to AllocationAgent to ask to relocate customers
+ * 
+ * @param customers List of customers to relocate
+ */
+event relocate {
+	// Customers to relocate
+	val customers : ArrayList<String>
+
+	new (customers_value : ArrayList<String>) {
+		customers = customers_value
+	}
+}
+
+/**
+ * Event from AllocationAgent to VehicleAgent to insert a customers
+ * 
+ * @param customer The customer to relocate
+ */
+event relocateCustomer {
+	// Customer to relocate in its route
+	val customer : String
+
+	new (customer_value : String) {
+		customer = customer_value
+	}
+}
+
+/**
+ * Event from VehicleAgent to AllocationAgent to tell that the customer have been inserted
+ */
+event customerRelocated {
+}
+
+/**
+ * Event from AllocationAgent to VehicleAgent to get the estimation cost of an relocation
+ * of the customer to relocate it
+ * 
+ * @param customer Customer to estimate the relocation
+ */
+event relocateCustomerEstimate {
+	// Customer to estimate relocation cost
+	val customer : String
+
+	new (customer_value : String) {
+		customer = customer_value
+	}
+}
+
+/**
+ * Event from VehicleAgent to AllocationAgent to tell the relocation
+ * cost estimated by the VehicleAgent
+ * 
+ * @param cost Cost of the relocation
+ */
+event relocateCostEstimation {
+	// Estimation cost
+	val cost : double
+
+	new (cost_value : double, source_id_value : UUID) {
+		cost = cost_value
+	}
+}
+
+/**
+ * Event triggered by AllocationAgent to TaskAgent to prevent that
+ * a new vehicle has been inserted
+ */
+event vehicleInserted{
+	
+}

@@ -34,6 +34,9 @@ PORT: int = 8080
 # Debugging mode 
 DEBUG: bool = True
 
+# Stop the Java application at the end of the applicattion
+STOP_JAVA: bool = True
+
 # Details on the Secret Key: https://flask.palletsprojects.com/en/1.1.x/config/#SECRET_KEY
 # NOTE: The secret key is used to cryptographically-sign the cookies used for storing
 # the session data.
@@ -43,6 +46,8 @@ SECRET_KEY: str = 'SECRET_KEY'
 SOLUTION_ADDRESS: str = "/stream"
 # Topic where the solution is publish
 SOLUTION_TOPIC: str = "solution_stream"
+# Topic where the sarl final solution is publish
+SARL_SOLUTION_TOPIC: str = "sarl_final_solution"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~  Maps Address settings ~~~~~~~~~~~~~~~~~~~~~~~~~~ #
 
