@@ -20,7 +20,7 @@ import sys
 from solution.constructive.clarkwrightsaving import clarkWrightSaving
 from solution.metaheuristic.tabusearch import easyTabuSearch
 from utils.otherplotting import showSolutionEvolutionAnimationMatplotlib
-
+import ML.k_means as ml
 
 def main():
     getOptions(sys.argv[1:])
@@ -28,6 +28,7 @@ def main():
     app = Application()
     app.run()
 
+
+
 if __name__ == "__main__":
     main()
-
