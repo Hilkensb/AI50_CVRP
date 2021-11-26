@@ -11,12 +11,17 @@ from collections import Counter
 # Other Library
 # An extension of itertools
 from more_itertools import pairwise
+# Library to create the graph plot
+import matplotlib.pyplot as plt
+# To display plotly grah
+import plotly.graph_objects as go
 
 # Modules
 from problem.node import NodeWithCoord
 import utils.mathfunctions as mathfunc
 from problem.cvrp.depot import DepotCvrp
 from problem.cvrp.customer import CustomerCvrp
+from utils.colorpallette import DEFAULT_COLOR_PALETTE
 
 
 class RouteCvrp:
@@ -120,8 +125,7 @@ class RouteCvrp:
         """
         # Return the len of the string
         return len(self.__customers_route)
-    
-    # TODO a tester    
+      
     def __eq__(self, other: RouteCvrp) -> bool:
         """
         """
@@ -168,7 +172,32 @@ class RouteCvrp:
         """
         """
         return self.__customers_route[indices]
+    
+    def __dict__(self):
+        """
+        dict()
         
+        Create the dictionnary of the object
+        
+        :return: The dictionnary with al values of the object
+        :rtype: dict
+        """  
+        
+        # Create the dictionnary
+        object_dict: Dict = {}
+        
+        # Set every variable of it
+        # Convert every customer into dictionnary before putting them inside
+        # the dictionnary of the route
+        # it will then be easier to generate the json string
+        object_dict["customers_route"] = [customer.__dict__() for customer in self.__customers_route]
+        
+        return object_dict  
+    
+    def __hash__(self):
+        """
+        """
+        return hash(self.__str__)
     
 # --------------------------------- Methods --------------------------------- #
 
@@ -700,6 +729,243 @@ class RouteCvrp:
         
         return sum(demand_list)
 
+# _____________________________ Extract Methods _____________________________ #
+
+    def toJSON(self) -> str:
+        """
+        toJSON()
+        
+        Method to get the JSON value of the class
+        """
+    
+        return json.dumps(self.__dict__())
+        
+    def fromJSON(self, json: dict) -> None:
+        """
+        fromJSON()
+        
+        Method to transform a JSON into an object
+        
+        :param json: Json data of the object
+        :type json: dict
+        :raises: KeyValueError if the json is incomplete
+        """
+    
+        # Create a list of customers
+        customers_list: List[CustomerCvrp] = []
+        # Iterate throw every customers of the route
+        # Excludes the first and last node that should be depot node
+        # So it has to be another object, so another constructor
+        for customer_dict in json["customers_route"][1:-1]:
+            # Create a new customer
+            customer: CustomerCvrp = CustomerCvrp(node_id=0, x=0, y=0, demand=0)
+            # Read the json of the customer and update the customer
+            # with information stored inside
+            customer.fromJSON(json=customer_dict)
+            # Add the customer to the list
+            customers_list.append(customer)
+        
+        # Since every route should start and end at the depot they should be
+        # of type DpotCvrp
+        # We could have made only one object and put it at the start and end
+        # But for the safety we will prefer create 2 objects
+        # Even if the two object should be the same (at least if the json
+        # is correct)
+        start_depot: DepotCvrp = DepotCvrp(node_id=0, x=0, y=0)
+        end_depot: DepotCvrp = DepotCvrp(node_id=0, x=0, y=0)
+        # Read the json to update the objects
+        start_depot.fromJSON(json=json["customers_route"][0])
+        end_depot.fromJSON(json=json["customers_route"][-1])
+        
+        # Create the route with all nodes build before
+        self.__customers_route = [start_depot, *customers_list, end_depot]
+
+# _____________________________ Display Methods _____________________________ #
+
+    def drawPlotly(
+        self, depot_node_color: str = "#a6f68e", node_size: int = 15, 
+        route_color: str = DEFAULT_COLOR_PALETTE[0], show_legend_edge: bool = True,
+        show_legend_node: bool = False, route_number: int = -1
+    ) -> Tuple(List[Scatter], List[Scatter]):
+        """
+        drawPlotly()
+        
+        Method to create the scatter that compose the graph made with plotly
+        
+        :param route_color: List of colors of the routes in the solution, default the DEFAULT_COLOR_PALETTE (utils.colorpallete) (opt.)
+        :type route_color: List[str]
+        :param depot_node_color: Color of the node depot, default to \"#a6f68e\" (opt.)
+        :type depot_node_color: str
+        :param node_size: Size of the nodes, default to 15 (opt)
+        :type node_size: int
+        :param show_legend_edge: Display or not the legend of edges, default to True (opt.)
+        :type show_legend_edge: bool
+        :param show_legend_node: Display or not the legend of nodes, default to False (opt.)
+        :type show_legend_edge: bool
+        :param route_number: Number of the route drawn
+        :type route_number: int
+        :return: Two lists of scatters, one of nodes and one of edges
+        :rtype: Tuple(List[Scatter], List[Scatter])
+        """
+        
+        # Get the depot node 
+        depot_node = self.__customers_route[0]
+        
+        # List of scatter plot 
+        # List of the nodes
+        node_scatter_dict: Dict[int, Scatter] = {}
+        
+        # List of edges
+        edge_x = []
+        edge_y = []
+        # List of nodes
+        node_x = []
+        node_y = []
+        # Text when hovered
+        node_text: List[str] = []
+        
+        x1, y1 = depot_node.getCoordinates()
+        # For every customer in the solution (excluding the depot, so excluding the first and last node of the route)
+        for customer in self.__customers_route[1:-1]:
+            # Get the x and y position of the departure of the route
+            x0, y0 = x1, y1
+            # Get the x and y position of the arrival of the route
+            x1, y1 = customer.getCoordinates()
+            
+            # Set the positions of the ege
+            edge_x.append(x0)
+            edge_x.append(x1)
+            edge_x.append(None)
+            edge_y.append(y0)
+            edge_y.append(y1)
+            edge_y.append(None)
+            
+            # Set the node
+            # Set is position
+            node_x = [x1]
+            node_y = [y1]
+            # Set his name
+            node_text = [f"{customer.node_id}"]
+  
+            # Node of the trace
+            node_trace: Scatter = go.Scatter(
+                x=node_x, y=node_y,
+                showlegend=show_legend_node,
+                mode='markers',
+                hoverinfo='text',
+                marker=dict(
+                    color=route_color,
+                    size=node_size,
+                    line_width=0.5
+                ),
+                name=f"Customers in route #{route_number + 1}",
+                text=node_text
+            )
+            # Add the node scatter 
+            # Garrentee that each node will be in the same oreder
+            node_scatter_dict[customer.node_id - 1] = node_trace
+
+        # Set the returning edge to the depot
+        # Get the x and y position of last customer
+        x0, y0 = x1, y1
+        # Get the x and y position of the depot
+        x1, y1 = depot_node.getCoordinates()
+        # Set the positions of the ege
+        edge_x.append(x0)
+        edge_x.append(x1)
+        edge_x.append(None)
+        edge_y.append(y0)
+        edge_y.append(y1)
+        edge_y.append(None)
+
+        # Edge of the trace
+        edge_trace: Scatter = go.Scatter(
+            x=edge_x, y=edge_y,
+            showlegend=show_legend_edge,
+            line=dict(width=0.5, color=route_color),
+            hoverinfo='none',
+            mode='lines',
+            name=f"Route #{route_number + 1}"
+        )
+
+        return node_scatter_dict, edge_trace
+        
+    def updateDrawPlotly(
+        self, depot_node_color: str = "#a6f68e", node_size: int = 15, 
+        route_color: str = DEFAULT_COLOR_PALETTE[0], show_legend_edge: bool = True,
+        show_legend_node: bool = False, route_number: int = -1,
+        node_scatter_parent: List[go.Scatter] = [],
+        edge_scatter_parent: List[go.Scatter] = []
+    ) -> None:
+        """
+        updateDrawPlotly()
+        
+
+        Method to create the scatter that compose the graph made with plotly
+        
+        :param route_color: List of colors of the routes in the solution, default the DEFAULT_COLOR_PALETTE (utils.colorpallete) (opt.)
+        :type route_color: List[str]
+        :param depot_node_color: Color of the node depot, default to \"#a6f68e\" (opt.)
+        :type depot_node_color: str
+        :param node_size: Size of the nodes, default to 15 (opt)
+        :type node_size: int
+        :param show_legend_edge: Display or not the legend of edges, default to True (opt.)
+        :type show_legend_edge: bool
+        :param show_legend_node: Display or not the legend of nodes, default to False (opt.)
+        :type show_legend_edge: bool
+        :param route_number: Number of the route drawn
+        :type route_number: int
+        :param node_scatter_parent: List of node scatter of the main figure animation
+        :type node_scatter_parent: List[go.Scatter]
+        :param edge_scatter_parent: List of edge scatter of the main figure animation
+        :type edge_scatter_parent: List[go.Scatter]
+        """
+        
+        # List of customers x positions
+        x_position_list: List[int] = [customer.x for customer in self.__customers_route]
+        # List of customers y positions
+        y_position_list: List[int] = [customer.y for customer in self.__customers_route]
+        
+        # List of edges
+        # Initialize the x position of edges
+        edge_x: List[int] = [None] * ((len(self.__customers_route) - 1) * 3)
+        # List of x position for the start of the edge
+        edge_x[::3] = x_position_list[:-1]
+        # List of x position for the end of the edge
+        edge_x[1::3] = x_position_list[1:]
+        # Initialize the y position of edges
+        edge_y: List[int] = [None] * ((len(self.__customers_route) - 1) * 3)
+        # List of y position for the start of the edge
+        edge_y[::3] = y_position_list[:-1]
+        # List of y position for the end of the edge
+        edge_y[1::3] = y_position_list[1:]
+        
+        # Customer node group name 
+        customer_group_name: str = f"Customers in route #{route_number + 1}"
+
+        # For every customer in the solution (excluding the depot, so excluding the first and last node of the route)
+        for customer in self.__customers_route[1:-1]:
+            
+            # Add the node scatter 
+            # Garrentee that each node will be in the same oreder
+            node_scatter_copy = copy.copy(node_scatter_parent[customer.node_id - 1])
+            # Update the group name of the node
+            node_scatter_copy.name = customer_group_name
+            # Update the color of the node
+            node_scatter_copy.marker["color"] = route_color
+            # Update the node on the figure
+            node_scatter_parent[customer.node_id - 1] = node_scatter_copy
+
+        # update the edge of the route
+        # First create a copy of the edge scatter
+        edge_scatter_copy = copy.copy(edge_scatter_parent[route_number])
+        # Set the x position of edge
+        edge_scatter_copy.x = edge_x
+        # Set the y position of edge
+        edge_scatter_copy.y = edge_y
+        # update the edge scatter
+        edge_scatter_parent[route_number] = edge_scatter_copy
+        
 # ----------------------------- Getter / Setter ----------------------------- #
 
     @property 
@@ -709,3 +975,4 @@ class RouteCvrp:
     @customers_route.setter
     def customers_route(self, value: List[NodeWithCoord]) -> None:
         self.__customers_route = value
+

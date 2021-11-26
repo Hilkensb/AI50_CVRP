@@ -1,4 +1,6 @@
-
+*.class
+*.sarlbin
+*._trace
 *.pyc
 
 main.py
