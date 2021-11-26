@@ -51,6 +51,7 @@ class Wolf:
         self.cluster_center, self.assignment = kMeanCapacited(cvrp=cvrp, cluster_center=self.cluster_center, update_centers=False)
         
         self.penalty: int = penalty
+        self.cvrp: Cvrp = cvrp
         # Compute the fitness
         self.fitness: float = self.computeFitness()
  
@@ -77,11 +78,11 @@ class Wolf:
                 
             # Get the sum of all the demands
             sum_demand: int = sum([
-                customer.demand for self.assignment[index]
+                customer.demand for customer in self.assignment[index]
             ])
             
             # Add the penalty
-            fitness += max(0, sum_demand - cvrp.vehicule_capacity) * self.penalty
+            fitness += max(0, sum_demand - self.cvrp.vehicule_capacity) * self.penalty
              
         return fitness
 
