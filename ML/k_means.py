@@ -66,10 +66,13 @@ class K_means():
                     if u!=k:
                         S = self.dist_eucli(np.array(self.__Centers[k]),np.array(self.__Centers[u]))
                         L.append((self.__H[k]+self.__H[u])/S)
-                DBK.append(max(L))
+                if L!=[]:
+                    DBK.append(max(L))
+                else:
+                    DBK.append(0)
 
         self.__DB = float(sum(DBK)/len(DBK))
-        
+
 
 
     def stop_(self):
