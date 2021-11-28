@@ -76,7 +76,7 @@ agent AllocationAgent {
 		// Save the task agent uuid
 		taskAgentUUID = occurrence.parameters.get(3) as UUID 
 		
-		// BUG ?!?
+		// Display the source ID and the taskAgent ID
 		info(occurrence.source.getID())
 		info(taskAgentUUID)
 
@@ -165,7 +165,7 @@ agent AllocationAgent {
 			// Add their uuid to a list of uuid of VehicleAgents
 			this.vehicle_agents.add(vehicle_agent)
 		}
-
+		// Emit event from to VehicleAgent to ask the VehicleAgent to remove customer in its route
 		var vehicle_customer_relocate : UUID = this.vehicle_agents.poll()
 		innerContext.defaultSpace.emit(this.ID, new removeAll())[it.ID == vehicle_customer_relocate]
 

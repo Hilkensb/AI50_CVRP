@@ -49,8 +49,7 @@ agent BootAgent {
 		// Get the json string
 		var json_string = occurrence.parameters.get(0) as String
 		json_string = json_string.replace("'", "\"");
-		// var json_string: String = '{"topic":"aa", "depot": "1 0 0", "customers": ["2 31 3 75", "3 6 52 45", "4 7 8 9"], "vehicle_capacity":100}'
-
+		
 		var json_objc : Object = null;
 		// Parse the json
 		json_objc = new JSONParser().parse(new StringReader(json_string));
@@ -75,23 +74,6 @@ agent BootAgent {
 		var vehicle_capacity : AtomicInteger = new AtomicInteger(vehicle_capacity_raw);
 		// Parse the topic
 		var topic : String = json_builded.get("topic") as String;
-
-		/* 
-		 * // List of customers compose of
-		// id, x, y, demand
-		 * var customers_list : ConcurrentLinkedQueue<String> = new ConcurrentLinkedQueue<String>()
-		// Create the customers
-		customers_list.add("2 10 0 10")
-		customers_list.add("3 10 25 95")
-		customers_list.add("4 30 10 75")
-
-		// id, x, y of the depot node
-		var depot : String = "1 0 0"
-		// Set the vehicle capacity
-		var vehicle_capacity : AtomicInteger = new AtomicInteger(100)
-		// Instance id to build the topic
-		var topic: String = "aa"
-		*/
 
 		// Spawn the agent SearchManager and SearchAgent
 		spawn(TaskAgent, depot, customers_list, vehicle_capacity, topic)
