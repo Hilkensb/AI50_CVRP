@@ -22,6 +22,8 @@ from solution.constructive.clarkwrightsaving import clarkWrightSavingEvolution, 
 from utils.redisutils import isRedisAvailable
 from utils.runalgorithm import runAlgorithm
 from utils.otherplotting import getHtmlSolutionEvolutionAnimationPlotly, getHtmlLineCostEvolution
+from solution.metaheuristic.gwo import greyWolfSolver
+from solution.multiagents.sarlcommunication import sarlSender
 
 
 # --------------------------- Controller function --------------------------- #
@@ -174,6 +176,35 @@ def load(cvrp_id: str):
                 "tabu_length": int(request.form['TabuLength']),
                 "max_second_run": int(request.form['RunTimeTabu']),
                 "publish_topic": f"{SOLUTION_TOPIC}_{cvrp_id}"
+            })
+            # Is there evolution in the solution
+            instance_save[f'has_evolution_{cvrp_id}'].append(True)
+            
+        # if the tabu search should be runned
+        if len(request.form.getlist("MAS_Solver")) > 0:
+            # add the algorithm
+            algo_function.append(sarlSender)
+            # Set the name of clark wirght
+            algo_name.append("Multi-Agent System")
+            # Set the algorithm param
+            algo_kwargs.append({
+                "topic": cvrp_id, "instance": cvrp_instance
+            })
+            # Is there evolution in the solution
+            instance_save[f'has_evolution_{cvrp_id}'].append(False)
+            
+        # if the tabu search should be runned
+        if len(request.form.getlist("Wolf")) > 0:
+            # add the algorithm
+            algo_function.append(greyWolfSolver)
+            # Set the name of clark wirght
+            algo_name.append("Grey Wolf Optimizer")
+            # Set the algorithm param
+            algo_kwargs.append({
+                "iteration": int(request.form['WolfIteration']),
+                "cvrp": cvrp_instance,
+                "wolf_number": int(request.form['WolfNumber']),
+                "topic": f"{SOLUTION_TOPIC}_{cvrp_id}"
             })
             # Is there evolution in the solution
             instance_save[f'has_evolution_{cvrp_id}'].append(True)
@@ -358,7 +389,7 @@ def algorithmTask(
         else:
             # Generate the html of the graph
             solution_representation: str = algorithm_solution[index][-1].getHtmlFigurePlotly(
-                full_html=False, default_height="750px"
+                full_html=False, default_height="500px"
             )
             # Append the html in the list
             solution_list.append(solution_representation)

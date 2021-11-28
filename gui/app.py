@@ -44,13 +44,13 @@ class Application:
         Destructor. It used to stop the sarl application
         """
         
-        # Call the super destructor if there's one
-        super()
-        
         # Send a stop on sarl topic if needed
-        if STOP_JAVA:
+        if STOP_JAVA and isRedisAvailable():
             # Publish stop on sarlTopic to tell the sarl agent to kill it self
             redis_server.publish("sarlTopic", "stop")
+            
+        # Call the super destructor if there's one
+        super()
         
     def __mapActions(self) -> None:
         """

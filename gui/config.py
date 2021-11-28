@@ -78,3 +78,19 @@ redis_server: red.Redis = red.Redis(host=REDIS_HOST, port=REDIS_PORT, db=0)
 # Session saves
 instance_save: Dict = {}
 
+# ________________________ Function to change values ________________________ #
+
+def updateShowSolution(value: bool):
+    """
+    Function to update the value of the SHOW_SOLUTION
+    
+    :param value: New value
+    :type value: bool
+    """
+    
+    # Get the global value
+    global SHOW_SOLUTION
+    
+    # Update the value
+    SHOW_SOLUTION = value
+

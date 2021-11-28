@@ -13,7 +13,7 @@ from problem.cvrp.instance import Cvrp
 from solution.cvrp.solution import SolutionCvrp
 
 
-def sarlSender(topic: str, instance: Cvrp) -> SolutionCvrp:
+def sarlSender(topic: str, instance: Cvrp) -> Tuple[List[SolutionCvrp], float]:
     """
     sarlSender()
     
@@ -44,7 +44,7 @@ def sarlSender(topic: str, instance: Cvrp) -> SolutionCvrp:
     return sarlListener(topic=topic, instance=instance)
     
 
-def sarlListener(topic: str, instance: Cvrp) -> SolutionCvrp:
+def sarlListener(topic: str, instance: Cvrp) -> Tuple[List[SolutionCvrp], float]:
     """
     sarlListener()
     
@@ -94,6 +94,6 @@ def sarlListener(topic: str, instance: Cvrp) -> SolutionCvrp:
     # Build it with the information returned by sarl
     solution.fromSarl(sarl_response=response)
     
-    return solution
+    return [solution], [solution.evaluation()]
     
     

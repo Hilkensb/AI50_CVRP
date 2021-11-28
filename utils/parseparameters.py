@@ -28,6 +28,5 @@ def getOptions(args: List[str]):
         runTest()
         
     # Show evolution
-    config.SHOW_SOLUTION = options.show_evolution
-        
+    config.updateShowSolution(value=options.show_evolution)
 

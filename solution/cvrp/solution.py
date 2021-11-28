@@ -1110,17 +1110,8 @@ class SolutionCvrp:
         """
         
         # The evaluation of the solution
-        evaluation: float = 0
-        
-        # We are going to evaluate each route and sum each evaluation
-        # For each route
-        for route in self.__route:
-            # Get the cost of the route
-            cost = route.evaluation()
-            # Sum the cost to get an evaluation
-            evaluation += cost
-            
-        return evaluation
+        # We are going to evaluate each route and sum each evaluation      
+        return sum([route.evaluation() for route in self.__route])
         
 # ______________________________ Parse Methods ______________________________ #
 
@@ -1240,6 +1231,19 @@ class SolutionCvrp:
         return True
 
 # ___________________________ Other Useful Method ___________________________ # 
+    
+    def getOverDemand(self) -> int:
+        """
+        Method to get the demand of each that are over the vehicle capacity
+        
+        :return: The demand over
+        :rtype: int
+        """
+        
+        return sum([
+            max(0, route.demandSupplied() - self.__cvrp_instance.vehicule_capacity)
+            for route in self.__route
+        ])
                 
     def getAllRouteSwapNeighbours(self, total_cost: float = None) -> List[Tuple[SolutionCvrp, int]]:
         """

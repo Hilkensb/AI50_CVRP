@@ -231,16 +231,12 @@ class RouteCvrp:
         # For every node in the route
         # The pairwise function of itertools create pair of elements that are
         # following in an iterable (here a list)
-        # More info : https://docs.python.org/3/library/itertools.html#itertools-recipes
-        for node_pair in pairwise(self.__customers_route):
-            # sum the euclidean distance of node that are following each other
-            # Get the distance between the nodes
-            distance: float = mathfunc.euclideanDistance(node_pair[0], node_pair[1])
-            # Add the distance to the evaluation
-            evaluation += distance
-            
+        # More info : https://docs.python.org/3/library/itertools.html#itertools-recipes            
         # Return the evaluation of the route
-        return evaluation
+        return sum([
+            mathfunc.euclideanDistance(node_pair[0], node_pair[1])
+            for node_pair in pairwise(self.__customers_route)
+        ])
         
     def isValid(self) -> bool:
         """
