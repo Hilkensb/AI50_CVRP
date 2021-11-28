@@ -27,43 +27,6 @@ import ML.createDataset as db
 
 def main():
 
-    #c = cvrp.Cvrp(file_path="http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.vrp", file_type="web")
-    #s = clarkWrightSaving(c)
-    #t = tabuSearch(initial_solution=s,number_iteration = 100,aspiration = False,tabu_length = 3,max_second_run = 60)
-    #res = t.best_solution_evaluation_evolution[-1]
-
-    #c = cvrp.Cvrp()
-    #c.randomInstance(70,40,7,30,100)
-    #KM = ml.K_means(c)
-    #KM.run()
-    #print(KM.DB)
-    #KM.show()
-
-
-    #with open('data.csv','w',newline='') as fichiercsv:
-        #writer=csv.writer(fichiercsv)
-        #writer.writerow(['Number of iterations','aspiration','lenght of tabu list','maximum run time',
-        #'Nb customers','Nb vehicles','Capacity','DB','results','num graph'])
-
-    #with open('dataComplet.csv','w',newline='') as fichiercsv2:
-        #writer=csv.writer(fichiercsv2)
-        #writer.writerow(['Number of iterations','aspiration','lenght of tabu list','maximum run time',
-        #'Nb customers','Nb vehicles','Capacity','DB','results','num graph'])
-
-
-
-
-    #s = sol.SolutionCvrp(c)
-    #s.readSolutionWeb(url="http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.sol")
-    #print(s.showFigure())
-
-
-    #S = slv.Solver(c.customers,c.minVehiculeNumber(),c.vehicule_capacity,c.distanceMatrix())
-    #S.run()
-    #S.show()
-
-
-
     cvrp_bench = [
     "http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.vrp",
     "http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n19-k2.vrp",
@@ -112,18 +75,18 @@ def main():
     (60,5,40),(80,5,40),(130,4,37),(135,5,40),(350,5,40),(400,3,50),(200,10,50),(200,3,35),(100,4,30)]
 
     dataset = db.Dataset('data.csv','dataComplet.csv',cvrp_bench,paramCVRP_alea)
-    dataset.create(0,1)   #chaque dataset.create a une durée d'environ 3h20
-    #dataset.create(1,2)
-    #dataset.create(2,3)
-    #dataset.create(3,4)
-    #dataset.create(4,5)
-    #dataset.create(5,6)
-    #dataset.create(6,7)
-    #dataset.create(7,8)
-    #dataset.create(8,9)
-    #dataset.create(9,10)
-    #dataset.create(10,11)
-    #dataset.create(11,12)
+    dataset.create(12,13)   #chaque dataset.create a une durée d'environ 3h20
+    #dataset.create(13,14)
+    #dataset.create(14,15)
+    #dataset.create(15,16)
+    #dataset.create(16,17)
+    #dataset.create(17,18)
+    #dataset.create(18,19)
+    #dataset.create(19,20)
+    #dataset.create(20,21)
+    #dataset.create(21,22)
+    #dataset.create(22,23)
+    #dataset.create(23,24)
 
 
 
