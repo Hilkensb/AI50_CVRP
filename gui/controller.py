@@ -204,7 +204,8 @@ def load(cvrp_id: str):
                 "iteration": int(request.form['WolfIteration']),
                 "cvrp": cvrp_instance,
                 "wolf_number": int(request.form['WolfNumber']),
-                "topic": f"{SOLUTION_TOPIC}_{cvrp_id}"
+                "topic": f"{SOLUTION_TOPIC}_{cvrp_id}",
+                "max_second_run": int(request.form['RunTimeGWO'])
             })
             # Is there evolution in the solution
             instance_save[f'has_evolution_{cvrp_id}'].append(True)

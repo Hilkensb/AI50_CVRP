@@ -7,6 +7,7 @@ import random
 from typing import List, Dict, Tuple, Union
 import math
 import json
+import threading
 
 # Other Library
 import numpy
@@ -22,9 +23,16 @@ from gui.config import redis_server, SOLUTION_TOPIC, SHOW_SOLUTION
 from utils.redisutils import isRedisAvailable
 
     
+# ----------------------------- Global variables ---------------------------- #    
+   
+# Set and dicts to memorize which cluster of point we already treated
+# And get the route and their evaluation of cluster point already treated
+# Used to build route and their evaluation more quickly  
 cluster_set = set()
 route_dict = dict()
 route_values_dict = dict()
+
+# ------------------------ Grey Wolf Optimizer Class ------------------------ #
 
 # wolf class
 class Wolf:
@@ -44,8 +52,10 @@ class Wolf:
             y_values: List[int] = [customer.y for customer in cvrp.customers]
             
             # Determine the max and min value of x and y
+            # For x
             max_x: int = max(x_values)
             min_x: int = min(x_values)
+            # For y
             max_y: int = max(y_values)
             min_y: int = min(y_values)
             
@@ -84,7 +94,9 @@ class Wolf:
         # Build the route with the customer assignment to cluster
         for customer_cluster in self.assignment:
         
-            key=hash(tuple(customer_cluster))        
+            # hash the clusters point
+            key=hash(tuple(customer_cluster))  
+            # If this cluster has already been seen      
             if key in cluster_set:
                 builded_route.append(route_dict[key])
                 evaluation += route_values_dict[key]
@@ -108,8 +120,203 @@ class Wolf:
         
         return self.fitness
 
+class WolfPack:
+    def __init__(self):
+        """
+        Constructor
+        """
+
+        # Evolution of the best solution evaluation found
+        self.__best_solution_evaluation_evolution: List[float] = []
+        # Evolution of the best solution found
+        self.__best_solution_evolution: List[SolutionCvrp] = []        
+        # Varaible to know if the tabu serach is still running
+        self.__running: bool = False
+    
+    # grey wolf optimization (GWO)
+    def gwo(
+        self, max_iter: int, wolf_number: int, cvrp: Cvrp, topic: str
+    ) -> Tuple[List[SolutionCvrp], List[float]]:
+        """
+        gwo()
+        
+        Function to run the Grey Wolf Optimizer
+        
+        :param cvrp: The cvrp instance to find a solution
+        :type cvrp: Cvrp
+        :param max_iter: Number of iteration to run
+        :type max_iter: int
+        :param wolf_number: Number of wolf
+        :type wolf_number: int
+        :return: The alpha wolf
+        :rtype: Wolf
+        """
+        
+        self.__running = True
+        rnd: random.Random = random.Random(0)
+     
+        # create n random wolves
+        population: List[Wolf] = [ Wolf(cvrp=cvrp) for i in range(wolf_number)]
+     
+        # On the basis of fitness values of wolves
+        # sort the population in asc order
+        population = sorted(population, key = lambda temp: temp.fitness)
+     
+        # best 3 solutions will be called as
+        # alpha, beta and gaama
+        alpha_wolf, beta_wolf, gamma_wolf = copy.copy(population[: 3])
+     
+        # Get the minimum number of vehicles
+        cluster_number: int = cvrp.minVehiculeNumber()
+     
+        # main loop of gwo
+        Iter: int = 0
+        while Iter < max_iter and self.__running:
+     
+            # linearly decreased from 2 to 0
+            a: float = 2.0 * (1.0 - Iter/max_iter)
+     
+            # updating each population member with the help of best three members
+            for i in range(wolf_number):
+            
+                r1: float = rnd.random()
+                # Compute the A
+                A1: float = 2.0 * a * r1 - a
+                A2: float = 2.0 * a * r1 - a
+                A3: float = 2.0 * a * r1 - a
+                
+                r2: float = rnd.random()
+                # Compute the c values
+                C1: float = 2.0 * r2
+                C2: float = 2.0 * r2
+                C3: float = 2.0 * r2
+     
+                # Create vectors 0
+                X1: List[Tuple[float]] = [tuple([0.0, 0.0]) for i in range(cluster_number)]
+                X2: List[Tuple[float]] = [tuple([0.0, 0.0]) for i in range(cluster_number)]
+                X3: List[Tuple[float]] = [tuple([0.0, 0.0]) for i in range(cluster_number)]
+                Xnew: List[Tuple[float]] = [tuple([0.0, 0.0]) for i in range(cluster_number)]
+                
+                # For each cluster
+                for j in range(cluster_number):
+                    # Update the position values with given alpha, beta and gamma position
+                    X1[j] = tuple(
+                        cluster_center - A1 * abs(
+                            C1 * cluster_center - population[i].cluster_center[j][index]
+                        )
+                        for index, cluster_center in enumerate(alpha_wolf.cluster_center[j])
+                    )
+                    
+                    X2[j] = tuple(
+                        cluster_center - A2 * abs(
+                            C2 * cluster_center - population[i].cluster_center[j][index]
+                        )
+                        for index, cluster_center in enumerate(beta_wolf.cluster_center[j])
+                    )
+                    
+                    X3[j] = tuple(
+                        cluster_center - A3 * abs(
+                            C3 * cluster_center - population[i].cluster_center[j][index]
+                        )
+                        for index, cluster_center in enumerate(gamma_wolf.cluster_center[j])
+                    )
+                    
+                    Xnew[j] = tuple(X1[j][val] + X2[j][val] + X3[j][val] for val in range(len(Xnew[j])))
+                 
+                # Create a new wolf 
+                for j in range(cluster_number):
+                    # Set it's value
+                    Xnew[j] = tuple(Xnew[j][val] / 3.0 for val in range(len(Xnew[j])))
+     
+                # Create a temporary wolf
+                wolf_temp: Wolf = Wolf(cvrp, Xnew)
+     
+                # greedy selection
+                # If the fitness is better
+                if wolf_temp.fitness < population[i].fitness:
+                    population[i] = wolf_temp
+                     
+            # On the basis of fitness values of wolves
+            # sort the population in asc order
+            population = sorted(population, key = lambda temp: temp.fitness)
+     
+            # best 3 solutions will be called as
+            # alpha, beta and gaama
+            alpha_wolf, beta_wolf, gamma_wolf = copy.copy(population[: 3])
+             
+            # Increase the iteration 
+            Iter+= 1
+            
+            # Add the solution
+            self.__best_solution_evolution.append(alpha_wolf.solution_found)
+            self.__best_solution_evaluation_evolution.append(alpha_wolf.fitness)
+            
+            # if redis is on
+            if isRedisAvailable():
+                # Create the data
+                json_data = {
+                    "algorithm_name": "Grey Wolf Optimizer", "cost": round(alpha_wolf.fitness, 2),
+                    "iteration": Iter,
+                    "graph": solution.drawPlotlyJSON() if SHOW_SOLUTION else ""
+                }
+                # Publish
+                redis_server.publish(topic, json.dumps(json_data))
+            
+        # end-while
+     
+        # returning the best solution
+        return solution_list, evaluation_list
+        
+    def runGwoThread(
+        self, max_iter: int, wolf_number: int, cvrp: Cvrp, topic: str,
+        max_second_run: int = 45
+    ) -> None:
+        """
+        runGwoThread()
+        
+        Function to launch the Grey Wolf Optimizer in an other thread to be stoped when we need.
+    
+        :param cvrp: The cvrp instance to find a solution
+        :type cvrp: Cvrp
+        :param iteration: Number of iteration to run
+        :type iteration: int
+        :param wolf_number: Number of wolf
+        :type wolf_number: int
+        :param max_second_run: Maximum second to run tabu search
+        :type max_second_run: int
+        """
+        
+        self.__running = True
+        
+        # Thread running the tabu search       
+        thread_gwo = threading.Thread(
+            target=self.gwo,
+            kwargs={
+                "max_iter": max_iter, "wolf_number": wolf_number, "cvrp": cvrp,
+                "topic": topic
+            }, daemon=True
+        )
+        
+        # launch the thread  
+        thread_gwo.start()
+        # wait n seconds for the thread to finish its work
+        thread_gwo.join(max_second_run)
+        
+        self.__running = False
+        
+    @property 
+    def best_solution_evaluation_evolution(self) -> List[int]:
+        return self.__best_solution_evaluation_evolution
+        
+    @property 
+    def best_solution_evolution(self) -> List[SolutionCvrp]:
+        return self.__best_solution_evolution
+
+# ------------------------- Grey Wolf Optimizer Run ------------------------- #
+
 def greyWolfSolver(
-    cvrp: Cvrp, topic: str, iteration: int = 100, wolf_number: int = 20
+    cvrp: Cvrp, topic: str, iteration: int = 100, wolf_number: int = 20,
+    max_second_run: int = 45
 ) -> Tuple[List[SolutionCvrp], List[float]]:
     """
     greyWolfSolver()
@@ -122,14 +329,26 @@ def greyWolfSolver(
     :type iteration: int
     :param wolf_number: Number of wolf
     :type wolf_number: int
+    :param max_second_run: Maximum second to run tabu search
+    :type max_second_run: int
     :return: Solution found and the evaluation
     :rtype: Tuple[List[SolutionCvrp], List[float]]
 
     .. note: Based on: https://iopscience.iop.org/article/10.1088/1757-899X/83/1/012014/pdf
     """
     
-    return gwo(max_iter=iteration, cvrp=cvrp, wolf_number=wolf_number, topic=topic)
+    # Create the wolf pack for the grey wolf optimizer
+    wolf_pack: WolfPack = WolfPack()
     
+    # Run the algorithm
+    wolf_pack.runGwoThread(
+        max_iter=iteration, cvrp=cvrp, wolf_number=wolf_number, topic=topic,
+        max_second_run=max_second_run
+    )
+    
+    return wolf_pack.best_solution_evolution, wolf_pack.best_solution_evaluation_evolution
+    
+# ----------------------------- Utils functions ----------------------------- #
     
 def buildClusterRoute(cluster_customer: List[Customer], depot: DepotCvrp) -> List[NodeWithCoord]:
     """
@@ -211,140 +430,6 @@ def costInsertion(customer: CustomerCvrp, route: List[NodeWithCoord], place: int
     distance3: float = euclideanDistance(route[place+1], customer)
     
     return distance2 + distance3 - distance1
-            
-# grey wolf optimization (GWO)
-def gwo(max_iter: int, wolf_number: int, cvrp: Cvrp, topic: str) -> Tuple[List[SolutionCvrp], List[float]]:
-    """
-    gwo()
-    
-    Function to run the Grey Wolf Optimizer
-    
-    :param cvrp: The cvrp instance to find a solution
-    :type cvrp: Cvrp
-    :param max_iter: Number of iteration to run
-    :type max_iter: int
-    :param wolf_number: Number of wolf
-    :type wolf_number: int
-    :return: The alpha wolf
-    :rtype: Wolf
-    """
-    
-    # History
-    solution_list: List[SolutionCvrp] = []
-    evaluation_list: List[float] = []
-    
-    rnd: random.Random = random.Random(0)
- 
-    # create n random wolves
-    population: List[Wolf] = [ Wolf(cvrp=cvrp) for i in range(wolf_number)]
- 
-    # On the basis of fitness values of wolves
-    # sort the population in asc order
-    population = sorted(population, key = lambda temp: temp.fitness)
- 
-    # best 3 solutions will be called as
-    # alpha, beta and gaama
-    alpha_wolf, beta_wolf, gamma_wolf = copy.copy(population[: 3])
- 
-    # Get the minimum number of vehicles
-    cluster_number: int = cvrp.minVehiculeNumber()
- 
-    # main loop of gwo
-    Iter: int = 0
-    while Iter < max_iter:
- 
-        # linearly decreased from 2 to 0
-        a: float = 2.0 * (1.0 - Iter/max_iter)
- 
-        # updating each population member with the help of best three members
-        for i in range(wolf_number):
-        
-            r1: float = rnd.random()
-            # Compute the A
-            A1: float = 2.0 * a * r1 - a
-            A2: float = 2.0 * a * r1 - a
-            A3: float = 2.0 * a * r1 - a
-            
-            r2: float = rnd.random()
-            # Compute the c values
-            C1: float = 2.0 * r2
-            C2: float = 2.0 * r2
-            C3: float = 2.0 * r2
- 
-            # Create vectors 0
-            X1: List[Tuple[float]] = [tuple([0.0, 0.0]) for i in range(cluster_number)]
-            X2: List[Tuple[float]] = [tuple([0.0, 0.0]) for i in range(cluster_number)]
-            X3: List[Tuple[float]] = [tuple([0.0, 0.0]) for i in range(cluster_number)]
-            Xnew: List[Tuple[float]] = [tuple([0.0, 0.0]) for i in range(cluster_number)]
-            
-            # For each cluster
-            for j in range(cluster_number):
-                # Update the position values with given alpha, beta and gamma position
-                X1[j] = tuple(
-                    cluster_center - A1 * abs(
-                        C1 * cluster_center - population[i].cluster_center[j][index]
-                    )
-                    for index, cluster_center in enumerate(alpha_wolf.cluster_center[j])
-                )
-                
-                X2[j] = tuple(
-                    cluster_center - A2 * abs(
-                        C2 * cluster_center - population[i].cluster_center[j][index]
-                    )
-                    for index, cluster_center in enumerate(beta_wolf.cluster_center[j])
-                )
-                
-                X3[j] = tuple(
-                    cluster_center - A3 * abs(
-                        C3 * cluster_center - population[i].cluster_center[j][index]
-                    )
-                    for index, cluster_center in enumerate(gamma_wolf.cluster_center[j])
-                )
-                
-                Xnew[j] = tuple(X1[j][val] + X2[j][val] + X3[j][val] for val in range(len(Xnew[j])))
-             
-            # Create a new wolf 
-            for j in range(cluster_number):
-                # Set it's value
-                Xnew[j] = tuple(Xnew[j][val] / 3.0 for val in range(len(Xnew[j])))
- 
-            # Create a temporary wolf
-            wolf_temp: Wolf = Wolf(cvrp, Xnew)
- 
-            # greedy selection
-            # If the fitness is better
-            if wolf_temp.fitness < population[i].fitness:
-                population[i] = wolf_temp
-                 
-        # On the basis of fitness values of wolves
-        # sort the population in asc order
-        population = sorted(population, key = lambda temp: temp.fitness)
- 
-        # best 3 solutions will be called as
-        # alpha, beta and gaama
-        alpha_wolf, beta_wolf, gamma_wolf = copy.copy(population[: 3])
-         
-        # Increase the iteration 
-        Iter+= 1
-        
-        solution_list.append(alpha_wolf.solution_found)
-        evaluation_list.append(alpha_wolf.fitness)
-        
-        # if redis is on
-        if isRedisAvailable():
-            # Create the data
-            json_data = {
-                "algorithm_name": "Grey Wolf Optimizer", "cost": round(alpha_wolf.fitness, 2),
-                "iteration": Iter,
-                "graph": solution.drawPlotlyJSON() if SHOW_SOLUTION else ""
-            }
-            # Publish
-            redis_server.publish(topic, json.dumps(json_data))
-        
-    # end-while
- 
-    # returning the best solution
-    return solution_list, evaluation_list
            
 #----------------------------
 
