@@ -112,12 +112,12 @@ def main():
     (60,5,40),(80,5,40),(130,4,37),(135,5,40),(350,5,40),(400,3,50),(200,10,50),(200,3,35),(100,4,30)]
 
     dataset = db.Dataset('data.csv','dataComplet.csv',cvrp_bench,paramCVRP_alea)
-    dataset.create(0,1)   #chaque dataset.create a une durée d'environ 3h20
+    #dataset.create(0,1)   #chaque dataset.create a une durée d'environ 3h20
     #dataset.create(1,2)
     #dataset.create(2,3)
     #dataset.create(3,4)
     #dataset.create(4,5)
-    #dataset.create(5,6)
+    dataset.create(5,6)
     #dataset.create(6,7)
     #dataset.create(7,8)
     #dataset.create(8,9)
