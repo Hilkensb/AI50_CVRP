@@ -24,6 +24,7 @@ from utils.runalgorithm import runAlgorithm
 from utils.otherplotting import getHtmlSolutionEvolutionAnimationPlotly, getHtmlLineCostEvolution
 from solution.metaheuristic.gwo import greyWolfSolver
 from solution.multiagents.sarlcommunication import sarlSender
+from utils.mailsender import sendMailFinished
 
 
 # --------------------------- Controller function --------------------------- #
@@ -223,7 +224,8 @@ def load(cvrp_id: str):
                 "algorithm_list": algo_function,
                 "algorithm_kargs": algo_kwargs,
                 "algorithm_name": algo_name,
-                "cvrp_id": cvrp_id
+                "cvrp_id": cvrp_id, 
+                "email": request.form['email']
             },
             daemon=True
         )
@@ -322,7 +324,7 @@ def event_stream(cvrp_id: str) -> str:
 def algorithmTask(
     flask_applaction: Flask, cvrp_instance: Cvrp,
     algorithm_list: List, algorithm_kargs: List[Dict], algorithm_name: List[str],
-    cvrp_id: str
+    cvrp_id: str, email: str
 ) -> None:
     """
     Function to run the algorithm selected by the user
@@ -347,10 +349,6 @@ def algorithmTask(
         algorithm_kargs=algorithm_kargs, algorithm_name=algorithm_name,
         publish_topic=f"{SOLUTION_TOPIC}_{cvrp_id}"
     )
-    
-    #with flask_applaction.test_request_context( '/result/'):
-    #    session['algorithm_name'] = algorithm_name
-    #    session['algorithm_solution'] = algorithm_solution
     
     # Tell to the user what is actually happening
     json_data = {
@@ -441,4 +439,15 @@ def algorithmTask(
         # before the web page have finished to load. If that case arrived
         # the user will stay forever on the loading page
         time.sleep(0.05)
+         
+    # Send mail if requested
+    if email is not None or email != "":
+        # Send the notification mail
+        with flask_applaction.test_request_context( '/result/'):
+            # Build the url for the report
+            url_link: str = f"http://{HOST}:{PORT}{url_for('result', cvrp_id=cvrp_id)}"
+            # print(url_link)
+            # Send the mail
+            status_code: int = sendMailFinished(mail_receiver=email, mail_name=cvrp_id, link=url_link)
+
    

@@ -265,7 +265,7 @@ class WolfPack:
         # end-while
      
         # returning the best solution
-        return solution_list, evaluation_list
+        return self.__best_solution_evolution, self.__best_solution_evaluation_evolution
         
     def runGwoThread(
         self, max_iter: int, wolf_number: int, cvrp: Cvrp, topic: str,
