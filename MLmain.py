@@ -77,10 +77,10 @@ def main():
     dataset = db.Dataset('data.csv','dataComplet.csv',cvrp_bench,paramCVRP_alea)
     #dataset.create(12,13)   #chaque dataset.create a une durée d'environ 3h20
     #dataset.create(13,14)
-    dataset.create(14,15)
+    #dataset.create(14,15)
     #dataset.create(15,16)
-    #dataset.create(16,17)
-    #dataset.create(17,18)
+    dataset.create(16,17)
+    dataset.create(17,18)
     #dataset.create(18,19)
     #dataset.create(19,20)
     #dataset.create(20,21)
