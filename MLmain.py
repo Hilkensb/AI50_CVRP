@@ -122,9 +122,12 @@ def main():
     #dataset.create(7,8)
     #dataset.create(8,9)
     #dataset.create(9,10)
-    dataset.create(10,11)
-    dataset.create(11,12)
-
+    #dataset.create(10,11)
+    #dataset.create(11,12)
+    dataset.create_from_bench(0,10)
+    dataset.create_from_bench(10,20)
+    #dataset.create_from_bench(20,30)
+    #dataset.create_from_bench(30,40)
 
 
 

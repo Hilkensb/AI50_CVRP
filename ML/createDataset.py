@@ -41,6 +41,19 @@ class Dataset():
                 self.test_all_parameters(nb_c,c,c.minVehiculeNumber(),c.vehicule_capacity,DB,num_graph)
         print(time.time() - start_time, " seconds")
 
+    def create_from_bench(self,d,f):
+        start_time = time.time()
+        for i in range(d,f):
+                c = cvrp.Cvrp(file_path=self.__cvrpbench[i], file_type="web")
+                nb_c = c.nb_customer
+                self.__tabu_list_lenght = [int(nb_c/4),int(nb_c/2),nb_c-1]
+                KM = ml.K_means(c)
+                KM.run()
+                DB = KM.DB
+                num_graph = i
+                self.test_all_parameters(nb_c,c,c.minVehiculeNumber(),c.vehicule_capacity,DB,num_graph)
+        print(time.time() - start_time, " seconds")
+
     def test_all_parameters(self, nb_cust, cvrp, nb_V,capacity,DB,num_graph):
         L = []
         L_all_res = []
