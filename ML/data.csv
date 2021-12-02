@@ -1,5 +1,4 @@
 Number of iterations,aspiration,lenght of tabu list,maximum run time,Nb customers,Nb vehicles,Capacity,DB,results,num graph
-
 100,True,7,75,15,3,140,0.8034807981054621,414.43713625116237,0
 100,False,3,60,15,2,160,0.8939493609861389,449.3407945815389,1
 100,False,3,75,15,1,400,0.0,43.86342439892266,2

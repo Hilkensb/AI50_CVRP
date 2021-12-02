@@ -24,8 +24,11 @@ from solution.metaheuristic.tabusearch import tabuSearch
 from utils.otherplotting import showSolutionEvolutionAnimationMatplotlib
 import ML.k_means as ml
 import ML.createDataset as db
+import ML.model as md
 
 def main():
+
+    model = md.ModelSeq()
 
     #c = cvrp.Cvrp(file_path="http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.vrp", file_type="web")
     #s = clarkWrightSaving(c)
