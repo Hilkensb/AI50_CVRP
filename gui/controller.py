@@ -25,6 +25,7 @@ from utils.otherplotting import getHtmlSolutionEvolutionAnimationPlotly, getHtml
 from solution.metaheuristic.gwo import greyWolfSolver
 from solution.multiagents.sarlcommunication import sarlSender
 from utils.mailsender import sendMailFinished
+from utils.pdfcreator import createPDF
 
 
 # --------------------------- Controller function --------------------------- #
@@ -287,6 +288,15 @@ def downloadFile(cvrp_id: str):
     
     # Get the generated pdf
     path = os.path.join(flask_applaction.config["CLIENT_PDF"], pdf_name)
+    
+    # Create the pdf
+    createPDF(
+        algorithm_name=instance_save[f'best_algorithm_{cvrp_id}'],
+        min_cost=instance_save[f'best_solution_cost_{cvrp_id}'], 
+        solution=instance_save[f'best_solution_{cvrp_id}'],
+        name=path
+    )
+    
     return send_file(path, as_attachment=True)
 
 # ----------------------------- Other functions ----------------------------- #
@@ -414,6 +424,8 @@ def algorithmTask(
     index_best_solution = instance_save[f'algorithm_best_solution_cost_{cvrp_id}'].index(instance_save[f'best_solution_cost_{cvrp_id}'])
     # Best algorithm
     instance_save[f'best_algorithm_{cvrp_id}'] = algorithm_name[index_best_solution]
+    # Best overall solution
+    instance_save[f'best_solution_{cvrp_id}'] = algorithm_solution[index_best_solution][-1]
     # Minimum number of vehicles for the best solutions
     instance_save[f'minimum_vehicles_{cvrp_id}'] = len(algorithm_solution[index_best_solution][-1].route)
     # Instance graph
