@@ -9,3 +9,5 @@ This section is dedicated to the python objects of this project, their attribute
    
    problem/problem
    solution/solution
+   utils/utils
+   gui/gui

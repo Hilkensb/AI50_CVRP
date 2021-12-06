@@ -19,7 +19,7 @@
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
-    <link rel="next" title="Capacitated Vehicle Routing Problem Modelization" href="../../solution/solution.html" />
+    <link rel="next" title="Capacitated Vehicle Routing Problem Solution Modelization" href="../../solution/solution.html" />
     <link rel="prev" title="CVRP Depot Node" href="depot.html" /> 
 </head>
 
@@ -54,7 +54,9 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../solution/solution.html">Capacitated Vehicle Routing Problem Modelization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../solution/solution.html">Capacitated Vehicle Routing Problem Solution Modelization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utils/utils.html">Utils package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gui/gui.html">Graphical user interface</a></li>
 </ul>
 </li>
 </ul>
@@ -91,6 +93,30 @@
 <dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">problem.cvrp.instance.</span></span><span class="sig-name descname"><span class="pre">Cvrp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">file_type</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'local'</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp" title="Permalink to this definition"></a></dt>
 <dd><dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.__createSizeMapPlotly">
+<span class="sig-name descname"><span class="pre">__createSizeMapPlotly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">minimum_demand</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">maximum_demand</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_max_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_min_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_depot_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.__createSizeMapPlotly" title="Permalink to this definition"></a></dt>
+<dd><p>createSizeMap()</p>
+<p>Method to create a sze map for plotly for node depending on their customers demand</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>minimum_demand</strong> (<em>int</em>) – The minimum demand of a customer</p></li>
+<li><p><strong>maximum_demand</strong> (<em>int</em>) – The maximum demand of a customer</p></li>
+<li><p><strong>node_min_size</strong> (<em>int</em>) – Minimum size of customers node, default to 250 (opt.)</p></li>
+<li><p><strong>node_max_size</strong> (<em>int</em>) – Maximum size of customers node, default to 500 (opt.)</p></li>
+<li><p><strong>node_depot_size</strong> (<em>int</em>) – Size of customers node, default to 300 (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The size map depending on demand</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.__drawLegend">
 <span class="sig-name descname"><span class="pre">__drawLegend</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.__drawLegend" title="Permalink to this definition"></a></dt>
 <dd><p>Method to get variable that will enable to draw then the legend on the
@@ -143,6 +169,30 @@ It will tne be use in method getFigure and showFigure (private)</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.__drawPlotly">
+<span class="sig-name descname"><span class="pre">__drawPlotly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.__drawPlotly" title="Permalink to this definition"></a></dt>
+<dd><p>Method to draw a matplotlib figure representing the graph of the cvrp.
+It will tne be use in method getFigure and showFigure (private)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>show_edge</strong> (<em>bool</em>) – Boolean to know if the edge will be shown or not in the graph representation, default to False (opt.)</p></li>
+<li><p><strong>customer_node_color</strong> (<em>str</em>) – Color of the nodes representing the customers, default to “#0000FF” (blue) (opt.)</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node representing the depot, default to “#a6f68e” (kind of soft green) (opt.)</p></li>
+<li><p><strong>with_labels</strong> – Display or not the name of the nodes (node id), default to True (opt.)</p></li>
+<li><p><strong>node_min_size</strong> (<em>int</em>) – Minimum size of customers node, default to 250 (opt.)</p></li>
+<li><p><strong>node_max_size</strong> (<em>int</em>) – Maximum size of customers node, default to 500 (opt.)</p></li>
+<li><p><strong>node_depot_size</strong> (<em>int</em>) – Size of customers node, default to 300 (opt.)</p></li>
+<li><p><strong>fixed_size</strong> (<em>bool</em>) – False if the node of customers should depend on their demand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple containing in that order a list of x position of edges, a list of y position of edges, a list of x position of nodes, a list of y position of nodes, a list of color for the nodes, a list of node’s size, a list of text displayed when a node is hovered</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.__parseVrp">
 <span class="sig-name descname"><span class="pre">__parseVrp</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.__parseVrp" title="Permalink to this definition"></a></dt>
 <dd><p>Method use to parse the data in .vrp files. Either web or local file,
@@ -154,8 +204,38 @@ since the argument must be a string</p>
 <dt class="field-even">Raises</dt>
 <dd class="field-even"><ul class="simple">
 <li><p><strong>KeyError</strong> – If either DIMENSION, CAPACITY, NODE_COORD_SECTION, DEMAND_SECTION or DEPOT_SECTION are not in the file to parse or have a wrong format</p></li>
-<li><p><strong>IndexOutOfBound</strong> – If not all nodes are in both NODE_COORD_SECTION and DEMAND_SECTION. Can also be raised if DEPOT_SECTION is empty.</p></li>
+<li><p><strong>IngetCustomerByIddexOutOfBound</strong> – If not all nodes are in both NODE_COORD_SECTION and DEMAND_SECTION. Can also be raised if DEPOT_SECTION is empty.</p></li>
 </ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.customersForSarl">
+<span class="sig-name descname"><span class="pre">customersForSarl</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.customersForSarl" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get the list of customers. Each customers is represented by a string and has all information needed to sarl program to be runned.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A list of string to be then read by sarl MAS program, it represent each customers</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.depotForSarl">
+<span class="sig-name descname"><span class="pre">depotForSarl</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.depotForSarl" title="Permalink to this definition"></a></dt>
+<dd><blockquote>
+<div><p>Method to get string representation of the depot for sarl program and all the informations needed to sarl program to be runned.</p>
+</div></blockquote>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A string to be then read by sarl MAS program, it represent the depot</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
 </dd>
 </dl>
 </dd></dl>
@@ -194,6 +274,47 @@ by their node_id)</p>
 <div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="n">dm</span> <span class="o">=</span> <span class="n">cvrp_instance</span><span class="o">.</span><span class="n">distanceMatrix</span><span class="p">()</span>
 </pre></div>
 </div>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.drawPlotlyJSON">
+<span class="sig-name descname"><span class="pre">drawPlotlyJSON</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.drawPlotlyJSON" title="Permalink to this definition"></a></dt>
+<dd><p>Method to draw a matplotlib figure representing the graph of the cvrp.
+It will tne be use in method getFigure and showFigure (private)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>show_edge</strong> (<em>bool</em>) – Boolean to know if the edge will be shown or not in the graph representation, default to False (opt.)</p></li>
+<li><p><strong>customer_node_color</strong> (<em>str</em>) – Color of the nodes representing the customers, default to “#0000FF” (blue) (opt.)</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node representing the depot, default to “#a6f68e” (kind of soft green) (opt.)</p></li>
+<li><p><strong>with_labels</strong> – Display or not the name of the nodes (node id), default to True (opt.)</p></li>
+<li><p><strong>node_min_size</strong> (<em>int</em>) – Minimum size of customers node, default to 250 (opt.)</p></li>
+<li><p><strong>node_max_size</strong> (<em>int</em>) – Maximum size of customers node, default to 500 (opt.)</p></li>
+<li><p><strong>node_depot_size</strong> (<em>int</em>) – Size of customers node, default to 300 (opt.)</p></li>
+<li><p><strong>fixed_size</strong> (<em>bool</em>) – False if the node of customers should depend on their demand</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A JSON containing the data to build a plotly figure</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Dict]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.fromJSON">
+<span class="sig-name descname"><span class="pre">fromJSON</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.fromJSON" title="Permalink to this definition"></a></dt>
+<dd><p>Method to transform a JSON into an object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>json</strong> (<em>dict</em>) – Json data of the object</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>KeyValueError if the json is incomplete</p>
+</dd>
+</dl>
 </dd></dl>
 
 <dl class="py method">
@@ -330,6 +451,63 @@ instance that can be include in tkinter windows then</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.getHtmlFigurePlotly">
+<span class="sig-name descname"><span class="pre">getHtmlFigurePlotly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.getHtmlFigurePlotly" title="Permalink to this definition"></a></dt>
+<dd><p>Method to display a matplotlib representing the graph of the cvrp
+instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>show_edge</strong> (<em>bool</em>) – Boolean to know if the edge will be shown or not in the graph representation, default to False (opt.)</p></li>
+<li><p><strong>customer_node_color</strong> (<em>str</em>) – Color of the nodes representing the customers, default to “#8eaaf6” (kind of sky blue) (opt.)</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node representing the depot, default to “#a6f68e” (kind of soft green) (opt.)</p></li>
+<li><p><strong>with_labels</strong> (<em>bool</em>) – Display or not the name of the nodes (node id), default to True (opt.)</p></li>
+<li><p><strong>node_min_size</strong> (<em>int</em>) – Minimum size of customers node, default to 250 (opt.)</p></li>
+<li><p><strong>node_max_size</strong> (<em>int</em>) – Maximum size of customers node, default to 500 (opt.)</p></li>
+<li><p><strong>node_depot_size</strong> (<em>int</em>) – Size of customers node, default to 300 (opt.)</p></li>
+<li><p><strong>fixed_size</strong> (<em>bool</em>) – Is the size of nodes fixed or variable in depends of the demand of the customer. If True the size of node will be based on the node_depot_size parameter, default to True (opt.)</p></li>
+<li><p><strong>full_html</strong> (<em>bool</em>) – If True, produce a string containing a complete HTML document starting with an &lt;html&gt; tag. If False, produce a string containing a single &lt;div&gt; element. Default to True (opt.)</p></li>
+<li><p><strong>default_width</strong> (<em>str</em>) – he default figure width/height to use if the provided figure does not specify its own layout.width/layout.height property. May be specified in pixels as an integer (e.g. 500), or as a css width style string (e.g. ‘500px’, ‘100%’). Default to “100%” (opt.)</p></li>
+<li><p><strong>default_height</strong> – The default figure width/height to use if the provided figure does not specify its own layout.width/layout.height property. May be specified in pixels as an integer (e.g. 500), or as a css width style string (e.g. ‘500px’, ‘100%’). Default to “100%” (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>a html string</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.getMaxDemand">
+<span class="sig-name descname"><span class="pre">getMaxDemand</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.getMaxDemand" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The maximum demand of a customer</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.getMinDemand">
+<span class="sig-name descname"><span class="pre">getMinDemand</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.getMinDemand" title="Permalink to this definition"></a></dt>
+<dd><p>getMaxDemand()</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The minimum demand of a customer</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.getNodeById">
 <span class="sig-name descname"><span class="pre">getNodeById</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.getNodeById" title="Permalink to this definition"></a></dt>
 <dd><p>Method to get any node (customer + depot) by his node id (the node id
@@ -418,7 +596,7 @@ return the value indexed at customer_number value</p>
 <dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.minVehiculeNumber">
 <span class="sig-name descname"><span class="pre">minVehiculeNumber</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.minVehiculeNumber" title="Permalink to this definition"></a></dt>
 <dd><p>Method to get the minimum number of vehicule to make a solution of this
-cvrp problem</p>
+cvrp problem use the first fit decreasing algorithm</p>
 <dl class="field-list simple">
 <dt class="field-odd">Returns</dt>
 <dd class="field-odd"><p>The minimum number of vehicule to solve the cvrp</p>
@@ -579,9 +757,42 @@ instance</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.showFigurePlotly">
+<span class="sig-name descname"><span class="pre">showFigurePlotly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.showFigurePlotly" title="Permalink to this definition"></a></dt>
+<dd><p>Method to display a matplotlib representing the graph of the cvrp
+instance</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>show_edge</strong> (<em>bool</em>) – Boolean to know if the edge will be shown or not in the graph representation, default to False (opt.)</p></li>
+<li><p><strong>customer_node_color</strong> (<em>str</em>) – Color of the nodes representing the customers, default to “#8eaaf6” (kind of sky blue) (opt.)</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node representing the depot, default to “#a6f68e” (kind of soft green) (opt.)</p></li>
+<li><p><strong>with_labels</strong> (<em>bool</em>) – Display or not the name of the nodes (node id), default to True (opt.)</p></li>
+<li><p><strong>node_min_size</strong> (<em>int</em>) – Minimum size of customers node, default to 250 (opt.)</p></li>
+<li><p><strong>node_max_size</strong> (<em>int</em>) – Maximum size of customers node, default to 500 (opt.)</p></li>
+<li><p><strong>node_depot_size</strong> (<em>int</em>) – Size of customers node, default to 300 (opt.)</p></li>
+<li><p><strong>fixed_size</strong> (<em>bool</em>) – Is the size of nodes fixed or variable in depends of the demand of the customer. If True the size of node will be based on the node_depot_size parameter, default to True (opt.)</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.toJSON">
+<span class="sig-name descname"><span class="pre">toJSON</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.toJSON" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get the JSON value of the class</p>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="problem.cvrp.instance.Cvrp.writeInstanceVrp">
 <span class="sig-name descname"><span class="pre">writeInstanceVrp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#problem.cvrp.instance.Cvrp.writeInstanceVrp" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Method to write an instance file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – Path to the file where we want to write in</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -592,7 +803,7 @@ instance</p>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="depot.html" class="btn btn-neutral float-left" title="CVRP Depot Node" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
-        <a href="../../solution/solution.html" class="btn btn-neutral float-right" title="Capacitated Vehicle Routing Problem Modelization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+        <a href="../../solution/solution.html" class="btn btn-neutral float-right" title="Capacitated Vehicle Routing Problem Solution Modelization" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>
