@@ -49,7 +49,7 @@ def sendMailFinished(
         {
           "From": {
             "Email": "cvrp.ai50@gmail.com",
-            "Name": "The CVRP's team"
+            "Name": "The ROAD's team"
           },
           "To": [
             {

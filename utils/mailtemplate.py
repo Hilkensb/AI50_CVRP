@@ -290,7 +290,7 @@ a[x-apple-data-detectors='true'] {{
         
   <div style="color: #264653; line-height: 140%; text-align: left; word-wrap: break-word;">
     <p style="font-size: 14px; line-height: 140%;"><strong>Cheers,</strong></p>
-<p style="font-size: 14px; line-height: 140%;">The AI50 CVRP team</p>
+<p style="font-size: 14px; line-height: 140%;">The ROAD's team</p>
   </div>
 
       </td>
@@ -325,7 +325,7 @@ a[x-apple-data-detectors='true'] {{
       <td style="overflow-wrap:break-word;word-break:break-word;padding:10px;font-family:'Montserrat',sans-serif;" align="left">
         
   <div style="line-height: 140%; text-align: center; word-wrap: break-word;">
-    <p style="font-size: 14px; line-height: 140%;"><span style="color: #ffffff; font-size: 14px; line-height: 19.6px;">AI50 CVRP Project</span></p>
+    <p style="font-size: 14px; line-height: 140%;"><span style="color: #ffffff; font-size: 14px; line-height: 19.6px;">ROAD - An AI50 Project - UTBM</span></p>
   </div>
 
       </td>
