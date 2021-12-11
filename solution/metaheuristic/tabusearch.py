@@ -17,8 +17,9 @@ from problem.cvrp.customer import CustomerCvrp
 from problem.cvrp.depot import DepotCvrp
 from problem.node import NodeWithCoord
 from solution.constructive.clarkwrightsaving import clarkWrightSaving
-from gui.config import redis_server, SOLUTION_TOPIC, SHOW_SOLUTION
+from gui.config import redis_server, SOLUTION_TOPIC
 from utils.redisutils import isRedisAvailable
+from utils.parseparameters import SHOW_SOLUTION
 
 
 # -------------------- Tabu Search Neighborhood functions ------------------- #

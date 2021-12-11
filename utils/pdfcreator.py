@@ -9,15 +9,14 @@ from solution.cvrp.solution import SolutionCvrp
 class PDF(FPDF, HTMLMixin):
     def header(self):
         """
+        Method to create the header of the file
         """
-
-        # Logo
-        self.set_xy(6.0,6.0)
-        self.image('./gui/static/image/logo_utbm_no_bg.png', link='', type='', w=19, h=21)
+        pass
 
     # Page footer
     def footer(self):
         """
+        Method to create the footer of the file
         """
 
         # Position at 1.5 cm from bottom
@@ -58,9 +57,16 @@ class PDF(FPDF, HTMLMixin):
     def globalInformation(self, algorithm_name: str, min_cost: float):
         """
         """
+        
+        
+        # Logo
+        self.set_xy(6.0,6.0)
+        self.image('./gui/static/image/logo_utbm_no_bg.png', link='', type='', w=19, h=21, x=5, y=5)
+        self.image('./gui/static/image/ROAD.png', link='', type='', w=19, h=21, x=186, y=5)
+        
         self.set_font('Helvetica', '', 15)
 
-        self.cell(w=0.0, h=20.0, align='C', txt="CVRP Report", border=0)
+        self.cell(w=0.0, h=40.0, align='C', txt="CVRP Report", border=0)
         # Line break
         self.ln(5)
         self.line(5.0,30.0,205.0,30.0)

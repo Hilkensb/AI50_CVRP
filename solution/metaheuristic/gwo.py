@@ -19,8 +19,9 @@ from solution.cvrp.solution import RouteCvrp
 from problem.cvrp.customer import CustomerCvrp
 from problem.cvrp.depot import DepotCvrp
 from problem.node import NodeWithCoord
-from gui.config import redis_server, SOLUTION_TOPIC, SHOW_SOLUTION
+from gui.config import redis_server, SOLUTION_TOPIC
 from utils.redisutils import isRedisAvailable
+from utils.parseparameters import SHOW_SOLUTION
 
     
 # ----------------------------- Global variables ---------------------------- #    

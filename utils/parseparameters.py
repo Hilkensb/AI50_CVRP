@@ -9,9 +9,15 @@ from typing import List, Dict, Tuple, Union
 from gui import config
 
 
+# Show or not solution on loading page
+# If not showed it will improved time cost of the algorithms
+SHOW_SOLUTION: bool = False
+
 def getOptions(args: List[str]):
     """
     """
+    
+    global SHOW_SOLUTION
     
     # Create a parser
     parser = argparse.ArgumentParser(description="Command.")
@@ -28,5 +34,8 @@ def getOptions(args: List[str]):
         runTest()
         
     # Show evolution
-    config.updateShowSolution(value=options.show_evolution)
+    if options.show_evolution:
+        SHOW_SOLUTION = options.show_evolution
+    else:
+        SHOW_SOLUTION = config.SHOW_SOLUTION
 

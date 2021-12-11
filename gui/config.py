@@ -7,14 +7,23 @@ import redis as red
 # -------------------------------- Parameters --------------------------------#
 # __________________________ Application Parameter __________________________ #
 
+# ~~~~~~~~~~~~~~~~~~~~~~  General application setting ~~~~~~~~~~~~~~~~~~~~~~~ #
+
 # Show or not solution on loading page
 # If not showed it will improved time cost of the algorithms
 SHOW_SOLUTION: bool = False
+
+# ~~~~~~~~~~~~~~~~~~~~~~~  REDIS application setting ~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 # Redis auto-launching
 AUTO_LAUNCH_REDIS: bool = True
 # Redis folder
 WINDOWS_REDIS_FOLDER: str = "redis\Windows\Redis-x64-3.0.504\\"
+
+# ~~~~~~~~~~~~~~~~~~~~~~~~  SARL application setting ~~~~~~~~~~~~~~~~~~~~~~~~ #
+
+# SARL auto-launching (Not working yet)
+AUTO_LAUNCH_SARL: bool = True
 
 # _____________________________ Flask Parameter _____________________________ #
 
@@ -77,20 +86,4 @@ REDIS_URL: str = f"redis://{REDIS_HOST}:{REDIS_PORT}"
 redis_server: red.Redis = red.Redis(host=REDIS_HOST, port=REDIS_PORT, db=0)
 # Session saves
 instance_save: Dict = {}
-
-# ________________________ Function to change values ________________________ #
-
-def updateShowSolution(value: bool):
-    """
-    Function to update the value of the SHOW_SOLUTION
-    
-    :param value: New value
-    :type value: bool
-    """
-    
-    # Get the global value
-    global SHOW_SOLUTION
-    
-    # Update the value
-    SHOW_SOLUTION = value
 
