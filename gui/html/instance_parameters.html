@@ -62,28 +62,28 @@
                           <div class="row">
                             <div class="col-md-12 mt-2">
                               <label>Number of iteration: </label>
-                              <input type="number" id="TabuIteration" name="TabuIteration" value="{{round(min(max(100, nb_customer*0.8), 500))}}" class="mr-1 mt-1 ml-3" required="required" style="width:75px">
+                              <input type="number" id="TabuIteration" name="TabuIteration" value="{{ nb_iter }}" class="mr-1 mt-1 ml-3" required="required" style="width:75px">
                             </div>
                           </div>
                           <div class="row">
                             <div class="col-md-12 mt-2">
                               <label>With aspiration: </label>
-                              <input type="radio" id="TrueAspiration" name="Aspiration" value="True" class="ml-3 mt-1 mr-1" checked="checked">
+                              <input type="radio" id="TrueAspiration" name="Aspiration" value="True" class="ml-3 mt-1 mr-1" {% if aspiration %}checked="checked" {% endif %}>
                               <label for="True">True</label>
-                              <input type="radio" id="FalseAspiration" name="Aspiration" value="False" class="mr-1 mt-1 ml-3">
+                              <input type="radio" id="FalseAspiration" name="Aspiration" value="False" class="mr-1 mt-1 ml-3" {% if aspiration == False %}checked="checked" {% endif %}>
                               <label for="False">False</label>
                             </div>
                           </div>
                           <div class="row">
                             <div class="col-md-12 mt-2">
                               <label>Length of the tabu list: </label>
-                              <input type="number" id="TabuLength" name="TabuLength" value="{{round(nb_customer*0.2)}}" class="mr-1 mt-1 ml-3" required="required" style="width:75px">
+                              <input type="number" id="TabuLength" name="TabuLength" value="{{ lenght_tabu }}" class="mr-1 mt-1 ml-3" required="required" style="width:75px">
                             </div>
                           </div>
                           <div class="row">
                             <div class="col-md-12 mt-2">
                               <label>Maximum run time (in seconds): </label>
-                              <input type="number" id="RunTimeTabu" name="RunTimeTabu" value="60" class="mr-1 mt-1 ml-3" required="required" style="width:75px">
+                              <input type="number" id="RunTimeTabu" name="RunTimeTabu" value="{{ time_tabu }}" class="mr-1 mt-1 ml-3" required="required" style="width:75px">
                             </div>
                           </div>
                         </div>
