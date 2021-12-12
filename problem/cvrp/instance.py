@@ -738,7 +738,7 @@ class Cvrp(VehiculeRootingProblem):
         )
       
         # Edge of the trace
-        edge_trace: Scatter = go.Scattergl(
+        edge_trace: Scatter = go.Scatter(
             x=edge_x, y=edge_y,
             line=dict(width=0.5, color='#888'),
             hoverinfo='none',
@@ -746,7 +746,7 @@ class Cvrp(VehiculeRootingProblem):
         )
         
         # Node of the trace
-        node_trace: Scatter = go.Scattergl(
+        node_trace: Scatter = go.Scatter(
             x=node_x, y=node_y,
             mode='markers',
             hoverinfo='text',
@@ -832,7 +832,7 @@ class Cvrp(VehiculeRootingProblem):
         )
       
         # Edge of the trace
-        edge_trace: Scatter = go.Scattergl(
+        edge_trace: Scatter = go.Scatter(
             x=edge_x, y=edge_y,
             line=dict(width=0.5, color='#888'),
             hoverinfo='none',
@@ -840,7 +840,7 @@ class Cvrp(VehiculeRootingProblem):
         )
         
         # Node of the trace
-        node_trace: Scatter = go.Scattergl(
+        node_trace: Scatter = go.Scatter(
             x=node_x, y=node_y,
             mode='markers',
             hoverinfo='text',
@@ -1370,7 +1370,7 @@ class Cvrp(VehiculeRootingProblem):
                 node_text = [f"Customer: {customer.node_id}<br>Demand: {customer.demand}"]
         
         # Node of the trace
-        node_trace: Scattergl = dict(
+        node_trace: Scatter = dict(
             x=node_x, y=node_y,
             mode='markers',
             hoverinfo='text',

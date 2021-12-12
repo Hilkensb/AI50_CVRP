@@ -416,6 +416,8 @@ def getFastSolutionEvolutionAnimationPlotly(
 
         # Add each scatter to the frame
         frame["data"] = [*node_scatter_list, *edge_scatter_list]
+        
+        print(node_scatter_list)
 
         # Create the frame
         fig_dict["frames"].append(frame)
