@@ -1,0 +1,273 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Other Plotting module &mdash; CVRP (Capacitated Vehicle Routing Problem) 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../_static/utbm_logo.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../" id="documentation_options" src="../../_static/documentation_options.js"></script>
+        <script src="../../_static/jquery.js"></script>
+        <script src="../../_static/underscore.js"></script>
+        <script src="../../_static/doctools.js"></script>
+    <script src="../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../genindex.html" />
+    <link rel="search" title="Search" href="../../search.html" />
+    <link rel="next" title="Parse Parameters module" href="parseparameters.html" />
+    <link rel="prev" title="mathfunctions module" href="mathfunctions.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../index.html" class="icon icon-home"> CVRP (Capacitated Vehicle Routing Problem)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../tutorial/tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../packages.html">Python Objects Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../problem/problem.html">Capacitated Vehicle Routing Problem Modelization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../solution/solution.html">Capacitated Vehicle Routing Problem Solution Modelization</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="utils.html">Utils package</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="utils.html#the-package">The package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="mailsender.html">Mail Sender module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="mathfunctions.html">mathfunctions module</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Other Plotting module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="parseparameters.html">Parse Parameters module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="pdfcreator.html">PDF creator module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="redisutils.html">Redis utils module</a></li>
+<li class="toctree-l4"><a class="reference internal" href="runalgorithm.html">Run algorithm module</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../gui/gui.html">Graphical user interface</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../index.html">CVRP (Capacitated Vehicle Routing Problem)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../packages.html">Python Objects Documentation</a> &raquo;</li>
+          <li><a href="utils.html">Utils package</a> &raquo;</li>
+      <li>Other Plotting module</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../_sources/packages/utils/otherplotting.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="other-plotting-module">
+<h1>Other Plotting module<a class="headerlink" href="#other-plotting-module" title="Permalink to this headline"></a></h1>
+<p>Module to create complex graphics using matplotlib and plotly</p>
+<span class="target" id="module-utils.otherplotting"></span><dl class="py function">
+<dt class="sig sig-object py" id="utils.otherplotting.getFastSolutionEvolutionAnimationPlotly">
+<span class="sig-prename descclassname"><span class="pre">utils.otherplotting.</span></span><span class="sig-name descname"><span class="pre">getFastSolutionEvolutionAnimationPlotly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solution_evolution</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">SolutionCvrp</span><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depot_node_color</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'#a6f68e'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">route_color</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">['#FF0000',</span> <span class="pre">'#0000FF',</span> <span class="pre">'#00FF00',</span> <span class="pre">'#E67300',</span> <span class="pre">'#9900cc',</span> <span class="pre">'#F0b8b8',</span> <span class="pre">'#72A0C1',</span> <span class="pre">'#008000',</span> <span class="pre">'#FFBF00',</span> <span class="pre">'#008080',</span> <span class="pre">'#000080',</span> <span class="pre">'#FFFF00',</span> <span class="pre">'#00FFFF',</span> <span class="pre">'#BDB76B',</span> <span class="pre">'#006400',</span> <span class="pre">'#6495ED',</span> <span class="pre">'#90EE90',</span> <span class="pre">'#800080',</span> <span class="pre">'#F0b8b8',</span> <span class="pre">'#FF69B4',</span> <span class="pre">'#F4A460',</span> <span class="pre">'#FFE4C4',</span> <span class="pre">'#40E0D0',</span> <span class="pre">'#FF8C00',</span> <span class="pre">'#FFD700',</span> <span class="pre">'#8FBC8F',</span> <span class="pre">'#ADD8E6',</span> <span class="pre">'#BA55D3',</span> <span class="pre">'#E6E6FA',</span> <span class="pre">'#D2691E',</span> <span class="pre">'#CC99CC',</span> <span class="pre">'#191970',</span> <span class="pre">'#ADFF2F',</span> <span class="pre">'#FF7F50',</span> <span class="pre">'#9900FF',</span> <span class="pre">'#FFCCBC',</span> <span class="pre">'#808080']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_legend_edge</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_legend_node</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">slider_from_end</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Figure</span></span></span><a class="headerlink" href="#utils.otherplotting.getFastSolutionEvolutionAnimationPlotly" title="Permalink to this definition"></a></dt>
+<dd><p>getSolutionEvolutionAnimationPlotly()</p>
+<p>Function to create animation figure of solution evolution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>route_color</strong> – List of colors of the routes in the solution, default the DEFAULT_COLOR_PALETTE (utils.colorpallete) (opt.)</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node depot, default to “#a6f68e” (opt.)</p></li>
+<li><p><strong>node_size</strong> (<em>int</em>) – Size of the nodes, default to 15 (opt)</p></li>
+<li><p><strong>show_legend_edge</strong> (<em>bool</em>) – Display or not the legend of edges, default to True (opt.)</p></li>
+<li><p><strong>show_legend_node</strong> – Display or not the legend of nodes, default to False (opt.)</p></li>
+<li><p><strong>slider_from_end</strong> (<em>bool</em>) – True if the animation should start at the last frame</p></li>
+</ul>
+</dd>
+<dt class="field-even">Tyoe route_color</dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Animation Figure of the solution evolution</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.otherplotting.getHtmlLineCostEvolution">
+<span class="sig-prename descclassname"><span class="pre">utils.otherplotting.</span></span><span class="sig-name descname"><span class="pre">getHtmlLineCostEvolution</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utils.otherplotting.getHtmlLineCostEvolution" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cost_evolution</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – cost evolution during the algorithm</p></li>
+<li><p><strong>title</strong> (<em>str
+:param full_html: If True</em><em>, </em><em>produce a string containing a complete HTML document starting with an &lt;html&gt; tag. If False</em><em>, </em><em>produce a string containing a single &lt;div&gt; element. Default to True</em><em> (</em><em>opt.</em><em>)</em>) – Title of the figure, default to “” (opt.)</p></li>
+<li><p><strong>default_width</strong> (<em>str</em>) – he default figure width/height to use if the provided figure does not specify its own layout.width/layout.height property. May be specified in pixels as an integer (e.g. 500), or as a css width style string (e.g. ‘500px’, ‘100%’). Default to “100%” (opt.)</p></li>
+<li><p><strong>default_height</strong> – The default figure width/height to use if the provided figure does not specify its own layout.width/layout.height property. May be specified in pixels as an integer (e.g. 500), or as a css width style string (e.g. ‘500px’, ‘100%’). Default to “100%” (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>html code of the line chart of the cost evolution</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.otherplotting.getHtmlSolutionEvolutionAnimationPlotly">
+<span class="sig-prename descclassname"><span class="pre">utils.otherplotting.</span></span><span class="sig-name descname"><span class="pre">getHtmlSolutionEvolutionAnimationPlotly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utils.otherplotting.getHtmlSolutionEvolutionAnimationPlotly" title="Permalink to this definition"></a></dt>
+<dd><p>Function to create animation figure of solution evolution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>route_color</strong> – List of colors of the routes in the solution, default the DEFAULT_COLOR_PALETTE (utils.colorpallete) (opt.)</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node depot, default to “#a6f68e” (opt.)</p></li>
+<li><p><strong>node_size</strong> (<em>int</em>) – Size of the nodes, default to 15 (opt)</p></li>
+<li><p><strong>show_legend_edge</strong> (<em>bool</em>) – Display or not the legend of edges, default to True (opt.)</p></li>
+<li><p><strong>show_legend_node</strong> – Display or not the legend of nodes, default to False (opt.)</p></li>
+<li><p><strong>full_html</strong> (<em>bool</em>) – If True, produce a string containing a complete HTML document starting with an &lt;html&gt; tag. If False, produce a string containing a single &lt;div&gt; element. Default to True (opt.)</p></li>
+<li><p><strong>default_width</strong> (<em>str</em>) – he default figure width/height to use if the provided figure does not specify its own layout.width/layout.height property. May be specified in pixels as an integer (e.g. 500), or as a css width style string (e.g. ‘500px’, ‘100%’). Default to “100%” (opt.)</p></li>
+<li><p><strong>default_height</strong> – The default figure width/height to use if the provided figure does not specify its own layout.width/layout.height property. May be specified in pixels as an integer (e.g. 500), or as a css width style string (e.g. ‘500px’, ‘100%’). Default to “100%” (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Tyoe route_color</dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Html code of the animation figure</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.otherplotting.getLineCostEvolution">
+<span class="sig-prename descclassname"><span class="pre">utils.otherplotting.</span></span><span class="sig-name descname"><span class="pre">getLineCostEvolution</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utils.otherplotting.getLineCostEvolution" title="Permalink to this definition"></a></dt>
+<dd><dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cost_evolution</strong> (<em>List</em><em>[</em><em>float</em><em>]</em>) – cost evolution during the algorithm</p></li>
+<li><p><strong>title</strong> (<em>str</em>) – Title of the figure, default to “” (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Line chart of the cost evolution</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.otherplotting.getSolutionEvolutionAnimationPlotly">
+<span class="sig-prename descclassname"><span class="pre">utils.otherplotting.</span></span><span class="sig-name descname"><span class="pre">getSolutionEvolutionAnimationPlotly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#utils.otherplotting.getSolutionEvolutionAnimationPlotly" title="Permalink to this definition"></a></dt>
+<dd><p>Function to create animation figure of solution evolution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>route_color</strong> – List of colors of the routes in the solution, default the DEFAULT_COLOR_PALETTE (utils.colorpallete) (opt.)</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node depot, default to “#a6f68e” (opt.)</p></li>
+<li><p><strong>node_size</strong> (<em>int</em>) – Size of the nodes, default to 15 (opt)</p></li>
+<li><p><strong>show_legend_edge</strong> (<em>bool</em>) – Display or not the legend of edges, default to True (opt.)</p></li>
+<li><p><strong>show_legend_node</strong> – Display or not the legend of nodes, default to False (opt.)</p></li>
+<li><p><strong>slider_from_end</strong> (<em>bool</em>) – True if the animation should start at the last frame</p></li>
+</ul>
+</dd>
+<dt class="field-even">Tyoe route_color</dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Animation Figure of the solution evolution</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Figure</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="utils.otherplotting.showSolutionEvolutionAnimationMatplotlib">
+<span class="sig-prename descclassname"><span class="pre">utils.otherplotting.</span></span><span class="sig-name descname"><span class="pre">showSolutionEvolutionAnimationMatplotlib</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">solution_evolution</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="../solution/cvrp/solution.html#solution.cvrp.solution.SolutionCvrp" title="solution.cvrp.solution.SolutionCvrp"><span class="pre">solution.cvrp.solution.SolutionCvrp</span></a><span class="p"><span class="pre">]</span></span></span></em>, <em class="sig-param"><span class="n"><span class="pre">with_labels</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">route_color</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">['#FF0000',</span> <span class="pre">'#0000FF',</span> <span class="pre">'#00FF00',</span> <span class="pre">'#E67300',</span> <span class="pre">'#9900cc',</span> <span class="pre">'#F0b8b8',</span> <span class="pre">'#72A0C1',</span> <span class="pre">'#008000',</span> <span class="pre">'#FFBF00',</span> <span class="pre">'#008080',</span> <span class="pre">'#000080',</span> <span class="pre">'#FFFF00',</span> <span class="pre">'#00FFFF',</span> <span class="pre">'#BDB76B',</span> <span class="pre">'#006400',</span> <span class="pre">'#6495ED',</span> <span class="pre">'#90EE90',</span> <span class="pre">'#800080',</span> <span class="pre">'#F0b8b8',</span> <span class="pre">'#FF69B4',</span> <span class="pre">'#F4A460',</span> <span class="pre">'#FFE4C4',</span> <span class="pre">'#40E0D0',</span> <span class="pre">'#FF8C00',</span> <span class="pre">'#FFD700',</span> <span class="pre">'#8FBC8F',</span> <span class="pre">'#ADD8E6',</span> <span class="pre">'#BA55D3',</span> <span class="pre">'#E6E6FA',</span> <span class="pre">'#D2691E',</span> <span class="pre">'#CC99CC',</span> <span class="pre">'#191970',</span> <span class="pre">'#ADFF2F',</span> <span class="pre">'#FF7F50',</span> <span class="pre">'#9900FF',</span> <span class="pre">'#FFCCBC',</span> <span class="pre">'#808080']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depot_node_color</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'#a6f68e'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_weight</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">route_to_display</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">Optional</span><span class="p"><span class="pre">[</span></span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">300</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">auto_node_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#utils.otherplotting.showSolutionEvolutionAnimationMatplotlib" title="Permalink to this definition"></a></dt>
+<dd><p>showSolutionEvolutionAnimation()</p>
+<p>Function to create an animation of best solution evolution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>solution_evolution</strong> (<em>List</em><em>[</em><a class="reference internal" href="../solution/cvrp/solution.html#solution.cvrp.solution.SolutionCvrp" title="solution.cvrp.solution.SolutionCvrp"><em>SolutionCvrp</em></a><em>]</em>) – List of solution evolution</p></li>
+<li><p><strong>with_labels</strong> (<em>bool</em>) – Display or not the name of the nodes (node id), default to True (opt.)</p></li>
+<li><p><strong>route_color</strong> – List of colors of the routes in the solution, default the DEFAULT_COLOR_PALETTE (utils.colorpallete) (opt.)</p></li>
+<li><p><strong>route_color</strong> – List[str]</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node depot, default to “#a6f68e” (opt.)</p></li>
+<li><p><strong>show_weight</strong> (<em>bool</em>) – True if the weight should be displayed on the edge, else False. Default to True (opt.)</p></li>
+<li><p><strong>route_to_display</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – Number of the routes to display on the solution (route number start at 1), default to None (opt.)</p></li>
+<li><p><strong>node_size</strong> (<em>int</em>) – Size of the nodes</p></li>
+<li><p><strong>auto_node_size</strong> (<em>bool</em>) – Set the size of the node automatically</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="mathfunctions.html" class="btn btn-neutral float-left" title="mathfunctions module" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="parseparameters.html" class="btn btn-neutral float-right" title="Parse Parameters module" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright free.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

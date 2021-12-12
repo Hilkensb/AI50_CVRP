@@ -738,7 +738,7 @@ class Cvrp(VehiculeRootingProblem):
         )
       
         # Edge of the trace
-        edge_trace: Scatter = go.Scatter(
+        edge_trace: Scatter = go.Scattergl(
             x=edge_x, y=edge_y,
             line=dict(width=0.5, color='#888'),
             hoverinfo='none',
@@ -746,7 +746,7 @@ class Cvrp(VehiculeRootingProblem):
         )
         
         # Node of the trace
-        node_trace: Scatter = go.Scatter(
+        node_trace: Scatter = go.Scattergl(
             x=node_x, y=node_y,
             mode='markers',
             hoverinfo='text',
@@ -832,7 +832,7 @@ class Cvrp(VehiculeRootingProblem):
         )
       
         # Edge of the trace
-        edge_trace: Scatter = go.Scatter(
+        edge_trace: Scatter = go.Scattergl(
             x=edge_x, y=edge_y,
             line=dict(width=0.5, color='#888'),
             hoverinfo='none',
@@ -840,7 +840,7 @@ class Cvrp(VehiculeRootingProblem):
         )
         
         # Node of the trace
-        node_trace: Scatter = go.Scatter(
+        node_trace: Scatter = go.Scattergl(
             x=node_x, y=node_y,
             mode='markers',
             hoverinfo='text',
@@ -1224,8 +1224,6 @@ class Cvrp(VehiculeRootingProblem):
         # Set the text of the depot node
         node_text.append(f"{self.__depot.node_id} (depot)")
         
-
-        
         return edge_x, edge_y, node_x, node_y, color_map, size_map, node_text
         
     def drawPlotlyJSON(
@@ -1372,7 +1370,7 @@ class Cvrp(VehiculeRootingProblem):
                 node_text = [f"Customer: {customer.node_id}<br>Demand: {customer.demand}"]
         
         # Node of the trace
-        node_trace: Scatter = dict(
+        node_trace: Scattergl = dict(
             x=node_x, y=node_y,
             mode='markers',
             hoverinfo='text',

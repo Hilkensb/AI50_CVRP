@@ -212,7 +212,7 @@ agent VehicleAgent {
 			this.customers.add(best_index + 1, customer_to_insert)
 		}
 
-		debug(this.customers.toString())
+		// debug(this.customers.toString())
 		// emit a new event to tell that the customer have been inserted
 		emit(new customerRelocated())[it.ID == allocationAgentUUID]
 	}

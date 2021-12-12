@@ -231,16 +231,12 @@ class RouteCvrp:
         # For every node in the route
         # The pairwise function of itertools create pair of elements that are
         # following in an iterable (here a list)
-        # More info : https://docs.python.org/3/library/itertools.html#itertools-recipes
-        for node_pair in pairwise(self.__customers_route):
-            # sum the euclidean distance of node that are following each other
-            # Get the distance between the nodes
-            distance: float = mathfunc.euclideanDistance(node_pair[0], node_pair[1])
-            # Add the distance to the evaluation
-            evaluation += distance
-            
+        # More info : https://docs.python.org/3/library/itertools.html#itertools-recipes            
         # Return the evaluation of the route
-        return evaluation
+        return sum([
+            mathfunc.euclideanDistance(node_pair[0], node_pair[1])
+            for node_pair in pairwise(self.__customers_route)
+        ])
         
     def isValid(self) -> bool:
         """
@@ -861,7 +857,7 @@ class RouteCvrp:
             node_text = [f"{customer.node_id}"]
   
             # Node of the trace
-            node_trace: Scatter = go.Scatter(
+            node_trace: Scattergl = go.Scattergl(
                 x=node_x, y=node_y,
                 showlegend=show_legend_node,
                 mode='markers',
@@ -892,7 +888,7 @@ class RouteCvrp:
         edge_y.append(None)
 
         # Edge of the trace
-        edge_trace: Scatter = go.Scatter(
+        edge_trace: Scattergl = go.Scattergl(
             x=edge_x, y=edge_y,
             showlegend=show_legend_edge,
             line=dict(width=0.5, color=route_color),

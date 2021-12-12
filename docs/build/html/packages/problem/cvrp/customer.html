@@ -54,7 +54,9 @@
 </li>
 </ul>
 </li>
-<li class="toctree-l2"><a class="reference internal" href="../../solution/solution.html">Capacitated Vehicle Routing Problem Modelization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../solution/solution.html">Capacitated Vehicle Routing Problem Solution Modelization</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../utils/utils.html">Utils package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gui/gui.html">Graphical user interface</a></li>
 </ul>
 </li>
 </ul>
@@ -91,6 +93,20 @@
 <dt class="sig sig-object py" id="problem.cvrp.customer.CustomerCvrp">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">problem.cvrp.customer.</span></span><span class="sig-name descname"><span class="pre">CustomerCvrp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">node_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">x</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">y</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">demand</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.customer.CustomerCvrp" title="Permalink to this definition"></a></dt>
 <dd><dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.customer.CustomerCvrp.fromJSON">
+<span class="sig-name descname"><span class="pre">fromJSON</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.customer.CustomerCvrp.fromJSON" title="Permalink to this definition"></a></dt>
+<dd><p>Method to transform a JSON into an object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>json</strong> (<em>dict</em>) – Json data of the object</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>KeyValueError if the json is incomplete</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="problem.cvrp.customer.CustomerCvrp.getCoordinates">
 <span class="sig-name descname"><span class="pre">getCoordinates</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.customer.CustomerCvrp.getCoordinates" title="Permalink to this definition"></a></dt>
 <dd><p>Method to get the coordinates (the x and y position of the node)</p>
@@ -102,6 +118,27 @@
 <dd class="field-even"><p>Tuple[int, int]</p>
 </dd>
 </dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.customer.CustomerCvrp.getMapCoordinates">
+<span class="sig-name descname"><span class="pre">getMapCoordinates</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">float</span><span class="p"><span class="pre">,</span> </span><span class="pre">float</span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#problem.cvrp.customer.CustomerCvrp.getMapCoordinates" title="Permalink to this definition"></a></dt>
+<dd><p>getCoordinates()</p>
+<p>Method to get the coordinates (the x and y position of the node)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>A tuple of int representing the latitude and longitude position of the depot node</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tuple[int, int]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="problem.cvrp.customer.CustomerCvrp.toJSON">
+<span class="sig-name descname"><span class="pre">toJSON</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#problem.cvrp.customer.CustomerCvrp.toJSON" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get the JSON value of the class</p>
 </dd></dl>
 
 </dd></dl>

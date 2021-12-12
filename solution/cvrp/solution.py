@@ -815,7 +815,7 @@ class SolutionCvrp:
                 node_text = [f"Customer: {customer.node_id}<br>Demand: {customer.demand}"]
       
                 # Node of the trace
-                node_trace: Scatter = go.Scatter(
+                node_trace: Scattergl = go.Scattergl(
                     x=node_x, y=node_y,
                     showlegend=show_legend_node,
                     mode='markers',
@@ -849,7 +849,7 @@ class SolutionCvrp:
             edge_y.append(None)
 
             # Edge of the trace
-            edge_trace: Scatter = go.Scatter(
+            edge_trace: Scattergl = go.Scattergl(
                 x=edge_x, y=edge_y,
                 showlegend=show_legend_edge,
                 line=dict(width=0.5, color=route_color[index]),
@@ -861,7 +861,7 @@ class SolutionCvrp:
             edge_scatter_list.append(edge_trace)
             
         # Create the node of the depot
-        depot_trace: Scatter = go.Scatter(
+        depot_trace: Scattergl = go.Scattergl(
             x=[depot_node.x], y=[depot_node.y],
             showlegend=show_legend_node,
             mode='markers',
@@ -1110,17 +1110,8 @@ class SolutionCvrp:
         """
         
         # The evaluation of the solution
-        evaluation: float = 0
-        
-        # We are going to evaluate each route and sum each evaluation
-        # For each route
-        for route in self.__route:
-            # Get the cost of the route
-            cost = route.evaluation()
-            # Sum the cost to get an evaluation
-            evaluation += cost
-            
-        return evaluation
+        # We are going to evaluate each route and sum each evaluation      
+        return sum([route.evaluation() for route in self.__route])
         
 # ______________________________ Parse Methods ______________________________ #
 
@@ -1240,6 +1231,19 @@ class SolutionCvrp:
         return True
 
 # ___________________________ Other Useful Method ___________________________ # 
+    
+    def getOverDemand(self) -> int:
+        """
+        Method to get the demand of each that are over the vehicle capacity
+        
+        :return: The demand over
+        :rtype: int
+        """
+        
+        return sum([
+            max(0, route.demandSupplied() - self.__cvrp_instance.vehicule_capacity)
+            for route in self.__route
+        ])
                 
     def getAllRouteSwapNeighbours(self, total_cost: float = None) -> List[Tuple[SolutionCvrp, int]]:
         """

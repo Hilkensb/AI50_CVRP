@@ -4,3 +4,7 @@
 *.pyc
 
 main.py
+
+sarl/vrp/target/
+
+sarl/vrp/src/main/generated-sources/sarl/fr/utbm/vrp/agents/

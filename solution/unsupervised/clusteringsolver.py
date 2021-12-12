@@ -175,11 +175,21 @@ def kMeanCapacited(
     
     # If the cluster centers have not been precised
     if cluster_center is None:
-        # Create the cluster center
-        cluster_center: List[Tuple[float, float]] = []
-        # Choose randomly k unique customers to be the centers of the clusters
-        cluster_center = random.sample(cvrp.customers, k=cluster_number)
-        cluster_center = [cluster.getCoordinates() for cluster in cluster_center]
+        # Get the x and y values of customer in the cvrp
+        x_values: List[int] = [customer.x for customer in cvrp.customers]
+        y_values: List[int] = [customer.y for customer in cvrp.customers]
+        
+        # Determine the max and min value of x and y
+        max_x: int = max(x_values)
+        min_x: int = min(x_values)
+        max_y: int = max(y_values)
+        min_y: int = min(y_values)
+        
+        # Create random cluster center
+        cluster_center: List[Tuple[float]] = [tuple([
+            (random.uniform(0,1) * (max_x - min_x)) + min_x,
+            (random.uniform(0,1) * (max_y - min_y)) + min_y
+        ]) for i in range(cluster_number)]
     
     # Get the reamining capacity of the cluster
     cluster_capacity: List[int] = [cvrp.vehicule_capacity] * cluster_number

@@ -7,10 +7,10 @@
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css" type="text/css">
   <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/accordion.css') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/theme.css') }}" type="text/css">
-  <link rel="icon" type="image/png" href="{{ url_for('static', filename='image/logo_utbm_no_bg.png') }}">
+  <link rel="icon" type="image/png" href="{{ url_for('static', filename='image/ROAD.png') }}">
   <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/round-button.css') }}" type="text/css">
   <link rel="stylesheet" href="{{ url_for('static', filename='stylesheets/chatbox.css') }}" type="text/css">
-  <title>AI50 - Algorithm</title>
+  <title>ROAD - Algorithm</title>
 </head>
 
 <body>
@@ -19,7 +19,7 @@
         <span class="navbar-toggler-icon"></span>
       </button>
       <div class="collapse navbar-collapse" id="navbar13"> <a class="navbar-brand d-none d-md-block" href="{{ url_for('index') }}">
-          <b> AI50</b>
+          <b> ROAD</b>
         </a>
         <ul class="navbar-nav mx-auto"></ul>
         <ul class="navbar-nav">
@@ -119,6 +119,46 @@
                 <div class="form-group row"><label class="col-10 py-1" style="font-size:18px;">Multi-agent solver</label>
                   <div class="col-2"><input type="checkbox" class="form-control text-left w-50" style="text-shadow: black 0px 0px 4px;" name="MAS_Solver"></div>
                 </div>
+                
+                <div class="form-group row">
+                  <label class="col-10 py-1" style="font-size:18px;">Grey Wolf Optimizer</label>
+                  <div class="col-2"><input type="checkbox" class="form-control text-left w-50" style="text-shadow: black 0px 0px 4px;" name="Wolf"></div>
+                  <div class="row">
+                    <a class="accordion ml-3" href="#" style="width:85%;">Grey Wolf Optimizer options</a>
+                    <div class="panel" style="">
+                      <div class="">
+                        <div class="container">
+                          <div class="row">
+                            <div class="col-md-12 mt-2">
+                              <label>Number of iteration: </label>
+                              <input type="number" id="WolfIteration" name="WolfIteration" value="100" class="mr-1 mt-1 ml-3" required="required" style="width:75px">
+                            </div>
+                          </div>
+                          <div class="row">
+                            <div class="col-md-12 mt-2">
+                              <label>Number of wolf: </label>
+                              <input type="number" id="WolfNumber" name="WolfNumber" value="20" class="mr-1 mt-1 ml-3" required="required" style="width:75px">
+                            </div>
+                          </div>
+                          
+                          <div class="row">
+                            <div class="col-md-12 mt-2">
+                              <label>Maximum run time (in seconds): </label>
+                              <input type="number" id="RunTimeGWO" name="RunTimeGWO" value="60" class="mr-1 mt-1 ml-3" required="required" style="width:75px">
+                            </div>
+                          </div>
+                          
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+                
+                <div class="form-group row">
+                  <label class="col-6" style="font-size:18px;">Email address (optional) :</label>
+                  <div class="col-6"><input type="email" class="form-control" name="email"></div>
+                </div>
+                
               </div>
             </div>
             <div class="form-group row">
@@ -214,14 +254,16 @@
     </div>
   </div>
       
-  <div class="py-3" style="">
+<div class="py-3" style="">
     <div class="container">
       <div class="row">
         <div class="col-md-6">
+          <img class="img-fluid d-block" src="{{ url_for('static', filename='image/ROAD.png') }}" height="59" width="55" style="margin-bottom: 10px;">
           <img class="img-fluid d-block" src="{{ url_for('static', filename='image/logo_utbm_alone.png') }}" height="59" width="55">
         </div>
         <div class="col-md-6 text-right">
-          <p class="py-1 my-2">AI50 Project - UTBM</p>
+          <p class="py-1 my-2"><b>R</b>outing <b>O</b>ptimization <b>A</b>I <b>D</b>elivery</p>
+          <p class="py-1 my-2">An AI50 project - UTBM</p>
         </div>
       </div>
     </div>

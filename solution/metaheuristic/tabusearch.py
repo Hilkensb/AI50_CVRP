@@ -17,8 +17,9 @@ from problem.cvrp.customer import CustomerCvrp
 from problem.cvrp.depot import DepotCvrp
 from problem.node import NodeWithCoord
 from solution.constructive.clarkwrightsaving import clarkWrightSaving
-from gui.config import redis_server, SOLUTION_TOPIC, SHOW_SOLUTION
+from gui.config import redis_server, SOLUTION_TOPIC
 from utils.redisutils import isRedisAvailable
+from utils.parseparameters import SHOW_SOLUTION
 
 
 # -------------------- Tabu Search Neighborhood functions ------------------- #
@@ -65,11 +66,13 @@ class TabuSearch:
         Constructor
         """
         # Evolution of the best solution evaluation found
-        self.__best_solution_evaluation_evolution: List[SolutionCvrp] = []
+        self.__best_solution_evaluation_evolution: List[float] = []
         # Evolution of the best solution found
         self.__best_solution_evolution: List[SolutionCvrp] = []
         # Set the topic where to publish evolution
-        self.__topic = publish_topic
+        self.__topic: str = publish_topic
+        # Varaible to know if the tabu serach is still running
+        self.__running: bool = False
 
     def runMultiPhaseTabuSearch(
         self, initial_solution: SolutionCvrp, neighborhood_function_list: List[function],
@@ -97,6 +100,8 @@ class TabuSearch:
         :rtype: SolutionCvrp
         
         """
+        
+        self.__running = True
         
         # Best solution found
         best_solution: SolutionCvrp = initial_solution
@@ -130,6 +135,10 @@ class TabuSearch:
         
         # For each iteration
         for iteration in range(number_iteration):
+
+            # Check if it noeed to stop        
+            if not self.__running:
+                break
         
             # Change the function
             if function_iteration_count >= function_iteration_number:
@@ -153,8 +162,12 @@ class TabuSearch:
               
             # Find the best solution    
             neighbours.sort(key=lambda sol: sol[1], reverse=True)
-            # Get the best neighbours
-            best_neighbours: Solution = neighbours.pop()
+            try:
+                # Get the best neighbours
+                best_neighbours: Solution = neighbours.pop()
+            except IndexError:
+                # No more neighbours so it stops
+                return best_solution
             
             # get the swap value (to be hashable)
             swap: str = best_neighbours[2]
@@ -228,6 +241,8 @@ class TabuSearch:
         :rtype: SolutionCvrp
         """
         
+        self.__running = True
+        
         # Best solution found
         best_solution: SolutionCvrp = initial_solution
         
@@ -252,6 +267,10 @@ class TabuSearch:
         # For each iteration
         for iteration in range(number_iteration):
         
+            # Check if it noeed to stop        
+            if not self.__running:
+                break
+        
             # Find the length of the smallest route
             smallest_route: int = min(current_solution.route, key=lambda r: len(r))
             
@@ -263,8 +282,12 @@ class TabuSearch:
               
             # Find the best solution    
             neighbours.sort(key=lambda sol: sol[1], reverse=True)
-            # Get the best solution
-            best_neighbours: Solution = neighbours.pop()
+            try:
+                # Get the best neighbours
+                best_neighbours: Solution = neighbours.pop()
+            except IndexError:
+                # No more neighbours so it stops
+                return best_solution
             
             # Get the swap realize
             swap: str = best_neighbours[2]
@@ -337,6 +360,9 @@ class TabuSearch:
         :return: An improved solution
         :rtype: SolutionCvrp
         """
+        
+        self.__running = True
+        
         # Thread running the tabu search       
         thread_tabu = threading.Thread(
             target=self.runMultiPhaseTabuSearch,
@@ -352,6 +378,8 @@ class TabuSearch:
         thread_tabu.start()
         # wait n seconds for the thread to finish its work
         thread_tabu.join(max_second_run)
+        
+        self.__running = False
         
     def runTabuSearchThread(
         self, initial_solution: SolutionCvrp, neighborhood_function: funtion,
@@ -379,6 +407,8 @@ class TabuSearch:
         :rtype: SolutionCvrp
         """
         
+        self.__running = True
+        
         # Thread running the tabu search       
         thread_tabu = threading.Thread(
             target=self.runTabuSearch,
@@ -394,12 +424,8 @@ class TabuSearch:
         thread_tabu.start()
         # wait n seconds for the thread to finish its work
         thread_tabu.join(max_second_run)  
-        
-        # Check if the tabu thread is still alive
-        if thread_tabu.isAlive():
-            # If tth thread is alive, kill it
-            thread_tabu.join()
                
+        self.__running = False
 
     def __addNewSolution(self, solution: SolutionCvrp, evaluation: float, rounded_json: int = 2):
         """
@@ -409,7 +435,7 @@ class TabuSearch:
         self.__best_solution_evolution.append(solution)
         
         # if redis is on
-        if isRedisAvailable():
+        if isRedisAvailable() and self.__running:
             # Create the data
             json_data = {
                 "algorithm_name": "Tabu search", "cost": round(evaluation, 2),

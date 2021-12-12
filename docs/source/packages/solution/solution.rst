@@ -8,9 +8,9 @@ the modelization of the solution of a Capacitated Vehicle Routing Problem in pyt
 The package
 -----------
 
-The package is composed of 3 modules:
-- solution: Contain the class SolutionCvrp that enables you to create instance of the CVRP;
-- route: Contain the Class RouteCvrp that will let you create customers nodes;
+The package is composed of multiple modules:
+- Modules for modelizing the CVRP's solution
+- Modules to find a feasible solution using different techniques
 
 
 .. toctree::
@@ -19,4 +19,10 @@ The package is composed of 3 modules:
 
    cvrp/solution
    cvrp/route
-
+   constructive/clarkwrightsaving
+   constructive/firstfitdecreasing
+   constructive/nearestneighbors
+   metaheuristic/tabusearch
+   metaheuristic/gwo
+   multiagents/sarlcommunication
+   unsupervised/clusteringsolver
