@@ -367,6 +367,9 @@ def algorithmTask(
     # Publish
     redis_server.publish(f"{SOLUTION_TOPIC}_{cvrp_id}", json.dumps(json_data))
     
+    # Bool to know if we need to show the solution evolution
+    hide_solution_evolution: bool = QUICK_RESULT or (AUTO_QUICK_RESULT and cvrp_instance.nb_customer >= BIG_INSTANCE)
+    
     # Save the result
     instance_save[f'algorithm_name_{cvrp_id}'] = algorithm_name
     # Dictionnary to save solution linked to their solution
@@ -379,10 +382,18 @@ def algorithmTask(
     for index in range(len(algorithm_name)):
         # If the solution has evolution
         if instance_save[f'has_evolution_{cvrp_id}'][index]:
-            # Generate the html of the graph
-            solution_representation: str = getHtmlSolutionEvolutionAnimationPlotly(
-                solution_evolution=algorithm_solution[index], full_html=False, default_height="750px"
-            )
+        
+            if hide_solution_evolution:
+                # Generate the html of the graph
+                solution_representation: str = algorithm_solution[index][-1].getHtmlFigurePlotly(
+                    full_html=False, default_height="750px"
+                )
+            else:
+                # Generate the html of the graph
+                solution_representation: str = getHtmlSolutionEvolutionAnimationPlotly(
+                    solution_evolution=algorithm_solution[index], full_html=False, default_height="750px"
+                )
+
             # Append the html in the list
             solution_list.append(solution_representation)
             # Generate the line chart

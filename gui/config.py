@@ -13,6 +13,13 @@ import redis as red
 # If not showed it will improved time cost of the algorithms
 SHOW_SOLUTION: bool = False
 
+# Generate quickly the result page by not evolving
+QUICK_RESULT: bool = False
+# Set the QUICK_RESULT automatically for big instance
+AUTO_QUICK_RESULT: bool = True
+# Number of customer for big instance
+BIG_INSTANCE: int = 400
+
 # ~~~~~~~~~~~~~~~~~~~~~~~  REDIS application setting ~~~~~~~~~~~~~~~~~~~~~~~~ #
 
 # Redis auto-launching
