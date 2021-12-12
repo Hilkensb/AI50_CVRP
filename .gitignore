@@ -2,11 +2,8 @@
 *.sarlbin
 *._trace
 *.pyc
-*.properties
 
-sarl/vrp/target/
 sarl/vrp/src/main/generated-sources/sarl/fr/utbm/vrp/agents/
 sarl/vrp/src/main/generated-sources
-sarl/vrp/target/classes/META-INF/maven/fr.utbm.AI50/vrp/
 
 main.py
