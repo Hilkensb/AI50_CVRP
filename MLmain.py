@@ -2,6 +2,7 @@
 
 # A supprimer !!!!
 # Juste pour tester le programme facilement
+import pandas as pd
 import problem.cvrp.instance as cvrp
 import networkx as nx
 import utils.mathfunctions as mathfunc
@@ -29,6 +30,14 @@ import ML.model as md
 def main():
 
     model = md.ModelSeq()
+    model.pred(15,3,140,0.8034807981054621)
+    #model.learn("./ML/Dataset.csv")
+    #model.info()
+    #data = pd.read_csv("./ML/Dataset.csv")
+    #print(data)
+    #for i in range(412):
+        #data["num graph"][i] = i
+    #data.to_csv("./ML/Dataset2.csv", index=False)
 
     #c = cvrp.Cvrp(file_path="http://vrp.atd-lab.inf.puc-rio.br/media/com_vrp/instances/P/P-n16-k8.vrp", file_type="web")
     #s = clarkWrightSaving(c)
