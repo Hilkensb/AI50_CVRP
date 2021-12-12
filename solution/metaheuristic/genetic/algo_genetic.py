@@ -6,8 +6,9 @@ Created on Sat Oct 20 12:54:08 2021
 @author: stephane
 """
 import numpy
-import ga
+import solution.metaheuristic.genetic.ga as ga
 import random
+import copy
 
 
 number_conductor = 5
@@ -37,7 +38,7 @@ Genetic algorithm parameters:
 
 
 
-def genetic(number_conductor, number_node, distance, sol_per_pop = 8, num_parents_mating = 4):
+def genetic(number_conductor, number_node, vehicle_capacity, customer_demand, distance, sol_per_pop = 8, num_parents_mating = 4):
     number_node_per_conductor = numpy.uint8(number_node/number_conductor)
     
     # Defining the population size.
@@ -58,18 +59,29 @@ def genetic(number_conductor, number_node, distance, sol_per_pop = 8, num_parent
     new_population[5, :] = [-2,   3,   -7, 6,   3,    3]
     """
     best_outputs = []
+    best_sols = []
     num_generations = 20
     for generation in range(num_generations):
         print("Generation : ", generation)
         fitness = numpy.zeros(sol_per_pop)
         for pop_local in range(sol_per_pop):
-            population_conducteur = numpy.zeros((number_conductor,number_node_per_conductor))
+        
+            population_copy = copy.copy(new_population[pop_local]).tolist()
+            current_index = 0
+
+            population_conducteur = numpy.empty(0)
             fitness_conductor = numpy.zeros(number_conductor)
             for i in range (number_conductor):
-                population_conducteur[i, :] = new_population[pop_local, i*(number_node_per_conductor):(i+1)*(number_node_per_conductor)]
-                y = population_conducteur[i, :]
+                if len(population_copy)==0:
+                    continue
+
+                population_conducteur = population_conducteur.tolist()
+                population_copy, population_conducteur_temp = createSubRoute(population_copy, vehicle_capacity, customer_demand)
+                population_conducteur.append(population_conducteur_temp)
+                population_conducteur = numpy.array(population_conducteur)
+                
+                y = population_conducteur[-1]
                 population_local = ga.create_pop(y, sol_per_pop)
-                print("pop local : ", population_local)
                 
                 num_generation_local = 20
                 for generation_local in range(num_generation_local):
@@ -94,17 +106,23 @@ def genetic(number_conductor, number_node, distance, sol_per_pop = 8, num_parent
                 fitness_conductor[i] = numpy.min(fitness_local)
                 best_match_idx_local = numpy.where(fitness_local == numpy.min(fitness_local))
                 #print("b : ",best_match_idx_local[0][0])
-                population_conducteur[i,:]=population_local[best_match_idx_local[0][0],:]
-                new_population[pop_local, i*(number_node_per_conductor):(i+1)*(number_node_per_conductor)] = population_conducteur[i,:]
-            
+                population_conducteur[i]=population_local[best_match_idx_local[0][0],:]
+                
+                new_population[pop_local].tolist()[current_index:current_index+len(population_conducteur[i])] = population_conducteur[i]
+                current_index+=len(population_conducteur[i])
+               
+            for index in range(len(new_population)):
+                new_population[index] = ga.correct(new_population[i])
+
             # Measuring the fitness of each chromosome in the population.
             fitness[pop_local] = numpy.sum(fitness_conductor)
             # print("Fitness")
             # print(fitness)
-       
-        
+                
 
         best_outputs.append(numpy.min(fitness))
+        best_fits_sols = [pop for pop in range(len(fitness)) if fitness[pop]==best_outputs[-1]]
+        best_sols.append(new_population[best_fits_sols])
         # The best result in the current iteration.
         #print("Best result : ", numpy.min(numpy.sum(new_population*equation_inputs, axis=1)))
         
@@ -126,7 +144,7 @@ def genetic(number_conductor, number_node, distance, sol_per_pop = 8, num_parent
         # Creating the new population based on the parents and offspring.
         new_population[0:parents.shape[0], :] = parents
         new_population[parents.shape[0]:, :] = offspring_crossover
-        
+
     # Getting the best solution after iterating finishing all generations.
     #At first, the fitness is calculated for each solution in the final generation.
     fitness = ga.cal_pop_fitness(distance, new_population)
@@ -134,15 +152,36 @@ def genetic(number_conductor, number_node, distance, sol_per_pop = 8, num_parent
     best_match_idx = numpy.where(fitness == numpy.min(fitness))
     
     
-    print("Best solution : ", new_population[best_match_idx, :])
-    print("Best solution fitness : ", fitness[best_match_idx])
-    print("best outpout : ", best_outputs)
+#    print("Best solution : ",  best_sols[best_outputs.index(numpy.min(best_outputs))])
+#    print("Best solution fitness : ",numpy.min(best_outputs))
+#    print("best outpout : ", best_outputs)
 
-    import matplotlib.pyplot
-    matplotlib.pyplot.plot(best_outputs)
-    matplotlib.pyplot.xlabel("Iteration")
-    matplotlib.pyplot.ylabel("Fitness")
-    matplotlib.pyplot.show()
+#    import matplotlib.pyplot
+#    matplotlib.pyplot.plot(best_outputs)
+#    matplotlib.pyplot.xlabel("Iteration")
+#    matplotlib.pyplot.ylabel("Fitness")
+#    matplotlib.pyplot.show()
     
-    return fitness, best_outputs
+    return numpy.min(best_outputs),  best_sols[best_outputs.index(numpy.min(best_outputs))][0].tolist()
+
+def createSubRoute(population, vehicle_capacity, customer_demand):
+    """
+    """
+    
+    # The demand supplied
+    demand_supplied: int = vehicle_capacity
+    
+    # Store teh customers
+    result: List = []
+    
+    # Copy the population
+    population_copy: List = copy.copy(population)
+
+    for customer in population:
+        if (demand_supplied - customer_demand[customer] > 0):
+            demand_supplied -= customer_demand[customer]
+            result.append(customer)
+            population_copy.remove(customer)
+            
+    return population_copy, result
 

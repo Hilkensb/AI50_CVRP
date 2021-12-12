@@ -7,6 +7,8 @@ Created on Sat Oct 20 11:35:21 2021
 """
 import numpy
 import random
+import copy
+from collections import Counter
 
 def create_pop(pop, pop_size):
     new_population = numpy.zeros((pop_size,len(pop)), dtype=int)
@@ -36,7 +38,7 @@ def select_mating_pool(pop, fitness, num_parents):
     return parents
 
 def crossover(parents, offspring_size):
-    offspring = numpy.empty(offspring_size)
+    offspring = numpy.empty((offspring_size[0],parents.shape[1]))
     #print("offspring_size : ", offspring_size)
     # The point at which crossover takes place between two parents. Usually, it is at the center.
     crossover_point = numpy.uint8(offspring_size[1]/2)
@@ -53,13 +55,57 @@ def crossover(parents, offspring_size):
     return offspring
 
 def mutation(offspring_crossover, num_mutations=1):
-    mutations_counter = numpy.uint8(offspring_crossover.shape[1] / num_mutations)
-    # Mutation changes a number of genes as defined by the num_mutations argument. The changes are random.
-    for idx in range(offspring_crossover.shape[0]):
-        gene_idx = mutations_counter - 1
-        for mutation_num in range(num_mutations):
-            # The random value to be added to the gene.
-            random_value = numpy.random.uniform(-1.0, 1.0, 1)
-            offspring_crossover[idx, gene_idx] = offspring_crossover[idx, gene_idx] + random_value
-            gene_idx = gene_idx + mutations_counter
+    
+    
+    for i in range(num_mutations):
+        # Choose randomly the allele to mutate
+        int_random_valeur = random.sample(population=list(range(len(offspring_crossover[1]))), k=2)
+
+        # Choose randomly to add or remove one
+        min_val=int(min(int_random_valeur))
+        max_val=int(max(int_random_valeur))
+        offspring_crossover[i, min_val], offspring_crossover[i, max_val] = offspring_crossover[i, max_val], offspring_crossover[i, min_val]
+
     return offspring_crossover
+    
+def correct(solution):
+    """
+    Function to correct an incorrect gene
+    
+    :param gene: gene to correct
+    :type gene: np.ndarray
+    :return: The corrected gene
+    :rtype: np.ndarray
+    """
+    
+    # Convert gene to list
+    solution_list = solution.tolist()
+    # Corrected gene
+    corrected = copy.copy(solution_list)
+    
+    counter_nodes = Counter(solution_list)
+    non_valid_cities = [
+        city for city in counter_nodes.keys()
+        if counter_nodes[city] > 1
+    ]
+    insert_cities = list(set(range(len(solution_list))) - set(solution_list)) 
+
+    # While there's non 0 values index to look for
+    while len(insert_cities) > 0:
+        # Get the index of an object
+        value_to_change = random.choice(non_valid_cities)
+        index = corrected.index(value_to_change)
+        counter_nodes[value_to_change] -= 1
+        
+        if counter_nodes[value_to_change] <= 1:
+            non_valid_cities.remove(value_to_change)
+        
+        insert_value = random.choice(insert_cities)
+        insert_cities.remove(insert_value)
+        
+        # Add the object if it's respecting the capacity constraints
+        corrected[corrected.index(value_to_change)] = insert_value
+
+    # Return the corrected one
+    return numpy.array(corrected)
+
