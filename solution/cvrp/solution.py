@@ -815,7 +815,7 @@ class SolutionCvrp:
                 node_text = [f"Customer: {customer.node_id}<br>Demand: {customer.demand}"]
       
                 # Node of the trace
-                node_trace: Scattergl = go.Scattergl(
+                node_trace: Scatter = go.Scatter(
                     x=node_x, y=node_y,
                     showlegend=show_legend_node,
                     mode='markers',
@@ -849,7 +849,7 @@ class SolutionCvrp:
             edge_y.append(None)
 
             # Edge of the trace
-            edge_trace: Scattergl = go.Scattergl(
+            edge_trace: Scatter = go.Scatter(
                 x=edge_x, y=edge_y,
                 showlegend=show_legend_edge,
                 line=dict(width=0.5, color=route_color[index]),
@@ -861,7 +861,7 @@ class SolutionCvrp:
             edge_scatter_list.append(edge_trace)
             
         # Create the node of the depot
-        depot_trace: Scattergl = go.Scattergl(
+        depot_trace: Scatter = go.Scatter(
             x=[depot_node.x], y=[depot_node.y],
             showlegend=show_legend_node,
             mode='markers',

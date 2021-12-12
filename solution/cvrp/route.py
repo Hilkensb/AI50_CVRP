@@ -857,7 +857,7 @@ class RouteCvrp:
             node_text = [f"{customer.node_id}"]
   
             # Node of the trace
-            node_trace: Scattergl = go.Scattergl(
+            node_trace: Scatter = go.Scatter(
                 x=node_x, y=node_y,
                 showlegend=show_legend_node,
                 mode='markers',
@@ -888,7 +888,7 @@ class RouteCvrp:
         edge_y.append(None)
 
         # Edge of the trace
-        edge_trace: Scattergl = go.Scattergl(
+        edge_trace: Scatter = go.Scatter(
             x=edge_x, y=edge_y,
             showlegend=show_legend_edge,
             line=dict(width=0.5, color=route_color),
