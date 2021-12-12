@@ -110,7 +110,7 @@ agent VehicleAgent {
 
 
 
-		debug(this.customers.toString())
+		// debug(this.customers.toString())
 		// emit a new event to tell that the customer have been inserted
 		emit(new customerInserted())[it.ID == allocationAgentUUID]
 	}
@@ -118,7 +118,7 @@ agent VehicleAgent {
 	on finishVehicle {
 		info("Finish event received.")
 		// Show to the log his route
-		info(this.customers.toString())
+		// info(this.customers.toString())
 		
 		// Return the solution
 		var solutionEvt = new solution(this.customers)
@@ -132,7 +132,7 @@ agent VehicleAgent {
 	
 	on removeAll {
 		info("Removing all my customers")
-		debug(this.customers.toString())
+		// debug(this.customers.toString())
 		
 		// Create a new Array that contains every customers
 		var customers_copy : ArrayList<String> = new ArrayList<String>
@@ -180,8 +180,8 @@ agent VehicleAgent {
 
 	on relocateCustomer {
 		info("Relocating customer")
-		debug(occurrence.customer)
-		debug(this.customers.toString())
+		// debug(occurrence.customer)
+		// debug(this.customers.toString())
 
 		// Determine the minimum cost of insertion
 		var min_dist : double = Integer.MAX_VALUE
@@ -212,7 +212,7 @@ agent VehicleAgent {
 			this.customers.add(best_index + 1, customer_to_insert)
 		}
 
-		debug(this.customers.toString())
+		// debug(this.customers.toString())
 		// emit a new event to tell that the customer have been inserted
 		emit(new customerRelocated())[it.ID == allocationAgentUUID]
 	}

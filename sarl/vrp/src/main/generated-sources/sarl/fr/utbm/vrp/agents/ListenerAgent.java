@@ -34,15 +34,29 @@ import redis.clients.jedis.JedisPubSub;
 public class ListenerAgent extends Agent {
   private void $behaviorUnit$Initialize$0(final Initialize occurrence) {
     abstract class __ListenerAgent_0 extends JedisPubSub {
+      /**
+       * onMessage
+       * <br>Triggered when an message in pusblishe in a given topic
+       * 
+       * @param channel  Name of the topic were message has been published
+       * @param message  Message published on channel topic
+       */
       public abstract void onMessage(final String channel, final String message);
     }
     
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The agent was started.");
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("The ListenerAgent was started.");
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.setLogLevel(2);
     Jedis jSubscriber = new Jedis();
     __ListenerAgent_0 ___ListenerAgent_0 = new __ListenerAgent_0() {
+      /**
+       * onMessage
+       * <br>Triggered when an message in pusblishe in a given topic
+       * 
+       * @param channel  Name of the topic were message has been published
+       * @param message  Message published on channel topic
+       */
       public void onMessage(final String channel, final String message) {
         Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = ListenerAgent.this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
         _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(((("channel: " + channel) + " message: ") + message));
@@ -92,9 +106,6 @@ public class ListenerAgent extends Agent {
     return $castSkill(Lifecycle.class, this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE);
   }
   
-  /**
-   * Initialize event handler
-   */
   @SyntheticMember
   @PerceptGuardEvaluator
   private void $guardEvaluator$Initialize(final Initialize occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {
@@ -103,9 +114,6 @@ public class ListenerAgent extends Agent {
     ___SARLlocal_runnableCollection.add(() -> $behaviorUnit$Initialize$0(occurrence));
   }
   
-  /**
-   * Destroy event handler
-   */
   @SyntheticMember
   @PerceptGuardEvaluator
   private void $guardEvaluator$Destroy(final Destroy occurrence, final Collection<Runnable> ___SARLlocal_runnableCollection) {

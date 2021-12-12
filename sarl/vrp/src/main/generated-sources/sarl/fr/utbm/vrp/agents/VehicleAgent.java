@@ -8,7 +8,6 @@ import fr.utbm.vrp.agents.insertCustomer;
 import fr.utbm.vrp.agents.insertCustomerEstimate;
 import fr.utbm.vrp.agents.insertionCostEstimation;
 import fr.utbm.vrp.agents.relocate;
-import fr.utbm.vrp.agents.relocateCostEstimation;
 import fr.utbm.vrp.agents.relocateCustomer;
 import fr.utbm.vrp.agents.relocateCustomerEstimate;
 import fr.utbm.vrp.agents.removeAll;
@@ -145,8 +144,6 @@ public class VehicleAgent extends Agent {
     synchronized (this) {
       this.customers.add((best_index + 1), customer_to_insert);
     }
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.debug(this.customers.toString());
     DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
     customerInserted _customerInserted = new customerInserted();
     class $SerializableClosureProxy implements Scope<Address> {
@@ -179,8 +176,6 @@ public class VehicleAgent extends Agent {
   private void $behaviorUnit$finishVehicle$3(final finishVehicle occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Finish event received.");
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(this.customers.toString());
     solution solutionEvt = new solution(this.customers);
     DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
     class $SerializableClosureProxy implements Scope<Address> {
@@ -208,10 +203,10 @@ public class VehicleAgent extends Agent {
       }
     };
     _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(solutionEvt, _function);
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Solution sent.");
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info("Solution sent.");
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3.info("Killing myself.");
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info("Killing myself.");
     Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.killMe();
   }
@@ -219,8 +214,6 @@ public class VehicleAgent extends Agent {
   private void $behaviorUnit$removeAll$4(final removeAll occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Removing all my customers");
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.debug(this.customers.toString());
     ArrayList<String> customers_copy = new ArrayList<String>();
     for (int customer_index = 1; (customer_index < (((Object[])Conversions.unwrapArray(this.customers, Object.class)).length - 1)); customer_index++) {
       customers_copy.add(this.customers.get(customer_index));
@@ -229,8 +222,8 @@ public class VehicleAgent extends Agent {
     this.customers.add(this.depot);
     this.customers.add(this.depot);
     this.demand_supplied.set(0);
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.debug(customers_copy);
+    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.debug(customers_copy);
     DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
     relocate _relocate = new relocate(customers_copy);
     class $SerializableClosureProxy implements Scope<Address> {
@@ -261,59 +254,13 @@ public class VehicleAgent extends Agent {
   }
   
   private void $behaviorUnit$relocateCustomerEstimate$5(final relocateCustomerEstimate occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("New customer to relocate received.");
-    double min_dist = Integer.MAX_VALUE;
-    String customer_to_insert = occurrence.customer;
-    int _get = this.demand_supplied.get();
-    int _demand = this.getDemand(customer_to_insert);
-    if (((_get + _demand) <= this.vehicle_capacity.doubleValue())) {
-      for (int index = 0; (index < (((Object[])Conversions.unwrapArray(this.customers, Object.class)).length - 1)); index++) {
-        {
-          double insertion_cost = this.insertionCost(index, customer_to_insert);
-          if ((insertion_cost < min_dist)) {
-            min_dist = insertion_cost;
-          }
-        }
-      }
-    }
-    DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
-    UUID _iD = this.getID();
-    relocateCostEstimation _relocateCostEstimation = new relocateCostEstimation(min_dist, _iD);
-    class $SerializableClosureProxy implements Scope<Address> {
-      
-      private final UUID $_allocationAgentUUID_1;
-      
-      public $SerializableClosureProxy(final UUID $_allocationAgentUUID_1) {
-        this.$_allocationAgentUUID_1 = $_allocationAgentUUID_1;
-      }
-      
-      @Override
-      public boolean matches(final Address it) {
-        UUID _iD = it.getID();
-        return Objects.equal(_iD, $_allocationAgentUUID_1);
-      }
-    }
-    final Scope<Address> _function = new Scope<Address>() {
-      @Override
-      public boolean matches(final Address it) {
-        UUID _iD = it.getID();
-        return Objects.equal(_iD, VehicleAgent.this.allocationAgentUUID);
-      }
-      private Object writeReplace() throws ObjectStreamException {
-        return new SerializableProxy($SerializableClosureProxy.class, VehicleAgent.this.allocationAgentUUID);
-      }
-    };
-    _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER.emit(_relocateCostEstimation, _function);
+    throw new Error("Unresolved compilation problems:"
+      + "\nType mismatch: cannot convert from UUID to UUID");
   }
   
   private void $behaviorUnit$relocateCustomer$6(final relocateCustomer occurrence) {
     Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
     _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Relocating customer");
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.debug(occurrence.customer);
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.debug(this.customers.toString());
     double min_dist = Integer.MAX_VALUE;
     String customer_to_insert = occurrence.customer;
     int best_index = 0;
@@ -337,8 +284,6 @@ public class VehicleAgent extends Agent {
     synchronized (this) {
       this.customers.add((best_index + 1), customer_to_insert);
     }
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3.debug(this.customers.toString());
     DefaultContextInteractions _$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_DEFAULTCONTEXTINTERACTIONS$CALLER();
     customerRelocated _customerRelocated = new customerRelocated();
     class $SerializableClosureProxy implements Scope<Address> {

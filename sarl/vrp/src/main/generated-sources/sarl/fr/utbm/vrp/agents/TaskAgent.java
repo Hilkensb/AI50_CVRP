@@ -1,9 +1,6 @@
 package fr.utbm.vrp.agents;
 
-import com.google.common.base.Objects;
 import fr.utbm.vrp.agents.AllocationAgent;
-import fr.utbm.vrp.agents.finish;
-import fr.utbm.vrp.agents.nextCustomer;
 import fr.utbm.vrp.agents.nextCustomerRequest;
 import fr.utbm.vrp.agents.solution;
 import fr.utbm.vrp.agents.vehicleInserted;
@@ -20,18 +17,14 @@ import io.sarl.lang.annotation.PerceptGuardEvaluator;
 import io.sarl.lang.annotation.SarlElementType;
 import io.sarl.lang.annotation.SarlSpecification;
 import io.sarl.lang.annotation.SyntheticMember;
-import io.sarl.lang.core.Address;
 import io.sarl.lang.core.Agent;
 import io.sarl.lang.core.AtomicSkillReference;
 import io.sarl.lang.core.DynamicSkillProvider;
 import io.sarl.lang.core.Event;
-import io.sarl.lang.core.Scope;
-import io.sarl.lang.core.SpaceID;
-import io.sarl.lang.util.SerializableProxy;
-import java.io.ObjectStreamException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
+import java.util.Objects;
 import java.util.Set;
 import java.util.UUID;
 import java.util.concurrent.ConcurrentLinkedQueue;
@@ -100,85 +93,9 @@ public class TaskAgent extends Agent {
   }
   
   private void $behaviorUnit$nextCustomerRequest$1(final nextCustomerRequest occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info("Next customer requested.");
-    String _string = Integer.valueOf(this.iteration.incrementAndGet()).toString();
-    final String iteration_json = (("{\"algorithm_name\":\"Multi-Agent system\", \"iteration\":" + _string) + "}");
-    this.JEDIS.publish(("solution_streal_" + this.topic), iteration_json);
-    Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
-    String _string_1 = Integer.valueOf(((Object[])Conversions.unwrapArray(this.customers, Object.class)).length).toString();
-    final AgentTask task = _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER.task(("waiting_for_allocation_agent" + _string_1));
-    Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
-    final Procedure1<Agent> _function = (Agent it) -> {
-      if (this.allocation_agent_spawned) {
-        boolean _isEmpty = this.customers.isEmpty();
-        if ((!_isEmpty)) {
-          Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-          _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Sending the next customer.");
-          String _nextCustomers = this.getNextCustomers();
-          nextCustomer nextCustomerEvt = new nextCustomer(_nextCustomers);
-          InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-          class $SerializableClosureProxy implements Scope<Address> {
-            
-            private final UUID $_allocationAgentUUID_1;
-            
-            public $SerializableClosureProxy(final UUID $_allocationAgentUUID_1) {
-              this.$_allocationAgentUUID_1 = $_allocationAgentUUID_1;
-            }
-            
-            @Override
-            public boolean matches(final Address it) {
-              UUID _iD = it.getID();
-              return Objects.equal(_iD, $_allocationAgentUUID_1);
-            }
-          }
-          final Scope<Address> _function_1 = new Scope<Address>() {
-            @Override
-            public boolean matches(final Address it) {
-              UUID _iD = it.getID();
-              return Objects.equal(_iD, TaskAgent.this.allocationAgentUUID);
-            }
-            private Object writeReplace() throws ObjectStreamException {
-              return new SerializableProxy($SerializableClosureProxy.class, TaskAgent.this.allocationAgentUUID);
-            }
-          };
-          _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext().getDefaultSpace().emit(this.getID(), nextCustomerEvt, _function_1);
-        } else {
-          Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-          _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info("No more customer.");
-          finish finishEvt = new finish();
-          InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-          class $SerializableClosureProxy_1 implements Scope<Address> {
-            
-            private final UUID $_allocationAgentUUID_1;
-            
-            public $SerializableClosureProxy_1(final UUID $_allocationAgentUUID_1) {
-              this.$_allocationAgentUUID_1 = $_allocationAgentUUID_1;
-            }
-            
-            @Override
-            public boolean matches(final Address it) {
-              UUID _iD = it.getID();
-              return Objects.equal(_iD, $_allocationAgentUUID_1);
-            }
-          }
-          final Scope<Address> _function_2 = new Scope<Address>() {
-            @Override
-            public boolean matches(final Address it) {
-              UUID _iD = it.getID();
-              return Objects.equal(_iD, TaskAgent.this.allocationAgentUUID);
-            }
-            private Object writeReplace() throws ObjectStreamException {
-              return new SerializableProxy($SerializableClosureProxy_1.class, TaskAgent.this.allocationAgentUUID);
-            }
-          };
-          _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER_1.getInnerContext().getDefaultSpace().emit(this.getID(), finishEvt, _function_2);
-        }
-        Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
-        _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_2.cancel(task);
-      }
-    };
-    _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1.every(task, 100, _function);
+    throw new Error("Unresolved compilation problems:"
+      + "\nType mismatch: cannot convert from UUID to UUID"
+      + "\nType mismatch: cannot convert from UUID to UUID");
   }
   
   private void $behaviorUnit$ParticipantJoined$2(final ParticipantJoined occurrence) {
@@ -188,32 +105,27 @@ public class TaskAgent extends Agent {
   @SyntheticMember
   @Pure
   private boolean $behaviorUnitGuard$ParticipantJoined$2(final ParticipantJoined it, final ParticipantJoined occurrence) {
-    InnerContextAccess _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER();
-    SpaceID _spaceID = _$CAPACITY_USE$IO_SARL_CORE_INNERCONTEXTACCESS$CALLER.getInnerContext().getDefaultSpace().getSpaceID();
-    boolean _equals = Objects.equal(occurrence.spaceID, _spaceID);
-    return _equals;
+    throw new Error("Unresolved compilation problems:"
+      + "\nType mismatch: cannot convert from boolean to boolean");
   }
   
   private void $behaviorUnit$MemberLeft$3(final MemberLeft occurrence) {
-    Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-    String _string = Integer.valueOf(this.num_of_route.get()).toString();
-    _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(("Number of routes: " + _string));
     Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
     final AgentTask task = _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER.task("waiting_for_route");
     Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
     final Procedure1<Agent> _function = (Agent it) -> {
-      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info(Integer.valueOf(((Object[])Conversions.unwrapArray(this.solution_found, Object.class)).length));
+      Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+      _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER.info(Integer.valueOf(((Object[])Conversions.unwrapArray(this.solution_found, Object.class)).length));
       int _length = ((Object[])Conversions.unwrapArray(this.solution_found, Object.class)).length;
       if ((_length >= this.num_of_route.doubleValue())) {
         final String solution_string = ((List<Object>)Conversions.doWrapArray(this.solution_found.toArray())).toString();
         this.JEDIS.publish(("sarl_final_solution_" + this.topic), solution_string);
-        Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-        _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info("Solution published.");
+        Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+        _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_1.info("Solution published.");
         Schedules _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER();
         _$CAPACITY_USE$IO_SARL_CORE_SCHEDULES$CALLER_2.cancel(task);
-        Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
-        _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_3.info("Killing myself.");
+        Logging _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2 = this.$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER();
+        _$CAPACITY_USE$IO_SARL_CORE_LOGGING$CALLER_2.info("Killing myself.");
         Lifecycle _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER = this.$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER();
         _$CAPACITY_USE$IO_SARL_CORE_LIFECYCLE$CALLER.killMe();
       }
@@ -464,15 +376,15 @@ public class TaskAgent extends Agent {
     if (getClass() != obj.getClass())
       return false;
     TaskAgent other = (TaskAgent) obj;
-    if (!java.util.Objects.equals(this.JEDIS_HOST, other.JEDIS_HOST))
+    if (!Objects.equals(this.JEDIS_HOST, other.JEDIS_HOST))
       return false;
     if (other.JEDIS_PORT != this.JEDIS_PORT)
       return false;
-    if (!java.util.Objects.equals(this.topic, other.topic))
+    if (!Objects.equals(this.topic, other.topic))
       return false;
-    if (!java.util.Objects.equals(this.allocationAgentUUID, other.allocationAgentUUID))
+    if (!Objects.equals(this.allocationAgentUUID, other.allocationAgentUUID))
       return false;
-    if (!java.util.Objects.equals(this.depot, other.depot))
+    if (!Objects.equals(this.depot, other.depot))
       return false;
     if (other.allocation_agent_spawned != this.allocation_agent_spawned)
       return false;
@@ -485,11 +397,11 @@ public class TaskAgent extends Agent {
   public int hashCode() {
     int result = super.hashCode();
     final int prime = 31;
-    result = prime * result + java.util.Objects.hashCode(this.JEDIS_HOST);
+    result = prime * result + Objects.hashCode(this.JEDIS_HOST);
     result = prime * result + Integer.hashCode(this.JEDIS_PORT);
-    result = prime * result + java.util.Objects.hashCode(this.topic);
-    result = prime * result + java.util.Objects.hashCode(this.allocationAgentUUID);
-    result = prime * result + java.util.Objects.hashCode(this.depot);
+    result = prime * result + Objects.hashCode(this.topic);
+    result = prime * result + Objects.hashCode(this.allocationAgentUUID);
+    result = prime * result + Objects.hashCode(this.depot);
     result = prime * result + Boolean.hashCode(this.allocation_agent_spawned);
     return result;
   }

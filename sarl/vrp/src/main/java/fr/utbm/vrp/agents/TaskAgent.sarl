@@ -137,7 +137,7 @@ agent TaskAgent {
 	}
 
 	on MemberLeft {
-		info("Number of routes: " + this.num_of_route.get().toString())
+		// info("Number of routes: " + this.num_of_route.get().toString())
 		val task = task("waiting_for_route")
 		task.every(100) [
 			// Wait until all route have been all added to the list
