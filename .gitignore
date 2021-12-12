@@ -2,3 +2,9 @@
 *.pyc
 
 main.py
+
+*._trace
+
+*.sarlbin
+
+sarl/vrp/src/main/generated-sources/sarl/fr/utbm/vrp/agents/
