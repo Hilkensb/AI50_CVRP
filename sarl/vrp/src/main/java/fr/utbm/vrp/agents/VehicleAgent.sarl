@@ -180,7 +180,7 @@ agent VehicleAgent {
 
 	on relocateCustomer {
 		info("Relocating customer")
-		debug(occurrence.customer)
+		// debug(occurrence.customer)
 		// debug(this.customers.toString())
 
 		// Determine the minimum cost of insertion
