@@ -16,22 +16,26 @@ import io.sarl.core.Lifecycle
 agent ListenerAgent {
 	uses Logging, Lifecycle
 
-	/**
-	 * Initialize event handler
-	 */
 	on Initialize {
-		// Event trigger before the agent begin to live or to be used.
-		info("The agent was started.")
+		info("The ListenerAgent was started.")
 
 		// Change the logging level to warning to gain some time to not display
 		// all messages published by the agents
 		// level - 0 or lower for no logging, 1 for error, 2 for warning, 3 for info, 4 or higher for debug.
 		setLogLevel(2)
 
+		// Create new Jedis object in order to subscirbe to a specific topic
 		var jSubscriber:Jedis = new Jedis();
 		jSubscriber.subscribe(new JedisPubSub() {
-
+			/**
+			* onMessage
+			* <br>Triggered when an message in pusblishe in a given topic
+			* 
+			* @param channel  Name of the topic were message has been published
+			* @param message  Message published on channel topic
+			**/
 			def onMessage(channel : String, message : String) {
+				// Display the name of the topic and the message published for debug purpose
 				info("channel: " + channel + " message: " + message)
 				
 				// Check the content of the message
@@ -43,12 +47,10 @@ agent ListenerAgent {
 					spawn(BootAgent, message)
 				}
 			}
+			// Name of the topic we which to subscribe
 		}, "sarlTopic");
     }
 
-	/**
-	 * Destroy event handler
-	 */
     on Destroy {
         // Event trigger when the agent is destroyed from the system..
         info("The agent was stopped.")

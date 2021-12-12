@@ -3,6 +3,9 @@
 *._trace
 *.pyc
 
+sarl/vrp/src/main/generated-sources/sarl/fr/utbm/vrp/agents/
+sarl/vrp/src/main/generated-sources
+
 main.py
 
 sarl/vrp/target/
