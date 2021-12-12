@@ -19,6 +19,7 @@
     <script src="../../../_static/js/theme.js"></script>
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Clark And Wright saving algorithm" href="../constructive/clarkwrightsaving.html" />
     <link rel="prev" title="CVRP Solution object" href="solution.html" /> 
 </head>
 
@@ -44,14 +45,23 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorial/tutorial.html">Tutorial</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../packages.html">Python Objects Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../problem/problem.html">Capacitated Vehicle Routing Problem Modelization</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../solution.html">Capacitated Vehicle Routing Problem Modelization</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../solution.html">Capacitated Vehicle Routing Problem Solution Modelization</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="../solution.html#the-package">The package</a><ul class="current">
 <li class="toctree-l4"><a class="reference internal" href="solution.html">CVRP Solution object</a></li>
 <li class="toctree-l4 current"><a class="current reference internal" href="#">Route of CVRP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../constructive/clarkwrightsaving.html">Clark And Wright saving algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../constructive/firstfitdecreasing.html">First Fit Decreasing Algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../constructive/nearestneighbors.html">Nearest Neighbors Algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../metaheuristic/tabusearch.html">Tabu search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../metaheuristic/gwo.html">Grey Wolf Optimizer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../multiagents/sarlcommunication.html">Sarl Communication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../unsupervised/clusteringsolver.html">Capacited K-Means</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../utils/utils.html">Utils package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gui/gui.html">Graphical user interface</a></li>
 </ul>
 </li>
 </ul>
@@ -71,7 +81,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../../packages.html">Python Objects Documentation</a> &raquo;</li>
-          <li><a href="../solution.html">Capacitated Vehicle Routing Problem Modelization</a> &raquo;</li>
+          <li><a href="../solution.html">Capacitated Vehicle Routing Problem Solution Modelization</a> &raquo;</li>
       <li>Route of CVRP</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../_sources/packages/solution/cvrp/route.rst.txt" rel="nofollow"> View page source</a>
@@ -88,6 +98,105 @@
 <dt class="sig sig-object py" id="solution.cvrp.route.RouteCvrp">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">solution.cvrp.route.</span></span><span class="sig-name descname"><span class="pre">RouteCvrp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">route</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">problem.node.NodeWithCoord</span><span class="p"><span class="pre">]</span></span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.route.RouteCvrp" title="Permalink to this definition"></a></dt>
 <dd><dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.route.RouteCvrp.__getNeighboursSwapLong">
+<span class="sig-name descname"><span class="pre">__getNeighboursSwapLong</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proximity_swaps</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solution_evaluation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">route_cost</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#solution.cvrp.route.RouteCvrp" title="solution.cvrp.route.RouteCvrp"><span class="pre">RouteCvrp</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#solution.cvrp.route.RouteCvrp.__getNeighboursSwapLong" title="Permalink to this definition"></a></dt>
+<dd><p>getNeighboursSwapLong()</p>
+<p>Method to get a customers swap of the route. The swaps will be made
+between 2 elements of the route depending of the parameter proximity_swaps.
+For exemple if the proximity_swaps is equal to 1, the route generated
+will be a swap between an element of the route and the node that is following.
+Let’s imagine we have route like (node 1 being the depot):
+[1, 2, 3, 4, 1]
+The swaps will be:
+[1, 3, 2, 4, 1]
+[1, 2, 4, 3, 1]
+[1, 4, 3, 2, 1]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>proximity_swaps</strong> (<em>int</em>) – The proximity of elements swaps, default to 1 (opt.)</p></li>
+<li><p><strong>solution_evaluation</strong> (<em>float</em>) – Evaluation of the solution (to then get the cost the whole solution), default to 0 (opt.)</p></li>
+<li><p><strong>route_cost</strong> (<em>float</em>) – Cost the route, default to None (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple containing the routes with swaps, their evaluation (it will contain n route, with n being the number of customer in the route) and the string representing the swap realized</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Tuple[<a class="reference internal" href="#solution.cvrp.route.RouteCvrp" title="solution.cvrp.route.RouteCvrp">RouteCvrp</a>, int, str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.route.RouteCvrp.__getNeighboursSwapShort">
+<span class="sig-name descname"><span class="pre">__getNeighboursSwapShort</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proximity_swaps</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solution_evaluation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#solution.cvrp.route.RouteCvrp" title="solution.cvrp.route.RouteCvrp"><span class="pre">RouteCvrp</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#solution.cvrp.route.RouteCvrp.__getNeighboursSwapShort" title="Permalink to this definition"></a></dt>
+<dd><p>getNeighboursSwapShort()</p>
+<p>Method to get a customers swap of the route. The swaps will be made
+between 2 elements of the route depending of the parameter proximity_swaps.
+For exemple if the proximity_swaps is equal to 1, the route generated
+will be a swap between an element of the route and the node that is following.
+Let’s imagine we have route like (node 1 being the depot):
+[1, 2, 3, 4, 1]
+The swaps will be:
+[1, 3, 2, 4, 1]
+[1, 2, 4, 3, 1]
+[1, 4, 3, 2, 1]</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>proximity_swaps</strong> (<em>int</em>) – The proximity of elements swaps, default to 1 (opt.)</p></li>
+<li><p><strong>solution_evaluation</strong> (<em>float</em>) – Evaluation of the solution (to then get the cost the whole solution), default to 0 (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple containing the routes with swaps, their evaluation (it will contain n route, with n being the number of customer in the route) and the string representing the swap realized</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Tuple[<a class="reference internal" href="#solution.cvrp.route.RouteCvrp" title="solution.cvrp.route.RouteCvrp">RouteCvrp</a>, int, str]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.route.RouteCvrp.demandSupplied">
+<span class="sig-name descname"><span class="pre">demandSupplied</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.route.RouteCvrp.demandSupplied" title="Permalink to this definition"></a></dt>
+<dd><p>The sum of demand of all customers in the route</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The total demand supplied by this route</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.route.RouteCvrp.drawPlotly">
+<span class="sig-name descname"><span class="pre">drawPlotly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.route.RouteCvrp.drawPlotly" title="Permalink to this definition"></a></dt>
+<dd><p>Method to create the scatter that compose the graph made with plotly</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>route_color</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of colors of the routes in the solution, default the DEFAULT_COLOR_PALETTE (utils.colorpallete) (opt.)</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node depot, default to “#a6f68e” (opt.)</p></li>
+<li><p><strong>node_size</strong> (<em>int</em>) – Size of the nodes, default to 15 (opt)</p></li>
+<li><p><strong>show_legend_edge</strong> (<em>bool</em>) – Display or not the legend of edges, default to True (opt.)</p></li>
+<li><p><strong>show_legend_node</strong> – Display or not the legend of nodes, default to False (opt.)</p></li>
+<li><p><strong>route_number</strong> (<em>int</em>) – Number of the route drawn</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Two lists of scatters, one of nodes and one of edges</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple(List[Scatter], List[Scatter])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="solution.cvrp.route.RouteCvrp.evaluation">
 <span class="sig-name descname"><span class="pre">evaluation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.route.RouteCvrp.evaluation" title="Permalink to this definition"></a></dt>
 <dd><p>Method to get the cost of the route (not rounded)</p>
@@ -97,6 +206,20 @@
 </dd>
 <dt class="field-even">Return type</dt>
 <dd class="field-even"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.route.RouteCvrp.fromJSON">
+<span class="sig-name descname"><span class="pre">fromJSON</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.route.RouteCvrp.fromJSON" title="Permalink to this definition"></a></dt>
+<dd><p>Method to transform a JSON into an object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>json</strong> (<em>dict</em>) – Json data of the object</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>KeyValueError if the json is incomplete</p>
 </dd>
 </dl>
 </dd></dl>
@@ -119,6 +242,39 @@
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.route.RouteCvrp.getNeighboursRouteInsertion">
+<span class="sig-name descname"><span class="pre">getNeighboursRouteInsertion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.route.RouteCvrp.getNeighboursRouteInsertion" title="Permalink to this definition"></a></dt>
+<dd><p>Method to swap a customers between 2 routes</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>proximity_swaps</strong> (<em>int</em>) – The proximity of elements swaps, default to 0 (opt.)</p></li>
+<li><p><strong>vehicule_capacity</strong> (<em>int</em>) – The capacity of the vehicule in the cvrp instance</p></li>
+<li><p><strong>solution_evaluation</strong> (<em>float</em>) – Evaluation of the solution (to then get the cost the whole solution), default to 0 (opt.)</p></li>
+<li><p><strong>self_route_cost</strong> (<em>float</em>) – cost of this route, default to None (opt.)</p></li>
+<li><p><strong>other_route_cost</strong> (<em>float</em>) – cost of the other route given in argument, default to None (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A tuple containing the routes with swaps and their evaluation (it will contain n route, with n being the number of customer in the route) and the string representing the swap realized</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Tuple[<a class="reference internal" href="#solution.cvrp.route.RouteCvrp" title="solution.cvrp.route.RouteCvrp">RouteCvrp</a>, int, str]]</p>
+</dd>
+</dl>
+<dl class="field-list simple">
+<dt class="field-odd">Exemple</dt>
+<dd class="field-odd"><p></p></dd>
+</dl>
+<div class="doctest highlight-default notranslate"><div class="highlight"><pre><span></span><span class="gp">&gt;&gt;&gt; </span><span class="k">if</span> <span class="nb">len</span><span class="p">(</span><span class="n">route1</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="nb">len</span><span class="p">(</span><span class="n">route2</span><span class="p">):</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">route1</span><span class="o">.</span><span class="n">getNeighboursRouteSwap</span><span class="p">(</span><span class="n">other_route</span><span class="o">=</span><span class="n">route2</span><span class="p">)</span>
+<span class="gp">&gt;&gt;&gt; </span><span class="k">else</span><span class="p">:</span>
+<span class="gp">&gt;&gt;&gt; </span>    <span class="n">route2</span><span class="o">.</span><span class="n">getNeighboursRouteSwap</span><span class="p">(</span><span class="n">other_route</span><span class="o">=</span><span class="n">route1</span><span class="p">)</span>
+</pre></div>
+</div>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="solution.cvrp.route.RouteCvrp.getNeighboursRouteSwap">
 <span class="sig-name descname"><span class="pre">getNeighboursRouteSwap</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.route.RouteCvrp.getNeighboursRouteSwap" title="Permalink to this definition"></a></dt>
 <dd><p>Method to swap a customers between 2 routes</p>
@@ -126,14 +282,15 @@
 <dt class="field-odd">Parameters</dt>
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>proximity_swaps</strong> (<em>int</em>) – The proximity of elements swaps, default to 0 (opt.)</p></li>
+<li><p><strong>vehicule_capacity</strong> (<em>int</em>) – The capacity of the vehicule in the cvrp instance</p></li>
 <li><p><strong>solution_evaluation</strong> (<em>float</em>) – Evaluation of the solution (to then get the cost the whole solution), default to 0 (opt.)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A tuple containing the routes with swaps and their evaluation (it will contain n route, with n being the number of customer in the route)</p>
+<dd class="field-even"><p>A tuple containing the routes with swaps and their evaluation (it will contain n route, with n being the number of customer in the route) and the string representing the swap realized</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>List[Tuple[<a class="reference internal" href="#solution.cvrp.route.RouteCvrp" title="solution.cvrp.route.RouteCvrp">RouteCvrp</a>, int]]</p>
+<dd class="field-odd"><p>List[Tuple[<a class="reference internal" href="#solution.cvrp.route.RouteCvrp" title="solution.cvrp.route.RouteCvrp">RouteCvrp</a>, int, str]]</p>
 </dd>
 </dl>
 <dl class="field-list simple">
@@ -150,9 +307,8 @@
 
 <dl class="py method">
 <dt class="sig sig-object py" id="solution.cvrp.route.RouteCvrp.getNeighboursSwap">
-<span class="sig-name descname"><span class="pre">getNeighboursSwap</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">proximity_swaps</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">1</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">solution_evaluation</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">float</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">0</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="#solution.cvrp.route.RouteCvrp" title="solution.cvrp.route.RouteCvrp"><span class="pre">RouteCvrp</span></a><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#solution.cvrp.route.RouteCvrp.getNeighboursSwap" title="Permalink to this definition"></a></dt>
-<dd><p>getAllNeighboursSwap()</p>
-<p>Method to get a customers swap of the route. The swaps will be made
+<span class="sig-name descname"><span class="pre">getNeighboursSwap</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.route.RouteCvrp.getNeighboursSwap" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get a customers swap of the route. The swaps will be made
 between 2 elements of the route depending of the parameter proximity_swaps.
 For exemple if the proximity_swaps is equal to 1, the route generated
 will be a swap between an element of the route and the node that is following.
@@ -167,13 +323,14 @@ The swaps will be:
 <dd class="field-odd"><ul class="simple">
 <li><p><strong>proximity_swaps</strong> (<em>int</em>) – The proximity of elements swaps, default to 1 (opt.)</p></li>
 <li><p><strong>solution_evaluation</strong> (<em>float</em>) – Evaluation of the solution (to then get the cost the whole solution), default to 0 (opt.)</p></li>
+<li><p><strong>route_cost</strong> (<em>float</em>) – Cost the route, default to None (opt.)</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
-<dd class="field-even"><p>A tuple containing the routes with swaps and their evaluation (it will contain n route, with n being the number of customer in the route)</p>
+<dd class="field-even"><p>A tuple containing the routes with swaps, their evaluation (it will contain n route, with n being the number of customer in the route) and the string representing the swap realized</p>
 </dd>
 <dt class="field-odd">Return type</dt>
-<dd class="field-odd"><p>List[Tuple[<a class="reference internal" href="#solution.cvrp.route.RouteCvrp" title="solution.cvrp.route.RouteCvrp">RouteCvrp</a>, int]]</p>
+<dd class="field-odd"><p>List[Tuple[<a class="reference internal" href="#solution.cvrp.route.RouteCvrp" title="solution.cvrp.route.RouteCvrp">RouteCvrp</a>, int, str]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -197,6 +354,32 @@ The swaps will be:
 </dl>
 </dd></dl>
 
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.route.RouteCvrp.toJSON">
+<span class="sig-name descname"><span class="pre">toJSON</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.route.RouteCvrp.toJSON" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get the JSON value of the class</p>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.route.RouteCvrp.updateDrawPlotly">
+<span class="sig-name descname"><span class="pre">updateDrawPlotly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.route.RouteCvrp.updateDrawPlotly" title="Permalink to this definition"></a></dt>
+<dd><p>Method to create the scatter that compose the graph made with plotly</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>route_color</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of colors of the routes in the solution, default the DEFAULT_COLOR_PALETTE (utils.colorpallete) (opt.)</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node depot, default to “#a6f68e” (opt.)</p></li>
+<li><p><strong>node_size</strong> (<em>int</em>) – Size of the nodes, default to 15 (opt)</p></li>
+<li><p><strong>show_legend_edge</strong> (<em>bool</em>) – Display or not the legend of edges, default to True (opt.)</p></li>
+<li><p><strong>show_legend_node</strong> – Display or not the legend of nodes, default to False (opt.)</p></li>
+<li><p><strong>route_number</strong> (<em>int</em>) – Number of the route drawn</p></li>
+<li><p><strong>node_scatter_parent</strong> (<em>List</em><em>[</em><em>go.Scatter</em><em>]</em>) – List of node scatter of the main figure animation</p></li>
+<li><p><strong>edge_scatter_parent</strong> (<em>List</em><em>[</em><em>go.Scatter</em><em>]</em>) – List of edge scatter of the main figure animation</p></li>
+</ul>
+</dd>
+</dl>
+</dd></dl>
+
 </dd></dl>
 
 </section>
@@ -206,6 +389,7 @@ The swaps will be:
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
         <a href="solution.html" class="btn btn-neutral float-left" title="CVRP Solution object" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../constructive/clarkwrightsaving.html" class="btn btn-neutral float-right" title="Clark And Wright saving algorithm" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 
   <hr/>

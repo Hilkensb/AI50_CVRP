@@ -1,0 +1,59 @@
+package fr.utbm.vrp.agents
+
+import io.sarl.core.Logging
+import io.sarl.core.Initialize
+import redis.clients.jedis.Jedis
+import redis.clients.jedis.JedisPubSub
+import io.sarl.core.Destroy
+import io.sarl.core.Lifecycle
+
+/** 
+ * ListenerAgent
+ * <br>Subscribes to an JEDIS topic and spawns BootAgent when topic is active
+ * 
+ * 
+ */
+agent ListenerAgent {
+	uses Logging, Lifecycle
+
+	on Initialize {
+		info("The ListenerAgent was started.")
+
+		// Change the logging level to warning to gain some time to not display
+		// all messages published by the agents
+		// level - 0 or lower for no logging, 1 for error, 2 for warning, 3 for info, 4 or higher for debug.
+		setLogLevel(2)
+
+		// Create new Jedis object in order to subscirbe to a specific topic
+		var jSubscriber:Jedis = new Jedis();
+		jSubscriber.subscribe(new JedisPubSub() {
+			/**
+			* onMessage
+			* <br>Triggered when an message in pusblishe in a given topic
+			* 
+			* @param channel  Name of the topic were message has been published
+			* @param message  Message published on channel topic
+			**/
+			def onMessage(channel : String, message : String) {
+				// Display the name of the topic and the message published for debug purpose
+				info("channel: " + channel + " message: " + message)
+				
+				// Check the content of the message
+				if(message == "stop"){
+					// If the content is stop, kill it self
+					killMe
+				} else {
+					// Else it must be json and must launched the boot agent
+					spawn(BootAgent, message)
+				}
+			}
+			// Name of the topic we which to subscribe
+		}, "sarlTopic");
+    }
+
+    on Destroy {
+        // Event trigger when the agent is destroyed from the system..
+        info("The agent was stopped.")
+	}
+
+}

@@ -20,3 +20,13 @@ class NodeWithCoord(abc.ABC):
         :rtype: tuple[int, int]
         """
         pass
+
+    @abc.abstractclassmethod
+    def toJSON(self):
+        """
+        toJSON()
+        
+        Abstract Method to ensure that every node that inherated of this
+        class can return a json of theirselvess
+        """
+        pass

@@ -20,7 +20,7 @@
     <link rel="index" title="Index" href="../../../genindex.html" />
     <link rel="search" title="Search" href="../../../search.html" />
     <link rel="next" title="Route of CVRP" href="route.html" />
-    <link rel="prev" title="Capacitated Vehicle Routing Problem Modelization" href="../solution.html" /> 
+    <link rel="prev" title="Capacitated Vehicle Routing Problem Solution Modelization" href="../solution.html" /> 
 </head>
 
 <body class="wy-body-for-nav"> 
@@ -45,14 +45,23 @@
 <li class="toctree-l1"><a class="reference internal" href="../../../tutorial/tutorial.html">Tutorial</a></li>
 <li class="toctree-l1 current"><a class="reference internal" href="../../packages.html">Python Objects Documentation</a><ul class="current">
 <li class="toctree-l2"><a class="reference internal" href="../../problem/problem.html">Capacitated Vehicle Routing Problem Modelization</a></li>
-<li class="toctree-l2 current"><a class="reference internal" href="../solution.html">Capacitated Vehicle Routing Problem Modelization</a><ul class="current">
+<li class="toctree-l2 current"><a class="reference internal" href="../solution.html">Capacitated Vehicle Routing Problem Solution Modelization</a><ul class="current">
 <li class="toctree-l3 current"><a class="reference internal" href="../solution.html#the-package">The package</a><ul class="current">
 <li class="toctree-l4 current"><a class="current reference internal" href="#">CVRP Solution object</a></li>
 <li class="toctree-l4"><a class="reference internal" href="route.html">Route of CVRP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../constructive/clarkwrightsaving.html">Clark And Wright saving algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../constructive/firstfitdecreasing.html">First Fit Decreasing Algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../constructive/nearestneighbors.html">Nearest Neighbors Algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../metaheuristic/tabusearch.html">Tabu search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../metaheuristic/gwo.html">Grey Wolf Optimizer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../multiagents/sarlcommunication.html">Sarl Communication</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../unsupervised/clusteringsolver.html">Capacited K-Means</a></li>
 </ul>
 </li>
 </ul>
 </li>
+<li class="toctree-l2"><a class="reference internal" href="../../utils/utils.html">Utils package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gui/gui.html">Graphical user interface</a></li>
 </ul>
 </li>
 </ul>
@@ -72,7 +81,7 @@
   <ul class="wy-breadcrumbs">
       <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
           <li><a href="../../packages.html">Python Objects Documentation</a> &raquo;</li>
-          <li><a href="../solution.html">Capacitated Vehicle Routing Problem Modelization</a> &raquo;</li>
+          <li><a href="../solution.html">Capacitated Vehicle Routing Problem Solution Modelization</a> &raquo;</li>
       <li>CVRP Solution object</li>
       <li class="wy-breadcrumbs-aside">
             <a href="../../../_sources/packages/solution/cvrp/solution.rst.txt" rel="nofollow"> View page source</a>
@@ -89,27 +98,6 @@
 <dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp">
 <em class="property"><span class="pre">class</span> </em><span class="sig-prename descclassname"><span class="pre">solution.cvrp.solution.</span></span><span class="sig-name descname"><span class="pre">SolutionCvrp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">instance</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><a class="reference internal" href="../../problem/cvrp/instance.html#problem.cvrp.instance.Cvrp" title="problem.cvrp.instance.Cvrp"><span class="pre">problem.cvrp.instance.Cvrp</span></a></span></em>, <em class="sig-param"><span class="n"><span class="pre">route</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><a class="reference internal" href="route.html#solution.cvrp.route.RouteCvrp" title="solution.cvrp.route.RouteCvrp"><span class="pre">solution.cvrp.route.RouteCvrp</span></a><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp" title="Permalink to this definition"></a></dt>
 <dd><dl class="py method">
-<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.__drawMatPlotLib">
-<span class="sig-name descname"><span class="pre">__drawMatPlotLib</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">route_color</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">[]</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">depot_node_color</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'#a6f68e'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">route_to_display</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">None</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Tuple</span><span class="p"><span class="pre">[</span></span><span class="pre">nx.graph</span><span class="p"><span class="pre">,</span> </span><span class="pre">nx.spring_layout</span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">,</span> </span><span class="pre">Dict</span><span class="p"><span class="pre">[</span></span><span class="pre">int</span><span class="p"><span class="pre">,</span> </span><span class="pre">int</span><span class="p"><span class="pre">]</span></span><span class="p"><span class="pre">]</span></span></span></span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.__drawMatPlotLib" title="Permalink to this definition"></a></dt>
-<dd><p>drawMatPlotLib()</p>
-<p>Method to draw a figure of the solution (all routes displayed on the
-cvrp graph)</p>
-<dl class="field-list simple">
-<dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><ul class="simple">
-<li><p><strong>route_color</strong> – List of colors of the routes in the solution, default the DEFAULT_COLOR_PALETTE (utils.colorpallete) (opt.)</p></li>
-<li><p><strong>route_color</strong> – List[str]</p></li>
-<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node depot, default to “#a6f68e” (opt.)</p></li>
-<li><p><strong>route_to_display</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – Number of the routes to display on the solution (route number start at 1), default to None (opt.)</p></li>
-</ul>
-</dd>
-<dt class="field-even">Returns</dt>
-<dd class="field-even"><p>Return a tuple containing (in that order): the graph, the layout of the graph, node color map (list of node color), edge color map (list of edge color), weight map (list of weight)</p>
-</dd>
-</dl>
-</dd></dl>
-
-<dl class="py method">
 <dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.__parseRoute">
 <span class="sig-name descname"><span class="pre">__parseRoute</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">route_to_build</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="route.html#solution.cvrp.route.RouteCvrp" title="solution.cvrp.route.RouteCvrp"><span class="pre">solution.cvrp.route.RouteCvrp</span></a></span></span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.__parseRoute" title="Permalink to this definition"></a></dt>
 <dd><p>parseRoute()</p>
@@ -141,6 +129,83 @@ since the argument must be a string</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.drawMatPlotLib">
+<span class="sig-name descname"><span class="pre">drawMatPlotLib</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.drawMatPlotLib" title="Permalink to this definition"></a></dt>
+<dd><p>Method to draw a figure of the solution (all routes displayed on the
+cvrp graph)</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>route_color</strong> (<em>List</em><em>[</em><em>str</em><em>]</em>) – List of colors of the routes in the solution, default the DEFAULT_COLOR_PALETTE (utils.colorpallete) (opt.)</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node depot, default to “#a6f68e” (opt.)</p></li>
+<li><p><strong>route_to_display</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – Number of the routes to display on the solution (route number start at 1), default to None (opt.)</p></li>
+<li><p><strong>node_size</strong> (<em>int</em>) – Size of the nodes</p></li>
+<li><p><strong>auto_node_size</strong> (<em>bool</em>) – Set the size of the node automatically</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Return a tuple containing (in that order): the graph, the layout of the graph, node color map (list of node color), edge color map (list of edge color), weight map (list of weight), node size (an integer to represent the node size)</p>
+</dd>
+<dt class="field-odd">Raises</dt>
+<dd class="field-odd"><p><strong>IndexError</strong> – If a route to display does exists</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.drawPlotly">
+<span class="sig-name descname"><span class="pre">drawPlotly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.drawPlotly" title="Permalink to this definition"></a></dt>
+<dd><p>Method to create the scatter that compose the graph made with plotly</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>route_color</strong> – List of colors of the routes in the solution, default the DEFAULT_COLOR_PALETTE (utils.colorpallete) (opt.)</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node depot, default to “#a6f68e” (opt.)</p></li>
+<li><p><strong>node_size</strong> (<em>int</em>) – Size of the nodes, default to 15 (opt)</p></li>
+<li><p><strong>show_legend_edge</strong> (<em>bool</em>) – Display or not the legend of edges, default to True (opt.)</p></li>
+<li><p><strong>show_legend_node</strong> – Display or not the legend of nodes, default to False (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Tyoe route_color</dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>Two lists of scatters, one of nodes and one of edges</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>Tuple(List[Scatter], List[Scatter])</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.drawPlotlyJSON">
+<span class="sig-name descname"><span class="pre">drawPlotlyJSON</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">depot_node_color</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'#a6f68e'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">route_color</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">['#FF0000',</span> <span class="pre">'#0000FF',</span> <span class="pre">'#00FF00',</span> <span class="pre">'#E67300',</span> <span class="pre">'#9900cc',</span> <span class="pre">'#F0b8b8',</span> <span class="pre">'#72A0C1',</span> <span class="pre">'#008000',</span> <span class="pre">'#FFBF00',</span> <span class="pre">'#008080',</span> <span class="pre">'#000080',</span> <span class="pre">'#FFFF00',</span> <span class="pre">'#00FFFF',</span> <span class="pre">'#BDB76B',</span> <span class="pre">'#006400',</span> <span class="pre">'#6495ED',</span> <span class="pre">'#90EE90',</span> <span class="pre">'#800080',</span> <span class="pre">'#F0b8b8',</span> <span class="pre">'#FF69B4',</span> <span class="pre">'#F4A460',</span> <span class="pre">'#FFE4C4',</span> <span class="pre">'#40E0D0',</span> <span class="pre">'#FF8C00',</span> <span class="pre">'#FFD700',</span> <span class="pre">'#8FBC8F',</span> <span class="pre">'#ADD8E6',</span> <span class="pre">'#BA55D3',</span> <span class="pre">'#E6E6FA',</span> <span class="pre">'#D2691E',</span> <span class="pre">'#CC99CC',</span> <span class="pre">'#191970',</span> <span class="pre">'#ADFF2F',</span> <span class="pre">'#FF7F50',</span> <span class="pre">'#9900FF',</span> <span class="pre">'#FFCCBC',</span> <span class="pre">'#808080']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_legend_edge</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_legend_node</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">Dict</span></span></span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.drawPlotlyJSON" title="Permalink to this definition"></a></dt>
+<dd><p>drawPlotly()</p>
+<p>Method to create the scatter that compose the graph made with plotly</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>route_color</strong> – List of colors of the routes in the solution, default the DEFAULT_COLOR_PALETTE (utils.colorpallete) (opt.)</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node depot, default to “#a6f68e” (opt.)</p></li>
+<li><p><strong>node_size</strong> (<em>int</em>) – Size of the nodes, default to 15 (opt)</p></li>
+<li><p><strong>show_legend_edge</strong> (<em>bool</em>) – Display or not the legend of edges, default to True (opt.)</p></li>
+<li><p><strong>show_legend_node</strong> – Display or not the legend of nodes, default to False (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Tyoe route_color</dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>List of dictionnary to draw scatters</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.evaluation">
 <span class="sig-name descname"><span class="pre">evaluation</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.evaluation" title="Permalink to this definition"></a></dt>
 <dd><p>Method to get the cost of the solution (not rounded)</p>
@@ -155,15 +220,86 @@ since the argument must be a string</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.fromJSON">
+<span class="sig-name descname"><span class="pre">fromJSON</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.fromJSON" title="Permalink to this definition"></a></dt>
+<dd><p>Method to transform a JSON into an object</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>json</strong> (<em>dict</em>) – Json data of the object</p>
+</dd>
+<dt class="field-even">Raises</dt>
+<dd class="field-even"><p>KeyValueError if the json is incomplete</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.fromSarl">
+<span class="sig-name descname"><span class="pre">fromSarl</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.fromSarl" title="Permalink to this definition"></a></dt>
+<dd><p>Method to convert the sarl response into a solution</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>sarl_response</strong> – Response made by sarl programm to convert into python solution</p>
+</dd>
+<dt class="field-even">Type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.getAllRouteSwapNeighbours">
 <span class="sig-name descname"><span class="pre">getAllRouteSwapNeighbours</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.getAllRouteSwapNeighbours" title="Permalink to this definition"></a></dt>
 <dd><p>Method to get all swaps possible of customers in a single route. Do this for each route of the solution.</p>
 <dl class="field-list simple">
-<dt class="field-odd">Returns</dt>
-<dd class="field-odd"><p>A list containing the new solutions with the customers swaps in a single route, and their cost</p>
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>total_cost</strong> (<em>float</em>) – Total cost of the route (so it has not to be calculated again), default to None (opt.)</p>
 </dd>
-<dt class="field-even">Return type</dt>
-<dd class="field-even"><p>List[Tuple[<a class="reference internal" href="#solution.cvrp.solution.SolutionCvrp" title="solution.cvrp.solution.SolutionCvrp">SolutionCvrp</a>, int]]</p>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list containing the new solutions with the customers swaps in a single route, and their cost</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Tuple[<a class="reference internal" href="#solution.cvrp.solution.SolutionCvrp" title="solution.cvrp.solution.SolutionCvrp">SolutionCvrp</a>, int]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.getClosestInsertionNeighbours">
+<span class="sig-name descname"><span class="pre">getClosestInsertionNeighbours</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.getClosestInsertionNeighbours" title="Permalink to this definition"></a></dt>
+<dd><p>Method to build new solution by swapping a customer between 2 adjacent route. The position difference between the customer in route1 and route2 is defined by proximity_swaps. Swaps between each routes of the solution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>proximity_swaps</strong> (<em>int</em>) – Number of customer between to customer to swap between the route, default to 1 (opt.)</p></li>
+<li><p><strong>total_cost</strong> (<em>float</em>) – Total cost of the route (so it has not to be calculated again), default to None (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list containing the new solutions with the customers swaps in a single route, and their cost</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Tuple[<a class="reference internal" href="#solution.cvrp.solution.SolutionCvrp" title="solution.cvrp.solution.SolutionCvrp">SolutionCvrp</a>, int]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.getClosestPermutationNeighbours">
+<span class="sig-name descname"><span class="pre">getClosestPermutationNeighbours</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.getClosestPermutationNeighbours" title="Permalink to this definition"></a></dt>
+<dd><p>Method to build new solution by swapping a customer between 2 adjacent route. The position difference between the customer in route1 and route2 is defined by proximity_swaps. Swaps between each routes of the solution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>proximity_swaps</strong> (<em>int</em>) – Number of customer between to customer to swap between the route, default to 1 (opt.)</p></li>
+<li><p><strong>total_cost</strong> (<em>float</em>) – Total cost of the solution (so it has not to be calculated again), default to None (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list containing the new solutions with the customers swaps in a single route, and their cost</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Tuple[<a class="reference internal" href="#solution.cvrp.solution.SolutionCvrp" title="solution.cvrp.solution.SolutionCvrp">SolutionCvrp</a>, int]]</p>
 </dd>
 </dl>
 </dd></dl>
@@ -183,6 +319,8 @@ cvrp graph)</p>
 <li><p><strong>show_weight</strong> (<em>bool</em>) – True if the weight should be displayed on the edge, else False. Default to True (opt.)</p></li>
 <li><p><strong>route_to_display</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – Number of the routes to display on the solution (route number start at 1), default to None (opt.)</p></li>
 <li><p><strong>fig_size</strong> (<em>Tuple</em><em>[</em><em>int</em><em>, </em><em>int</em><em>]</em>) – Size of the figure</p></li>
+<li><p><strong>node_size</strong> (<em>int</em>) – Size of the nodes</p></li>
+<li><p><strong>auto_node_size</strong> (<em>bool</em>) – Set the size of the node automatically</p></li>
 </ul>
 </dd>
 <dt class="field-even">Returns</dt>
@@ -206,12 +344,68 @@ cvrp graph)</p>
 </dd></dl>
 
 <dl class="py method">
-<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.getPermutationNeighbours">
-<span class="sig-name descname"><span class="pre">getPermutationNeighbours</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.getPermutationNeighbours" title="Permalink to this definition"></a></dt>
-<dd><p>Method to build new solution by swapping a customer between 2 route. The position difference between the customer in route1 and route2 is defined by proximity_swaps. Swaps between each routes of the solution.</p>
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.getFigurePlotly">
+<span class="sig-name descname"><span class="pre">getFigurePlotly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">depot_node_color</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'#a6f68e'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">route_color</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">['#FF0000',</span> <span class="pre">'#0000FF',</span> <span class="pre">'#00FF00',</span> <span class="pre">'#E67300',</span> <span class="pre">'#9900cc',</span> <span class="pre">'#F0b8b8',</span> <span class="pre">'#72A0C1',</span> <span class="pre">'#008000',</span> <span class="pre">'#FFBF00',</span> <span class="pre">'#008080',</span> <span class="pre">'#000080',</span> <span class="pre">'#FFFF00',</span> <span class="pre">'#00FFFF',</span> <span class="pre">'#BDB76B',</span> <span class="pre">'#006400',</span> <span class="pre">'#6495ED',</span> <span class="pre">'#90EE90',</span> <span class="pre">'#800080',</span> <span class="pre">'#F0b8b8',</span> <span class="pre">'#FF69B4',</span> <span class="pre">'#F4A460',</span> <span class="pre">'#FFE4C4',</span> <span class="pre">'#40E0D0',</span> <span class="pre">'#FF8C00',</span> <span class="pre">'#FFD700',</span> <span class="pre">'#8FBC8F',</span> <span class="pre">'#ADD8E6',</span> <span class="pre">'#BA55D3',</span> <span class="pre">'#E6E6FA',</span> <span class="pre">'#D2691E',</span> <span class="pre">'#CC99CC',</span> <span class="pre">'#191970',</span> <span class="pre">'#ADFF2F',</span> <span class="pre">'#FF7F50',</span> <span class="pre">'#9900FF',</span> <span class="pre">'#FFCCBC',</span> <span class="pre">'#808080']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_legend_edge</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_legend_node</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.getFigurePlotly" title="Permalink to this definition"></a></dt>
+<dd><p>getHtmlFigurePlotly()</p>
+<p>Method to display the graph with plotly library</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>proximity_swaps</strong> (<em>int</em>) – Number of customer between to customer to swap between the route, default to 1 (opt.)</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>route_color</strong> – List of colors of the routes in the solution, default the DEFAULT_COLOR_PALETTE (utils.colorpallete) (opt.)</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node depot, default to “#a6f68e” (opt.)</p></li>
+<li><p><strong>node_size</strong> (<em>int</em>) – Size of the nodes, default to 15 (opt)</p></li>
+<li><p><strong>show_legend_edge</strong> (<em>bool</em>) – Display or not the legend of edges, default to True (opt.)</p></li>
+<li><p><strong>show_legend_node</strong> – Display or not the legend of nodes, default to False (opt.)</p></li>
+<li><p><strong>full_html</strong> (<em>bool</em>) – If True, produce a string containing a complete HTML document starting with an &lt;html&gt; tag. If False, produce a string containing a single &lt;div&gt; element. Default to True (opt.)</p></li>
+<li><p><strong>default_width</strong> (<em>str</em>) – he default figure width/height to use if the provided figure does not specify its own layout.width/layout.height property. May be specified in pixels as an integer (e.g. 500), or as a css width style string (e.g. ‘500px’, ‘100%’). Default to “100%” (opt.)</p></li>
+<li><p><strong>default_height</strong> – The default figure width/height to use if the provided figure does not specify its own layout.width/layout.height property. May be specified in pixels as an integer (e.g. 500), or as a css width style string (e.g. ‘500px’, ‘100%’). Default to “100%” (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Tyoe route_color</dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.getHtmlFigurePlotly">
+<span class="sig-name descname"><span class="pre">getHtmlFigurePlotly</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.getHtmlFigurePlotly" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get the html code of the graph</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>route_color</strong> – List of colors of the routes in the solution, default the DEFAULT_COLOR_PALETTE (utils.colorpallete) (opt.)</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node depot, default to “#a6f68e” (opt.)</p></li>
+<li><p><strong>node_size</strong> (<em>int</em>) – Size of the nodes, default to 15 (opt)</p></li>
+<li><p><strong>show_legend_edge</strong> (<em>bool</em>) – Display or not the legend of edges, default to True (opt.)</p></li>
+<li><p><strong>show_legend_node</strong> – Display or not the legend of nodes, default to False (opt.)</p></li>
+<li><p><strong>full_html</strong> (<em>bool</em>) – If True, produce a string containing a complete HTML document starting with an &lt;html&gt; tag. If False, produce a string containing a single &lt;div&gt; element. Default to True (opt.)</p></li>
+<li><p><strong>default_width</strong> (<em>str</em>) – he default figure width/height to use if the provided figure does not specify its own layout.width/layout.height property. May be specified in pixels as an integer (e.g. 500), or as a css width style string (e.g. ‘500px’, ‘100%’). Default to “100%” (opt.)</p></li>
+<li><p><strong>default_height</strong> – The default figure width/height to use if the provided figure does not specify its own layout.width/layout.height property. May be specified in pixels as an integer (e.g. 500), or as a css width style string (e.g. ‘500px’, ‘100%’). Default to “100%” (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Tyoe route_color</dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>a html string</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.getInsertionNeighbours">
+<span class="sig-name descname"><span class="pre">getInsertionNeighbours</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.getInsertionNeighbours" title="Permalink to this definition"></a></dt>
+<dd><p>Method to build new solution by insertinh a customer between in a route. The position difference between the customer in route1 and route2 is defined by proximity_swaps. Swaps between each routes of the solution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>proximity_swaps</strong> (<em>int</em>) – Number of customer between to customer to swap between the route, default to 1 (opt.)</p></li>
+<li><p><strong>total_cost</strong> (<em>float</em>) – Total cost of the solution (so it has not to be calculated again), default to None (opt.)</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A list containing the new solutions with the customers swaps in a single route, and their cost</p>
@@ -223,12 +417,66 @@ cvrp graph)</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.getOverDemand">
+<span class="sig-name descname"><span class="pre">getOverDemand</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">int</span></span></span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.getOverDemand" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get the demand of each that are over the vehicle capacity</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The demand over</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.getPermutationNeighbours">
+<span class="sig-name descname"><span class="pre">getPermutationNeighbours</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.getPermutationNeighbours" title="Permalink to this definition"></a></dt>
+<dd><p>Method to build new solution by swapping a customer between 2 route. The position difference between the customer in route1 and route2 is defined by proximity_swaps. Swaps between each routes of the solution.</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>proximity_swaps</strong> (<em>int</em>) – Number of customer between to customer to swap between the route, default to 1 (opt.)</p></li>
+<li><p><strong>total_cost</strong> (<em>float</em>) – Total cost of the route (so it has not to be calculated again), default to None (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>A list containing the new solutions with the customers swaps in a single route, and their cost</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[Tuple[<a class="reference internal" href="#solution.cvrp.solution.SolutionCvrp" title="solution.cvrp.solution.SolutionCvrp">SolutionCvrp</a>, int]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.getRouteOfCustomer">
+<span class="sig-name descname"><span class="pre">getRouteOfCustomer</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">customer_id</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><a class="reference internal" href="route.html#solution.cvrp.route.RouteCvrp" title="solution.cvrp.route.RouteCvrp"><span class="pre">solution.cvrp.route.RouteCvrp</span></a></span></span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.getRouteOfCustomer" title="Permalink to this definition"></a></dt>
+<dd><p>Method to find the route of a given customer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>customer_id</strong> (<em>int</em>) – Node id of the customer we search for</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The route of the customer</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p><a class="reference internal" href="route.html#solution.cvrp.route.RouteCvrp" title="solution.cvrp.route.RouteCvrp">RouteCvrp</a></p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.getRouteSwapNeighbours">
 <span class="sig-name descname"><span class="pre">getRouteSwapNeighbours</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.getRouteSwapNeighbours" title="Permalink to this definition"></a></dt>
 <dd><p>Method to get a single swap for each customer in a single route. The swap is made between customers that are separated by proximity_swaps - 1 customers. Do this for each route of the solution.</p>
 <dl class="field-list simple">
 <dt class="field-odd">Parameters</dt>
-<dd class="field-odd"><p><strong>proximity_swaps</strong> (<em>int</em>) – Number of customer between to customer to swap in the route, default to 1 (opt.)</p>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>proximity_swaps</strong> (<em>int</em>) – Number of customer between to customer to swap in the route, default to 1 (opt.)</p></li>
+<li><p><strong>total_cost</strong> (<em>float</em>) – Total cost of the route (so it has not to be calculated again), default to None (opt.)</p></li>
+</ul>
 </dd>
 <dt class="field-even">Returns</dt>
 <dd class="field-even"><p>A list containing the new solutions with the customers swaps in a single route, and their cost</p>
@@ -356,6 +604,8 @@ cvrp graph)</p>
 <li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node depot, default to “#a6f68e” (opt.)</p></li>
 <li><p><strong>show_weight</strong> (<em>bool</em>) – True if the weight should be displayed on the edge, else False. Default to True (opt.)</p></li>
 <li><p><strong>route_to_display</strong> (<em>List</em><em>[</em><em>int</em><em>]</em>) – Number of the routes to display on the solution (route number start at 1), default to None (opt.)</p></li>
+<li><p><strong>node_size</strong> (<em>int</em>) – Size of the nodes</p></li>
+<li><p><strong>auto_node_size</strong> (<em>bool</em>) – Set the size of the node automatically</p></li>
 </ul>
 </dd>
 <dt class="field-even">Exemple</dt>
@@ -367,9 +617,53 @@ cvrp graph)</p>
 </dd></dl>
 
 <dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.showFigurePlotly">
+<span class="sig-name descname"><span class="pre">showFigurePlotly</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">depot_node_color</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">'#a6f68e'</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">node_size</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">int</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">15</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">route_color</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">List</span><span class="p"><span class="pre">[</span></span><span class="pre">str</span><span class="p"><span class="pre">]</span></span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">['#FF0000',</span> <span class="pre">'#0000FF',</span> <span class="pre">'#00FF00',</span> <span class="pre">'#E67300',</span> <span class="pre">'#9900cc',</span> <span class="pre">'#F0b8b8',</span> <span class="pre">'#72A0C1',</span> <span class="pre">'#008000',</span> <span class="pre">'#FFBF00',</span> <span class="pre">'#008080',</span> <span class="pre">'#000080',</span> <span class="pre">'#FFFF00',</span> <span class="pre">'#00FFFF',</span> <span class="pre">'#BDB76B',</span> <span class="pre">'#006400',</span> <span class="pre">'#6495ED',</span> <span class="pre">'#90EE90',</span> <span class="pre">'#800080',</span> <span class="pre">'#F0b8b8',</span> <span class="pre">'#FF69B4',</span> <span class="pre">'#F4A460',</span> <span class="pre">'#FFE4C4',</span> <span class="pre">'#40E0D0',</span> <span class="pre">'#FF8C00',</span> <span class="pre">'#FFD700',</span> <span class="pre">'#8FBC8F',</span> <span class="pre">'#ADD8E6',</span> <span class="pre">'#BA55D3',</span> <span class="pre">'#E6E6FA',</span> <span class="pre">'#D2691E',</span> <span class="pre">'#CC99CC',</span> <span class="pre">'#191970',</span> <span class="pre">'#ADFF2F',</span> <span class="pre">'#FF7F50',</span> <span class="pre">'#9900FF',</span> <span class="pre">'#FFCCBC',</span> <span class="pre">'#808080']</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_legend_edge</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">True</span></span></em>, <em class="sig-param"><span class="n"><span class="pre">show_legend_node</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">bool</span></span> <span class="o"><span class="pre">=</span></span> <span class="default_value"><span class="pre">False</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">str</span></span></span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.showFigurePlotly" title="Permalink to this definition"></a></dt>
+<dd><p>getHtmlFigurePlotly()</p>
+<p>Method to display the graph with plotly library</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>route_color</strong> – List of colors of the routes in the solution, default the DEFAULT_COLOR_PALETTE (utils.colorpallete) (opt.)</p></li>
+<li><p><strong>depot_node_color</strong> (<em>str</em>) – Color of the node depot, default to “#a6f68e” (opt.)</p></li>
+<li><p><strong>node_size</strong> (<em>int</em>) – Size of the nodes, default to 15 (opt)</p></li>
+<li><p><strong>show_legend_edge</strong> (<em>bool</em>) – Display or not the legend of edges, default to True (opt.)</p></li>
+<li><p><strong>show_legend_node</strong> – Display or not the legend of nodes, default to False (opt.)</p></li>
+<li><p><strong>full_html</strong> (<em>bool</em>) – If True, produce a string containing a complete HTML document starting with an &lt;html&gt; tag. If False, produce a string containing a single &lt;div&gt; element. Default to True (opt.)</p></li>
+<li><p><strong>default_width</strong> (<em>str</em>) – he default figure width/height to use if the provided figure does not specify its own layout.width/layout.height property. May be specified in pixels as an integer (e.g. 500), or as a css width style string (e.g. ‘500px’, ‘100%’). Default to “100%” (opt.)</p></li>
+<li><p><strong>default_height</strong> – The default figure width/height to use if the provided figure does not specify its own layout.width/layout.height property. May be specified in pixels as an integer (e.g. 500), or as a css width style string (e.g. ‘500px’, ‘100%’). Default to “100%” (opt.)</p></li>
+</ul>
+</dd>
+<dt class="field-even">Tyoe route_color</dt>
+<dd class="field-even"><p>List[str]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
+<dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.toJSON">
+<span class="sig-name descname"><span class="pre">toJSON</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.toJSON" title="Permalink to this definition"></a></dt>
+<dd><p>Method to get the JSON value of the class</p>
+<dl class="field-list simple">
+<dt class="field-odd">Returns</dt>
+<dd class="field-odd"><p>The data of the solution in json format</p>
+</dd>
+<dt class="field-even">Return type</dt>
+<dd class="field-even"><p>str</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py method">
 <dt class="sig sig-object py" id="solution.cvrp.solution.SolutionCvrp.writeInstanceVrp">
 <span class="sig-name descname"><span class="pre">writeInstanceVrp</span></span><span class="sig-paren">(</span><em class="sig-param"><span class="n"><span class="pre">file_path</span></span><span class="p"><span class="pre">:</span></span> <span class="n"><span class="pre">str</span></span></em><span class="sig-paren">)</span> <span class="sig-return"><span class="sig-return-icon">&#x2192;</span> <span class="sig-return-typehint"><span class="pre">None</span></span></span><a class="headerlink" href="#solution.cvrp.solution.SolutionCvrp.writeInstanceVrp" title="Permalink to this definition"></a></dt>
-<dd></dd></dl>
+<dd><p>Method to write the soution in a file</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>file_path</strong> (<em>str</em>) – Path to the file where we want to write in</p>
+</dd>
+</dl>
+</dd></dl>
 
 </dd></dl>
 
@@ -379,7 +673,7 @@ cvrp graph)</p>
            </div>
           </div>
           <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
-        <a href="../solution.html" class="btn btn-neutral float-left" title="Capacitated Vehicle Routing Problem Modelization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../solution.html" class="btn btn-neutral float-left" title="Capacitated Vehicle Routing Problem Solution Modelization" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
         <a href="route.html" class="btn btn-neutral float-right" title="Route of CVRP" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
     </div>
 

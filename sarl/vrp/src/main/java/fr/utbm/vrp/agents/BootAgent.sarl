@@ -1,0 +1,84 @@
+/** 
+ * 
+ */
+package fr.utbm.vrp.agents
+
+
+import io.sarl.core.Initialize
+import io.sarl.core.Logging
+import java.util.concurrent.atomic.AtomicInteger
+import io.sarl.core.Lifecycle
+import java.util.concurrent.ConcurrentLinkedQueue
+import org.json.simple.parser.JSONParser
+import java.io.StringReader
+import org.json.simple.JSONObject
+import org.json.simple.JSONArray
+import java.util.Iterator
+
+/** 
+ * Boot agent
+ * <br>His goal is just to launch the task agent and then die
+ * 
+ * <br>MAS Systems based on <a href=https://www.semanticscholar.org/paper/Agents-towards-vehicle-routing-problems-Vokr%C3%ADnek-Komenda/1d486f85f0810331c8feb203ac126a7c192d00e1#related-papers>Agents towards vehicle routing problems</a> article
+ * <br>Strategy implemented: FIFO-ITER-CNP-RA
+ * 
+ */
+agent BootAgent {
+	uses Lifecycle, Logging
+
+	/**
+	 * Initialize event handler
+	 * 
+	 * <br> Waiting for one parameters, the json string published in redis
+	 * 
+	 * <br> It's job is to parse the json string and then give all arguments 
+	 * needed to the TaskAgent
+	 */
+	on Initialize {
+		// His logging name
+		loggingName = "Boot agent"
+		
+		// Logging info
+		info("The program has been launched.")
+
+		// Change the logging level to warning to gain some time to not display
+		// all messages published by the agents
+		// level - 0 or lower for no logging, 1 for error, 2 for warning, 3 for info, 4 or higher for debug.
+		setLogLevel(2)
+
+		// Get the json string
+		var json_string = occurrence.parameters.get(0) as String
+		json_string = json_string.replace("'", "\"");
+		
+		var json_objc : Object = null;
+		// Parse the json
+		json_objc = new JSONParser().parse(new StringReader(json_string));
+
+		// objc is convereted to JSON object
+		var json_builded : JSONObject = json_objc as JSONObject;
+		
+		// Build the list of customers
+		var customers_list : ConcurrentLinkedQueue<String> = new ConcurrentLinkedQueue<String>()
+		var jsonArray : JSONArray = json_builded.get("customers") as JSONArray;
+        // Iterating the contents of the array
+		var iterator : Iterator<Object> = jsonArray.iterator();
+		// Add all the customers in the list
+		while (iterator.hasNext()) {
+			customers_list.add(iterator.next() as String);
+		}
+
+		// Parse the depot
+		var depot : String = json_builded.get("depot") as String;
+		// Parse the vehicle cpacity
+		var vehicle_capacity_raw : int = json_builded.get("vehicle_capacity") as String as int;
+		var vehicle_capacity : AtomicInteger = new AtomicInteger(vehicle_capacity_raw);
+		// Parse the topic
+		var topic : String = json_builded.get("topic") as String;
+
+		// Spawn the agent SearchManager and SearchAgent
+		spawn(TaskAgent, depot, customers_list, vehicle_capacity, topic)
+
+		// Kill it self
+		killMe
+	}
+}

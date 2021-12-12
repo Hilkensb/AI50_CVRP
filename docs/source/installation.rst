@@ -10,8 +10,8 @@ version you should upgrade your python to use this project.
 Dependancies
 ------------
 
-List of dependancies
-~~~~~~~~~~~~~~~~~~~~
+List of python dependancies
+~~~~~~~~~~~~~~~~~~~~~~~~~~~
 You will find all the dependancies of the project in the following table (This table
 does not include dependancies of dependancies):
 
@@ -33,6 +33,20 @@ does not include dependancies of dependancies):
 | sphinx            | 4.2.0    | sphinx_              |
 +-------------------+----------+----------------------+
 
+List of needed software
+~~~~~~~~~~~~~~~~~~~~~~~
+
+The project can be runned using any version of python_ higher than the 3.8 version
+(tested for python version 3.8, 3.9 and 3.10).
+
+
+In order to use the application you will also need redis_ (version for windows and linux
+may be found in the redis folder).
+
+
+Finally to run the multiagent system you will need sarl_ programming language. You should then
+run the sarl maven projet in sarl folder to use the algorithm made in sarl.
+
 Install dependancies
 ~~~~~~~~~~~~~~~~~~~~
 
@@ -49,3 +63,6 @@ To install all the dependancies, use the following command in the root directory
 .. _panda: https://pandas.pydata.org/
 .. _requests: https://fr.python-requests.org/en/latest/
 .. _sphinx: https://www.sphinx-doc.org/en/master/
+.. _python: https://www.python.org/
+.. _redis: https://redis.io/
+.. _sarl: http://www.sarl.io/

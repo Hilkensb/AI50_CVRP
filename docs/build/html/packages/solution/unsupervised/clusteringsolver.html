@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html class="writer-html5" lang="en" >
+<head>
+  <meta charset="utf-8" /><meta name="generator" content="Docutils 0.17.1: http://docutils.sourceforge.net/" />
+
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Capacited K-Means &mdash; CVRP (Capacitated Vehicle Routing Problem) 0.0.1 documentation</title>
+      <link rel="stylesheet" href="../../../_static/pygments.css" type="text/css" />
+      <link rel="stylesheet" href="../../../_static/css/theme.css" type="text/css" />
+    <link rel="shortcut icon" href="../../../_static/utbm_logo.ico"/>
+  <!--[if lt IE 9]>
+    <script src="../../../_static/js/html5shiv.min.js"></script>
+  <![endif]-->
+  
+        <script data-url_root="../../../" id="documentation_options" src="../../../_static/documentation_options.js"></script>
+        <script src="../../../_static/jquery.js"></script>
+        <script src="../../../_static/underscore.js"></script>
+        <script src="../../../_static/doctools.js"></script>
+    <script src="../../../_static/js/theme.js"></script>
+    <link rel="index" title="Index" href="../../../genindex.html" />
+    <link rel="search" title="Search" href="../../../search.html" />
+    <link rel="next" title="Utils package" href="../../utils/utils.html" />
+    <link rel="prev" title="Sarl Communication" href="../multiagents/sarlcommunication.html" /> 
+</head>
+
+<body class="wy-body-for-nav"> 
+  <div class="wy-grid-for-nav">
+    <nav data-toggle="wy-nav-shift" class="wy-nav-side">
+      <div class="wy-side-scroll">
+        <div class="wy-side-nav-search" >
+            <a href="../../../index.html" class="icon icon-home"> CVRP (Capacitated Vehicle Routing Problem)
+          </a>
+<div role="search">
+  <form id="rtd-search-form" class="wy-form" action="../../../search.html" method="get">
+    <input type="text" name="q" placeholder="Search docs" />
+    <input type="hidden" name="check_keywords" value="yes" />
+    <input type="hidden" name="area" value="default" />
+  </form>
+</div>
+        </div><div class="wy-menu wy-menu-vertical" data-spy="affix" role="navigation" aria-label="Navigation menu">
+              <p class="caption" role="heading"><span class="caption-text">Contents:</span></p>
+<ul class="current">
+<li class="toctree-l1"><a class="reference internal" href="../../../installation.html">Installation</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../introduction.html">Introduction</a></li>
+<li class="toctree-l1"><a class="reference internal" href="../../../tutorial/tutorial.html">Tutorial</a></li>
+<li class="toctree-l1 current"><a class="reference internal" href="../../packages.html">Python Objects Documentation</a><ul class="current">
+<li class="toctree-l2"><a class="reference internal" href="../../problem/problem.html">Capacitated Vehicle Routing Problem Modelization</a></li>
+<li class="toctree-l2 current"><a class="reference internal" href="../solution.html">Capacitated Vehicle Routing Problem Solution Modelization</a><ul class="current">
+<li class="toctree-l3 current"><a class="reference internal" href="../solution.html#the-package">The package</a><ul class="current">
+<li class="toctree-l4"><a class="reference internal" href="../cvrp/solution.html">CVRP Solution object</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../cvrp/route.html">Route of CVRP</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../constructive/clarkwrightsaving.html">Clark And Wright saving algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../constructive/firstfitdecreasing.html">First Fit Decreasing Algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../constructive/nearestneighbors.html">Nearest Neighbors Algorithm</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../metaheuristic/tabusearch.html">Tabu search</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../metaheuristic/gwo.html">Grey Wolf Optimizer</a></li>
+<li class="toctree-l4"><a class="reference internal" href="../multiagents/sarlcommunication.html">Sarl Communication</a></li>
+<li class="toctree-l4 current"><a class="current reference internal" href="#">Capacited K-Means</a></li>
+</ul>
+</li>
+</ul>
+</li>
+<li class="toctree-l2"><a class="reference internal" href="../../utils/utils.html">Utils package</a></li>
+<li class="toctree-l2"><a class="reference internal" href="../../gui/gui.html">Graphical user interface</a></li>
+</ul>
+</li>
+</ul>
+
+        </div>
+      </div>
+    </nav>
+
+    <section data-toggle="wy-nav-shift" class="wy-nav-content-wrap"><nav class="wy-nav-top" aria-label="Mobile navigation menu" >
+          <i data-toggle="wy-nav-top" class="fa fa-bars"></i>
+          <a href="../../../index.html">CVRP (Capacitated Vehicle Routing Problem)</a>
+      </nav>
+
+      <div class="wy-nav-content">
+        <div class="rst-content">
+          <div role="navigation" aria-label="Page navigation">
+  <ul class="wy-breadcrumbs">
+      <li><a href="../../../index.html" class="icon icon-home"></a> &raquo;</li>
+          <li><a href="../../packages.html">Python Objects Documentation</a> &raquo;</li>
+          <li><a href="../solution.html">Capacitated Vehicle Routing Problem Solution Modelization</a> &raquo;</li>
+      <li>Capacited K-Means</li>
+      <li class="wy-breadcrumbs-aside">
+            <a href="../../../_sources/packages/solution/unsupervised/clusteringsolver.rst.txt" rel="nofollow"> View page source</a>
+      </li>
+  </ul>
+  <hr/>
+</div>
+          <div role="main" class="document" itemscope="itemscope" itemtype="http://schema.org/Article">
+           <div itemprop="articleBody">
+             
+  <section id="module-solution.unsupervised.clusteringsolver">
+<span id="capacited-k-means"></span><h1>Capacited K-Means<a class="headerlink" href="#module-solution.unsupervised.clusteringsolver" title="Permalink to this headline"></a></h1>
+<dl class="py function">
+<dt class="sig sig-object py" id="solution.unsupervised.clusteringsolver.buildClusterRoute">
+<span class="sig-prename descclassname"><span class="pre">solution.unsupervised.clusteringsolver.</span></span><span class="sig-name descname"><span class="pre">buildClusterRoute</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.unsupervised.clusteringsolver.buildClusterRoute" title="Permalink to this definition"></a></dt>
+<dd><p>Method to build route from the cluster</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cluster_customer</strong> (<em>List</em><em>[</em><em>Customer</em><em>]</em>) – Customer in the cluster</p></li>
+<li><p><strong>depot</strong> (<a class="reference internal" href="../../problem/cvrp/depot.html#problem.cvrp.depot.DepotCvrp" title="problem.cvrp.depot.DepotCvrp"><em>DepotCvrp</em></a>) – Depot of the cvrp instance</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>List of NodeWithCoord ordered representing the route</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[NodeWithCoord]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="solution.unsupervised.clusteringsolver.clusteringSolver">
+<span class="sig-prename descclassname"><span class="pre">solution.unsupervised.clusteringsolver.</span></span><span class="sig-name descname"><span class="pre">clusteringSolver</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.unsupervised.clusteringsolver.clusteringSolver" title="Permalink to this definition"></a></dt>
+<dd><p>Function to solve the cvrp by designing cluster and building route around it</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cvrp</strong> (<a class="reference internal" href="../../problem/cvrp/instance.html#problem.cvrp.instance.Cvrp" title="problem.cvrp.instance.Cvrp"><em>Cvrp</em></a>) – The cvrp instance to find a solution</p></li>
+<li><p><strong>iteration</strong> (<em>int</em>) – Number of iteration to run</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>Solution found and the evaluation</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[List[<a class="reference internal" href="../cvrp/solution.html#solution.cvrp.solution.SolutionCvrp" title="solution.cvrp.solution.SolutionCvrp">SolutionCvrp</a>], List[float]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="solution.unsupervised.clusteringsolver.costInsertion">
+<span class="sig-prename descclassname"><span class="pre">solution.unsupervised.clusteringsolver.</span></span><span class="sig-name descname"><span class="pre">costInsertion</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.unsupervised.clusteringsolver.costInsertion" title="Permalink to this definition"></a></dt>
+<dd><p>Method to compute the insertion cost of a customer</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>customer</strong> (<a class="reference internal" href="../../problem/cvrp/customer.html#problem.cvrp.customer.CustomerCvrp" title="problem.cvrp.customer.CustomerCvrp"><em>CustomerCvrp</em></a>) – Customer to insert in the route</p></li>
+<li><p><strong>route</strong> (<em>List</em><em>[</em><em>NodeWithCoord</em><em>]</em>) – Route to insert customer</p></li>
+<li><p><strong>place</strong> (<em>int</em>) – Place to estimate the insertion of the customer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The cost of the insertion at the given place</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="solution.unsupervised.clusteringsolver.euclideanDistance">
+<span class="sig-prename descclassname"><span class="pre">solution.unsupervised.clusteringsolver.</span></span><span class="sig-name descname"><span class="pre">euclideanDistance</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.unsupervised.clusteringsolver.euclideanDistance" title="Permalink to this definition"></a></dt>
+<dd><p>Function to compute the euclidean distance between 2 customers</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>customer1</strong> (<a class="reference internal" href="../../problem/cvrp/customer.html#problem.cvrp.customer.CustomerCvrp" title="problem.cvrp.customer.CustomerCvrp"><em>CustomerCvrp</em></a>) – First customer</p></li>
+<li><p><strong>customer2</strong> (<a class="reference internal" href="../../problem/cvrp/customer.html#problem.cvrp.customer.CustomerCvrp" title="problem.cvrp.customer.CustomerCvrp"><em>CustomerCvrp</em></a>) – Second customer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The distance between the 2 customers</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>float</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="solution.unsupervised.clusteringsolver.euclideanDistanceCluster">
+<span class="sig-prename descclassname"><span class="pre">solution.unsupervised.clusteringsolver.</span></span><span class="sig-name descname"><span class="pre">euclideanDistanceCluster</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.unsupervised.clusteringsolver.euclideanDistanceCluster" title="Permalink to this definition"></a></dt>
+<dd><p>Compute the euclidean distance between a cutomer and the clusters</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>customer</strong> (<a class="reference internal" href="../../problem/cvrp/customer.html#problem.cvrp.customer.CustomerCvrp" title="problem.cvrp.customer.CustomerCvrp"><em>CustomerCvrp</em></a>) – Customer</p></li>
+<li><p><strong>cluster_centers</strong> (<em>List</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>]</em>) – List of clusters center</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>LIst of distance between customer and clusters center</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>List[float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="solution.unsupervised.clusteringsolver.findBestPlace">
+<span class="sig-prename descclassname"><span class="pre">solution.unsupervised.clusteringsolver.</span></span><span class="sig-name descname"><span class="pre">findBestPlace</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.unsupervised.clusteringsolver.findBestPlace" title="Permalink to this definition"></a></dt>
+<dd><p>Method to find the best place to insert a customer in the route</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>customer</strong> (<a class="reference internal" href="../../problem/cvrp/customer.html#problem.cvrp.customer.CustomerCvrp" title="problem.cvrp.customer.CustomerCvrp"><em>CustomerCvrp</em></a>) – Customer to insert in the route</p></li>
+<li><p><strong>route</strong> (<em>List</em><em>[</em><em>NodeWithCoord</em><em>]</em>) – Route to insert customer</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The best place to insert the customer</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>int</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="solution.unsupervised.clusteringsolver.kMeanCapacited">
+<span class="sig-prename descclassname"><span class="pre">solution.unsupervised.clusteringsolver.</span></span><span class="sig-name descname"><span class="pre">kMeanCapacited</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.unsupervised.clusteringsolver.kMeanCapacited" title="Permalink to this definition"></a></dt>
+<dd><p>Function to run the capacited kmean algorithm</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><ul class="simple">
+<li><p><strong>cvrp</strong> (<a class="reference internal" href="../../problem/cvrp/instance.html#problem.cvrp.instance.Cvrp" title="problem.cvrp.instance.Cvrp"><em>Cvrp</em></a>) – Cvrp instance</p></li>
+<li><p><strong>cluster_center</strong> (<em>List</em><em>[</em><em>Tuple</em><em>[</em><em>float</em><em>, </em><em>float</em><em>]</em><em>]</em>) – List of cluster center, default to None (opt.)</p></li>
+<li><p><strong>update_centers</strong> (<em>bool</em>) – Boolean to know if the centers should be updated or not</p></li>
+</ul>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The cluster center and the customer assign to clusters</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[List[Tuple[float, float]], List[List[<a class="reference internal" href="../../problem/cvrp/customer.html#problem.cvrp.customer.CustomerCvrp" title="problem.cvrp.customer.CustomerCvrp">CustomerCvrp</a>]]]</p>
+</dd>
+</dl>
+</dd></dl>
+
+<dl class="py function">
+<dt class="sig sig-object py" id="solution.unsupervised.clusteringsolver.updateClusterCenter">
+<span class="sig-prename descclassname"><span class="pre">solution.unsupervised.clusteringsolver.</span></span><span class="sig-name descname"><span class="pre">updateClusterCenter</span></span><span class="sig-paren">(</span><span class="sig-paren">)</span><a class="headerlink" href="#solution.unsupervised.clusteringsolver.updateClusterCenter" title="Permalink to this definition"></a></dt>
+<dd><p>Method to update the cluster center</p>
+<dl class="field-list simple">
+<dt class="field-odd">Parameters</dt>
+<dd class="field-odd"><p><strong>point_assignment</strong> (<em>List</em><em>[</em><a class="reference internal" href="../../problem/cvrp/customer.html#problem.cvrp.customer.CustomerCvrp" title="problem.cvrp.customer.CustomerCvrp"><em>CustomerCvrp</em></a><em>]</em>) – Cluster of customer assignment</p>
+</dd>
+<dt class="field-even">Returns</dt>
+<dd class="field-even"><p>The update cluster center</p>
+</dd>
+<dt class="field-odd">Return type</dt>
+<dd class="field-odd"><p>Tuple[float, float]</p>
+</dd>
+</dl>
+</dd></dl>
+
+</section>
+
+
+           </div>
+          </div>
+          <footer><div class="rst-footer-buttons" role="navigation" aria-label="Footer">
+        <a href="../multiagents/sarlcommunication.html" class="btn btn-neutral float-left" title="Sarl Communication" accesskey="p" rel="prev"><span class="fa fa-arrow-circle-left" aria-hidden="true"></span> Previous</a>
+        <a href="../../utils/utils.html" class="btn btn-neutral float-right" title="Utils package" accesskey="n" rel="next">Next <span class="fa fa-arrow-circle-right" aria-hidden="true"></span></a>
+    </div>
+
+  <hr/>
+
+  <div role="contentinfo">
+    <p>&#169; Copyright free.</p>
+  </div>
+
+  Built with <a href="https://www.sphinx-doc.org/">Sphinx</a> using a
+    <a href="https://github.com/readthedocs/sphinx_rtd_theme">theme</a>
+    provided by <a href="https://readthedocs.org">Read the Docs</a>.
+   
+
+</footer>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+      jQuery(function () {
+          SphinxRtdTheme.Navigation.enable(true);
+      });
+  </script> 
+
+</body>
+</html>

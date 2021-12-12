@@ -1,10 +1,13 @@
-
+*.class
+*.sarlbin
+*._trace
 *.pyc
 
+sarl/vrp/src/main/generated-sources/sarl/fr/utbm/vrp/agents/
+sarl/vrp/src/main/generated-sources
+
 main.py
+sarl/vrp/target/
 
-*._trace
-
-*.sarlbin
 
 sarl/vrp/src/main/generated-sources/sarl/fr/utbm/vrp/agents/

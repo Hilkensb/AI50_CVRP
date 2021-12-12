@@ -3,10 +3,12 @@
 from __future__ import annotations
 from typing import List, Dict, Tuple, Union, Set
 import threading
+import json
 
 # Other Library
 import matplotlib.pyplot as plt
 import numpy as np
+import redis as red
 
 # Modules
 from solution.cvrp.solution import SolutionCvrp
@@ -15,6 +17,9 @@ from problem.cvrp.customer import CustomerCvrp
 from problem.cvrp.depot import DepotCvrp
 from problem.node import NodeWithCoord
 from solution.constructive.clarkwrightsaving import clarkWrightSaving
+from gui.config import redis_server, SOLUTION_TOPIC
+from utils.redisutils import isRedisAvailable
+from utils.parseparameters import SHOW_SOLUTION
 
 
 # -------------------- Tabu Search Neighborhood functions ------------------- #
@@ -32,7 +37,7 @@ def __getRouteSwapNeighbours(sol: SolutionCvrp, proximity_swaps: int = 1, total_
 def __getClosestPermutationNeighbours(sol: SolutionCvrp, proximity_swaps: int = 1, total_cost: int = None):
     """
     """
-    return sol.getClothestPermutationNeighbours(proximity_swaps=proximity_swaps, total_cost=total_cost) 
+    return sol.getClosestPermutationNeighbours(proximity_swaps=proximity_swaps, total_cost=total_cost) 
     
 def __getClosestInsertionNeighbours(sol: SolutionCvrp, proximity_swaps: int = 1, total_cost: int = None):
     """
@@ -56,14 +61,18 @@ NEIGHBORHOODFUNCTION = {"permutationNeighbours": __getPermutationNeighbours,
 # ---------------------------- Tabu Search Class ---------------------------- #
 
 class TabuSearch:
-    def __init__(self):
+    def __init__(self, publish_topic: str = None):
         """
         Constructor
         """
         # Evolution of the best solution evaluation found
-        self.__best_solution_evaluation_evolution: List[SolutionCvrp] = []
+        self.__best_solution_evaluation_evolution: List[float] = []
         # Evolution of the best solution found
         self.__best_solution_evolution: List[SolutionCvrp] = []
+        # Set the topic where to publish evolution
+        self.__topic: str = publish_topic
+        # Varaible to know if the tabu serach is still running
+        self.__running: bool = False
 
     def runMultiPhaseTabuSearch(
         self, initial_solution: SolutionCvrp, neighborhood_function_list: List[function],
@@ -91,6 +100,8 @@ class TabuSearch:
         :rtype: SolutionCvrp
         
         """
+        
+        self.__running = True
         
         # Best solution found
         best_solution: SolutionCvrp = initial_solution
@@ -124,6 +135,10 @@ class TabuSearch:
         
         # For each iteration
         for iteration in range(number_iteration):
+
+            # Check if it noeed to stop        
+            if not self.__running:
+                break
         
             # Change the function
             if function_iteration_count >= function_iteration_number:
@@ -147,10 +162,17 @@ class TabuSearch:
               
             # Find the best solution    
             neighbours.sort(key=lambda sol: sol[1], reverse=True)
-            best_neighbours: Solution = neighbours.pop()
+            try:
+                # Get the best neighbours
+                best_neighbours: Solution = neighbours.pop()
+            except IndexError:
+                # No more neighbours so it stops
+                return best_solution
             
             # get the swap value (to be hashable)
             swap: str = best_neighbours[2]
+            # Reverse the swap to be sure that if the swap is tabu
+            # no matter how it is ordered the algorithm will catch it
             reverse_swap: str = "-".join(n for n in best_neighbours[2].split("-")[::1])
             
             # If the aspiration as not been activated or the new solution does not upgrade the solution
@@ -162,20 +184,23 @@ class TabuSearch:
                     swap: str = best_neighbours[2]
                     reverse_swap: str = "-".join(n for n in best_neighbours[2].split("-")[::1])
                 # If there's no solution non tabu go to next iteration
-                if len(neighbours):
-                    self.__best_solution_evaluation_evolution.append(best_eval)
-                    self.__best_solution_evolution.append(best_solution)
+                if len(neighbours) == 0:
+                    # Create an history of the  best value
+                    self.__addNewSolution(solution=best_solution, evaluation=best_eval)
                     continue
             # If the solution triggered the aspiration, check if it was tabu
             elif swap in tabu_swaps or reverse_swap in tabu_swaps:
                 # Replace the swap in the tabu index by None
                 tabu_index = tabu_index[:max(iteration-tabu_length, 0)] + [None if neighbor == best_neighbours[2] else neighbor for neighbor in tabu_index[max(iteration-tabu_length, 0):iteration]] + tabu_index[iteration:]
  
+ 
             # Update the current solution   
             current_solution = best_neighbours[0]
             current_eval = best_neighbours[1]
             # Make the swap tabu
             tabu_swaps.add(swap)
+            # Set the swap tabu in a list to keep the iteration where it should pop
+            # from the set
             tabu_index[iteration] = swap
             
             # Remove a tabu value
@@ -185,11 +210,10 @@ class TabuSearch:
             # update the best value if needed       
             if best_neighbours[1] < best_eval:
                 best_solution = best_neighbours[0]
-                best_eval = best_neighbours[1]
+                best_eval = best_neighbours[1] 
                 
             # Create an history of the  best value
-            self.__best_solution_evaluation_evolution.append(best_eval)
-            self.__best_solution_evolution.append(best_solution)
+            self.__addNewSolution(solution=best_solution, evaluation=best_eval)
 
         return best_solution
 
@@ -217,6 +241,8 @@ class TabuSearch:
         :rtype: SolutionCvrp
         """
         
+        self.__running = True
+        
         # Best solution found
         best_solution: SolutionCvrp = initial_solution
         
@@ -241,6 +267,10 @@ class TabuSearch:
         # For each iteration
         for iteration in range(number_iteration):
         
+            # Check if it noeed to stop        
+            if not self.__running:
+                break
+        
             # Find the length of the smallest route
             smallest_route: int = min(current_solution.route, key=lambda r: len(r))
             
@@ -252,9 +282,16 @@ class TabuSearch:
               
             # Find the best solution    
             neighbours.sort(key=lambda sol: sol[1], reverse=True)
-            best_neighbours: Solution = neighbours.pop()
+            try:
+                # Get the best neighbours
+                best_neighbours: Solution = neighbours.pop()
+            except IndexError:
+                # No more neighbours so it stops
+                return best_solution
             
+            # Get the swap realize
             swap: str = best_neighbours[2]
+            # Reverse the string of the maded swap
             reverse_swap: str = "-".join(n for n in best_neighbours[2].split("-")[::1])
             
             # If the aspiration as not been activated or the new solution does not upgrade the solution
@@ -262,11 +299,12 @@ class TabuSearch:
                 # While the swaps is tabu
                 while (swap in tabu_swaps or reverse_swap in tabu_swaps):
                     # find another good solution
-                    best_neighbours= neighbours.pop()
+                    best_neighbours = neighbours.pop()
                     swap: str = best_neighbours[2]
                     reverse_swap: str = "-".join(n for n in best_neighbours[2].split("-")[::1])
                 # If there's no solution non tabu go to next iteration
                 if len(neighbours):
+                    # Go to next iteration
                     continue
             # If the solution triggered the aspiration, check if it was tabu
             elif swap in tabu_swaps or reverse_swap in tabu_swaps:
@@ -291,8 +329,7 @@ class TabuSearch:
                 best_eval = best_neighbours[1]
                 
             # Create an history of the  best value
-            self.__best_solution_evaluation_evolution.append(best_eval)
-            self.__best_solution_evolution.append(best_solution)
+            self.__addNewSolution(solution=best_solution, evaluation=best_eval)
 
         return best_solution
       
@@ -323,6 +360,9 @@ class TabuSearch:
         :return: An improved solution
         :rtype: SolutionCvrp
         """
+        
+        self.__running = True
+        
         # Thread running the tabu search       
         thread_tabu = threading.Thread(
             target=self.runMultiPhaseTabuSearch,
@@ -338,6 +378,8 @@ class TabuSearch:
         thread_tabu.start()
         # wait n seconds for the thread to finish its work
         thread_tabu.join(max_second_run)
+        
+        self.__running = False
         
     def runTabuSearchThread(
         self, initial_solution: SolutionCvrp, neighborhood_function: funtion,
@@ -365,6 +407,8 @@ class TabuSearch:
         :rtype: SolutionCvrp
         """
         
+        self.__running = True
+        
         # Thread running the tabu search       
         thread_tabu = threading.Thread(
             target=self.runTabuSearch,
@@ -379,7 +423,27 @@ class TabuSearch:
         # launch the thread  
         thread_tabu.start()
         # wait n seconds for the thread to finish its work
-        thread_tabu.join(max_second_run)     
+        thread_tabu.join(max_second_run)  
+               
+        self.__running = False
+
+    def __addNewSolution(self, solution: SolutionCvrp, evaluation: float, rounded_json: int = 2):
+        """
+        """
+        # Create an history of the  best value
+        self.__best_solution_evaluation_evolution.append(evaluation)
+        self.__best_solution_evolution.append(solution)
+        
+        # if redis is on
+        if isRedisAvailable() and self.__running:
+            # Create the data
+            json_data = {
+                "algorithm_name": "Tabu search", "cost": round(evaluation, 2),
+                "iteration":len(self.__best_solution_evaluation_evolution),
+                "graph": solution.drawPlotlyJSON() if SHOW_SOLUTION else ""
+            }
+            # Publish
+            redis_server.publish(self.__topic, json.dumps(json_data))
 
     @property 
     def best_solution_evaluation_evolution(self) -> List[int]:
@@ -395,7 +459,8 @@ def tabuSearch(
     initial_solution: SolutionCvrp, multiphase: bool = True,
     neighborhood_function_list: Union[List[str], str] = ["closestInsertionNeighbours", "routeSwapNeighbours"],
     function_iteration_list: List[int] = [3, 9], number_iteration: int = -1,
-    tabu_length: int = -1, aspiration: bool = True, max_second_run: int = 45
+    tabu_length: int = -1, aspiration: bool = True, max_second_run: int = 45,
+    publish_topic: str = SOLUTION_TOPIC
 ) -> TabuSearch:
     """
     tabuSearch()
@@ -418,12 +483,14 @@ def tabuSearch(
     :type aspiration: bool
     :param max_second_run: Maximum second to run tabu search
     :type max_second_run: int
+    :param publish_topic: topic name where to publish the solution
+    :type publish_topic: str
     :return: An improved solution with all the historical solution found
     :rtype: TabuSearch
     """
-    
+
     # Create the object to run the tabu search
-    tabu_search = TabuSearch()
+    tabu_search = TabuSearch(publish_topic=publish_topic)
     
     # Set the param for the tabu search
     # Set the number_iteration if it has not been set
@@ -487,7 +554,7 @@ def tabuSearch(
                 neighborhood_function = NEIGHBORHOODFUNCTION[neighborhood_function_list]
             except IndexError:
                 raise ValueError(f"The function linked to the string {neighborhood_function_list} does not exists.")
-     
+
     if multiphase:
         # Run in another thread the tabu search
         tabu_search.runMultiPhaseTabuSearchThread(
@@ -504,4 +571,48 @@ def tabuSearch(
         )
     
     return tabu_search
+
+def easyTabuSearch(
+    initial_solution: SolutionCvrp, multiphase: bool = True,
+    neighborhood_function_list: Union[List[str], str] = ["closestInsertionNeighbours", "routeSwapNeighbours"],
+    function_iteration_list: List[int] = [3, 9], number_iteration: int = -1,
+    tabu_length: int = -1, aspiration: bool = True, max_second_run: int = 45,
+    publish_topic: str = SOLUTION_TOPIC
+) -> List[SolutionCvrp]:
+    """
+    tabuSearch()
+    
+    Function to run tabu search
+    
+    :param initial_solution: The initial solution
+    :type initial_solution: SolutionCvrp
+    :param multiphase: Boolean to know if the tabu search need to have multiple phase
+    :type multiphase: bool
+    :param neighborhood_function_list: List of functions to find neighbours
+    :type neighborhood_function_list: List of function
+    :param function_iteration_list: Number of iteration to do for each function
+    :type function_iteration_list: List of int
+    :param number_iteration: Number of iteration to do
+    :type number_iteration: int
+    :param tabu_length: Length of tabu list
+    :type tabu_length: int
+    :param aspiration: If the aspirate criteria is enabled or not (ignore the tabu list if it upgrade the solution)
+    :type aspiration: bool
+    :param max_second_run: Maximum second to run tabu search
+    :type max_second_run: int
+    :param publish_topic: topic name where to publish the solution
+    :type publish_topic: str
+    :return: An improved solution with all the historical solution found
+    :rtype: TabuSearch
+    """
+    
+    tabu_search_result: TabuSearch = tabuSearch(
+        initial_solution=initial_solution, multiphase=multiphase,
+        neighborhood_function_list=neighborhood_function_list,
+        function_iteration_list=function_iteration_list, number_iteration=number_iteration,
+        tabu_length=tabu_length, aspiration=aspiration, max_second_run=max_second_run,
+        publish_topic=publish_topic
+    )
+    
+    return tabu_search_result.best_solution_evolution, tabu_search_result.best_solution_evaluation_evolution
                     
