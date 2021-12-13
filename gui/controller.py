@@ -23,6 +23,7 @@ from utils.redisutils import isRedisAvailable
 from utils.runalgorithm import runAlgorithm
 from utils.otherplotting import getHtmlSolutionEvolutionAnimationPlotly, getHtmlLineCostEvolution
 from solution.metaheuristic.gwo import greyWolfSolver
+from solution.metaheuristic.genetic.geneticalgorithm import geneticAlgorithm
 from solution.multiagents.sarlcommunication import sarlSender
 from utils.mailsender import sendMailFinished
 from utils.pdfcreator import createPDF
@@ -211,6 +212,21 @@ def load(cvrp_id: str):
             })
             # Is there evolution in the solution
             instance_save[f'has_evolution_{cvrp_id}'].append(True)
+        
+        # if the tabu search should be runned
+        if len(request.form.getlist("Genetic")) > 0:
+            # add the algorithm
+            algo_function.append(geneticAlgorithm)
+            # Set the name of clark wirght
+            algo_name.append("Genetic Algorithm")
+            # Set the algorithm param
+            algo_kwargs.append({
+                "cvrp": cvrp_instance,
+                "num_generations": int(request.form["GeneticIteration"]),
+                "topic": f"{SOLUTION_TOPIC}_{cvrp_id}"
+            })
+            # Is there evolution in the solution
+            instance_save[f'has_evolution_{cvrp_id}'].append(False)
         
         # Get the flask application
         flask_applaction = current_app._get_current_object()

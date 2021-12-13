@@ -55,7 +55,7 @@ Some metaheuristics start from a solution provided by the Clark & Wright saving 
 ![](./misc/tabu_search.gif)
 
 The Grey Wolf Optimizer will build a solution without needing one at the very start. The algorithm is based on the scientific article [Using Grey Wolf Algorithm to Solve the
-Capacitated Vehicle Routing Problem](https://iopscience.iop.org/article/10.1088/1757-899X/83/1/012014/pdf 'Grey Wolf Optimizer for CVRP') and the wikiversity page dedicated to the [Grey Wolf Algorithm](https://iopscience.iop.org/article/10.1088/1757-899X/83/1/012014/pdf 'Grey Wolf Optimizer Wikiversity').
+Capacitated Vehicle Routing Problem](https://iopscience.iop.org/article/10.1088/1757-899X/83/1/012014/pdf 'Grey Wolf Optimizer for CVRP') and the wikiversity page dedicated to the [Grey Wolf Algorithm](https://en.m.wikiversity.org/wiki/Algorithm_models/Grey_Wolf_Optimizer 'Grey Wolf Optimizer Wikiversity').
 
 ### Heuristics
 

@@ -1,16 +1,29 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
-"""
-Created on Sat Oct 20 11:35:21 2021
-
-@author: stephane
-"""
-import numpy
+# Standard Library
+from __future__ import annotations
+from typing import List, Dict, Tuple, Union, Set
 import random
 import copy
 from collections import Counter
 
+# Other Library
+import numpy
+
 def create_pop(pop, pop_size):
+    """
+    create_pop()
+    
+    Function to create a new population
+    
+    :param pop: List of customers
+    :type pop: List[int]
+    :param pop_size: Size of the population
+    :param pop_size: int
+    :return: New population
+    :rtype: List of int
+    """
+
     new_population = numpy.zeros((pop_size,len(pop)), dtype=int)
     for i in range(pop_size):
         random.shuffle(pop)
@@ -18,6 +31,19 @@ def create_pop(pop, pop_size):
     return new_population
 
 def cal_pop_fitness(distance, pop):
+    """
+    cal_pop_fitness()
+    
+    Function to compute the fitness
+    
+    :param pop: Population of the GA
+    :type pop: List[int]
+    :param distance: Distance matrix
+    :param distance: List[[int, int]]
+    :return: List of fitness
+    :rtype: List of int
+    """
+
     # Calculating the fitness value of each solution in the current population.
     # The fitness function calulates the sum of products between each input and its corresponding weight.
     fitness = numpy.zeros(len(pop[:,0]))
@@ -27,6 +53,19 @@ def cal_pop_fitness(distance, pop):
     return fitness
 
 def select_mating_pool(pop, fitness, num_parents):
+    """
+    select_mating_pool()
+    
+    Selection function 
+    
+    :param pop: Population of the GA
+    :type pop: List[int]
+    :param fitness: Fitness of the population
+    :type fitness: List[int]
+    :param num_parents: Number of chromosome to select
+    :type num_parents: int
+    """
+
     # Selecting the best individuals in the current generation as parents for producing the offspring of the next generation.
     parents = numpy.empty((num_parents, pop.shape[1]))
     fitness2 = fitness
@@ -38,6 +77,17 @@ def select_mating_pool(pop, fitness, num_parents):
     return parents
 
 def crossover(parents, offspring_size):
+    """
+    crossover()
+    
+    Crossover function
+    
+    :param parents: Population of the GA
+    :type parents: List[int]
+    :param offspring_size: Size of the childs
+    :type offspring_size: Tuple[int]
+    """
+
     offspring = numpy.empty((offspring_size[0],parents.shape[1]))
     #print("offspring_size : ", offspring_size)
     # The point at which crossover takes place between two parents. Usually, it is at the center.
@@ -55,7 +105,16 @@ def crossover(parents, offspring_size):
     return offspring
 
 def mutation(offspring_crossover, num_mutations=1):
+    """
+    mutation()
     
+    Mutation function using swaps
+    
+    :param offspring_crossover: Population of the GA
+    :type offspring_crossover: List[int]
+    :param num_mutations: number of mutation to do
+    :type num_mutations: int
+    """
     
     for i in range(num_mutations):
         # Choose randomly the allele to mutate
