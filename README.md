@@ -24,7 +24,7 @@ You can add one or more of the followings arguments:
 | ---------------------- | ------------------------------------------------------------ |
 | -h or --help           | Display the help message                                     |
 | -t or --unittest       | Run unit test before running the application                 |
-| -s or --show_evolution | Display the current solution on the load page (not working yet) |
+| -s or --show_evolution | Display the current solution on the load page                |
 
 You may also change the configuration of the application in the file /gui/config.py. All parameters are in this file, and commented.
 
