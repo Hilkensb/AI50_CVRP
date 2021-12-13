@@ -3,7 +3,7 @@
 # A supprimer !!!!
 # Juste pour tester le programme facilement
 from gui.app import Application
-from utils.parseparameters import getOptions
+from utils.parseparameters import getOptions, SHOW_SOLUTION
 import sys
 
 def main():
