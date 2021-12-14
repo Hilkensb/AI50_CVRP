@@ -61,3 +61,7 @@ tzlocal==4.1
 urllib3==1.26.7
 Werkzeug==2.0.2
 wrapt==1.13.3
+tensorflow==2.7.0
+sklearn==0.0
+scikit-learn==1.0
+keras==2.7.0

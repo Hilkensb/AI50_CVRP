@@ -2010,7 +2010,6 @@ class Cvrp(VehiculeRootingProblem):
         self.__nb_customer = len(value)
         return self.__customers
 
-
     @property 
     def depot(self) -> DepotCvrp:
         return self.__depot
