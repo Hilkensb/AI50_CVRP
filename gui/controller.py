@@ -38,6 +38,13 @@ def index():
     # return the index.html template
     return render_template("index.html", instance_id=uuid.uuid1())
 
+def serverStatus():
+    """
+    Controller to get the server status
+    """
+    
+    return 'OK', 200
+    
 def evaluateParams(
     cvrp_id: str, TabuIteration: int = 0, TabuLength: int = 0, RunTimeTabu: int = 0
 ):
