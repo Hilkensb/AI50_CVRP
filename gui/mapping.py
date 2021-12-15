@@ -60,5 +60,11 @@ mapping: List = [
         "endpoint_name": "evaluateParams",
         "action": evaluateParams, 
         "methods": ['GET', 'POST']
+    },
+    {
+        "endpoint": "/srv_status/", 
+        "endpoint_name": "serverStatus",
+        "action": serverStatus, 
+        "methods": ['GET']
     }
 ]

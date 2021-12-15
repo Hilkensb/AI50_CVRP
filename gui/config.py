@@ -26,6 +26,7 @@ BIG_INSTANCE: int = 400
 AUTO_LAUNCH_REDIS: bool = True
 # Redis folder
 WINDOWS_REDIS_FOLDER: str = "redis\Windows\Redis-x64-3.0.504\\"
+UNIX_REDIS_FOLDER: str = "redis\\Unix\\redis\\Unix\\redis-6.2.1\\src\\"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~  SARL application setting ~~~~~~~~~~~~~~~~~~~~~~~~ #
 

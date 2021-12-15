@@ -4,6 +4,9 @@ from __future__ import annotations
 import os
 from sys import platform
 import subprocess
+import webbrowser
+from threading import Timer
+import requests
 
 # Other Library
 from flask import Flask, render_template
@@ -114,8 +117,53 @@ class Application:
                     # Run redis server
                     subprocess.Popen(os.path.join(WINDOWS_REDIS_FOLDER, "redis-server.exe"))
                     print(Fore.GREEN + "Redis has been launched." + Style.RESET_ALL)
+                elif platform == "linux":
+                    # Run redis server
+                    subprocess.Popen(os.path.join(UNIX_REDIS_FOLDER, "redis-server"))
+                    print(Fore.GREEN + "Redis has been launched." + Style.RESET_ALL)
                 else:
                    print(Fore.YELLOW + "/!\ WARNING: Functionnality unavailable for your os. You need to launch redis manually." + Style.RESET_ALL)
 
+        # Create a thread to open a web browser when the server is ready
+        threaded_task = threading.Thread(
+            target=openBrowser
+        )
+        # launch the thread  
+        threaded_task.start()
+        
         self.app.run(host=host, port=port, debug=debug, threaded=True)
+
+
+def openBrowser():
+    """
+    openBrowser()
+    
+    Function to open a browser when the server is ready
+    """
+    
+    # Set the url where we will check if teh server is available
+    url_server_status: str = f'http://{HOST}:{PORT}/srv_status/'
+    
+    # Check the status of the server
+    try:
+        data_request: requests.Response = requests.get(url_server_status)
+        status_code: int = data_request.status_code
+    # requests.exceptions.ConnectionError is teh exception raise when the url is
+    # linked to nothing or the server refused the connection
+    except requests.exceptions.ConnectionError:
+        status_code: int = 0
+    
+    while not status_code==200:
+        time.sleep(0.1)
+        # Check the status of the server
+        try:
+            data_request: requests.Response = requests.get(url_server_status)
+            status_code: int = data_request.status_code
+        # requests.exceptions.ConnectionError is teh exception raise when the url is
+        # linked to nothing or the server refused the connection
+        except requests.exceptions.ConnectionError:
+            status_code: int = 0
+    
+    # Open the browser
+    webbrowser.open_new(f'http://{HOST}:{PORT}') 
 

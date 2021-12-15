@@ -14,6 +14,33 @@ To be runned the application needs [Redis](https://redis.io/ 'redis.io') server 
 
 Finally, since the multi-agent algorithm as been written in  [sarl](http://www.sarl.io/ 'sarl programming language') you will need it in order to get a solution from this algorithm.
 
+## Installation
+
+The installation will check for you if your python version and your os is supported by the ROAD software.
+
+### Windows
+
+To install all for windows os, please go in the dist folder, then setup folder.
+You will find the setup.exe, execute it. It will ask you your pip command (you can use your default one if you are on windows).
+It will then download all the required python libraries (it may take few minutes) and will close itself once installed.
+
+### Linux
+
+To install all dependencies for linux os, please run the following command:
+
+```shell
+./setup.sh
+```
+
+It will ask you your python command (please enter the python command that will enable you to run python 3.8+). For example python3.8.
+The program will then ask you your pip command. Please enter your pip command linked to the python you have entered previously. For example pip3.8.
+
+Finally you will have a new shell script generated: run.sh. You can run it using the following command:
+
+```shell
+./run.sh
+```
+
 ## Launching the web application
 
 ### Configuration 
