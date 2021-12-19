@@ -20,9 +20,20 @@ The installation will check for you if your python version and your os is suppor
 
 ### Windows
 
-To install all for windows os, please go in the dist folder, then setup folder.
-You will find the setup.exe, execute it. It will ask you your pip command (you can use your default one if you are on windows).
-It will then download all the required python libraries (it may take few minutes) and will close itself once installed.
+To install all dependencies for python on windows, please run the following command (or double click on it):
+
+```shell
+setup.bat
+```
+
+It will ask you your python command (please enter the python command that will enable you to run python 3.8+). For example python.
+The program will then ask you your pip command. Please enter your pip command linked to the python you have entered previously. For example pip.
+
+Finally you will have a new batch script generated: run.bat. You can run it using the following command (or double clicking on it):
+
+```shell
+run.bat
+```
 
 ### Linux
 

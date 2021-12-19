@@ -427,8 +427,18 @@ class TabuSearch:
                
         self.__running = False
 
-    def __addNewSolution(self, solution: SolutionCvrp, evaluation: float, rounded_json: int = 2):
+    def __addNewSolution(self, solution: SolutionCvrp, evaluation: float, rounded_json: int = 2) -> None:
         """
+        addNewSolution()
+        
+        Method to add solution to the historic
+        
+        :param solution: Solution to add
+        :type solution: SolutionCvrp
+        :param evaluation: Evaluation of the solution
+        :type evaluation: float
+        :param rounded_json: The round precision for the solution to pass to redis, default to 2 (opt.)
+        :type rounded_json: int
         """
         # Create an history of the  best value
         self.__best_solution_evaluation_evolution.append(evaluation)

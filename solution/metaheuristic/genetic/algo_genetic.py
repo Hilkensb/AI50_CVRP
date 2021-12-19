@@ -98,7 +98,7 @@ def genetic(
                 population_conducteur = population_conducteur.tolist()
                 population_copy, population_conducteur_temp = createSubRoute(population_copy, vehicle_capacity, customer_demand)
                 population_conducteur.append(population_conducteur_temp)
-                population_conducteur = numpy.array(population_conducteur)
+                population_conducteur = numpy.array(population_conducteur, dtype=object)
                 
                 # 
                 y = population_conducteur[-1]

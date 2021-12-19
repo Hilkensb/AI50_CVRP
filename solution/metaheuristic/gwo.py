@@ -8,6 +8,8 @@ from typing import List, Dict, Tuple, Union
 import math
 import json
 import threading
+# import statistics as stat
+# import matplotlib.pyplot as plt
 
 # Other Library
 import numpy
@@ -23,15 +25,6 @@ from gui.config import redis_server, SOLUTION_TOPIC
 from utils.redisutils import isRedisAvailable
 from utils.parseparameters import SHOW_SOLUTION
 
-    
-# ----------------------------- Global variables ---------------------------- #    
-   
-# Set and dicts to memorize which cluster of point we already treated
-# And get the route and their evaluation of cluster point already treated
-# Used to build route and their evaluation more quickly  
-cluster_set = set()
-route_dict = dict()
-route_values_dict = dict()
 
 # ------------------------ Grey Wolf Optimizer Class ------------------------ #
 
@@ -94,26 +87,18 @@ class Wolf:
         builded_route: List[RouteCvrp] = []   
         # Build the route with the customer assignment to cluster
         for customer_cluster in self.assignment:
-        
-            # hash the clusters point
-            key=hash(tuple(customer_cluster))  
-            # If this cluster has already been seen      
-            if key in cluster_set:
-                builded_route.append(route_dict[key])
-                evaluation += route_values_dict[key]
-            else:
-                # Build route wih the assignment in the cluster
-                route_list: List[NodeWithCoord] = buildClusterRoute(
-                    cluster_customer=customer_cluster, depot=self.cvrp.depot
-                )
-                # Build the route cvrp
-                new_route: RouteCvrp = RouteCvrp(route=route_list)
-                # Add it to the list of route
-                builded_route.append(new_route)
-                evaluation += new_route.evaluation()
-                cluster_set.add(key)
-                route_dict[key] = new_route
-                route_values_dict[key] = evaluation
+
+            # Build route wih the assignment in the cluster
+            route_list: List[NodeWithCoord] = buildClusterRoute(
+                cluster_customer=customer_cluster, depot=self.cvrp.depot
+            )
+            # Build the route cvrp
+            new_route: RouteCvrp = RouteCvrp(route=route_list)
+            # Add it to the list of route
+            builded_route.append(new_route)
+            
+            route_eval: flaot = new_route.evaluation() 
+            evaluation += route_eval + (new_route.demandSupplied() * route_eval * 0.1 if new_route.demandSupplied() > self.cvrp.vehicule_capacity else 0)
             
         # Build the solution
         self.solution_found: SolutionCvrp = SolutionCvrp(instance=self.cvrp, route=builded_route)
@@ -155,6 +140,8 @@ class WolfPack:
         
         self.__running = True
         rnd: random.Random = random.Random(0)
+     
+        # wolf_pack_fitness: List[List[float]] = []
      
         # create n random wolves
         population: List[Wolf] = [ Wolf(cvrp=cvrp) for i in range(wolf_number)]
@@ -251,6 +238,7 @@ class WolfPack:
             # Add the solution
             self.__best_solution_evolution.append(alpha_wolf.solution_found)
             self.__best_solution_evaluation_evolution.append(alpha_wolf.fitness)
+            # wolf_pack_fitness.append([ w.fitness for w in population ])
             
             # if redis is on
             if isRedisAvailable():
@@ -264,6 +252,14 @@ class WolfPack:
                 redis_server.publish(topic, json.dumps(json_data))
             
         # end-while
+     
+        # plt.plot(list(range(len(wolf_pack_fitness))), [stat.mean(fit) for fit in wolf_pack_fitness], label='Wolf pack')
+        # plt.plot(list(range(len(self.__best_solution_evaluation_evolution))), self.__best_solution_evaluation_evolution, label='Alpha Wolf')
+        # plt.legend()
+        # plt.title('Evolution of the fitness of the alpha wolf and the wolf pack')
+        # plt.xlabel('Iteration')
+        # plt.ylabel('Fitness')
+        # plt.show()
      
         # returning the best solution
         return self.__best_solution_evolution, self.__best_solution_evaluation_evolution
@@ -468,7 +464,7 @@ def kMeanCapacited(
         cluster_center = [cluster.getCoordinates() for cluster in cluster_center]
     
     # Get the reamining capacity of the cluster
-    cluster_capacity: List[int] = [cvrp.vehicule_capacity] * cluster_number
+    cluster_capacity: List[int] = [cvrp.vehicule_capacity for i in range(cluster_number)]
     
     # Shuffle the list to never have the customers in the same order
     customer_shuffle: List[CustomerCvrp] = copy.copy(cvrp.customers)
@@ -505,7 +501,7 @@ def kMeanCapacited(
             else:
                 # Compute the ratio
                 # ratio: float = distance / customer.demand
-                ratio: int = cluster_capacity[index] - customer.demand
+                ratio: int = distance / (distance * cluster_capacity[index] - customer.demand * (-0.1)) if cluster_capacity[index] - customer.demand < 0 else 0
                 # If the ratio is the best
                 if (smallest_dist == sys.maxsize and ratio > smallest_ratio):
                     # Change the best cluster

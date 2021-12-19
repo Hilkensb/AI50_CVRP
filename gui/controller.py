@@ -142,10 +142,24 @@ def randomInstance(cvrp_id: str):
         # if it is not made, the string of the html code will be displayed
         html_instance_graph = Markup(instance_graph)
         
+        # Get the ml prediction
+        ml_model: ModelSeq = ModelSeq()
+        # Get teh db parameter to predict then
+        k_mean: K_means = K_means(cvrp=cvrp_instance)
+        k_mean.run()
+        db_param: float = k_mean.DB
+        # Take the prediction
+        pred: List = ml_model.pred(
+            nb_customers=cvrp_instance.nb_customer,
+            nb_vehicles=cvrp_instance.minVehiculeNumber(),
+            capacity=cvrp_instance.vehicule_capacity, DB=db_param
+        )
+        
         return render_template(
             "instance_parameters.html", instance_graph=html_instance_graph,
             nb_customer=cvrp_instance.nb_customer, round=round, min=min,
-            max=max, instance_id=cvrp_id
+            max=max, instance_id=cvrp_id, nb_iter=pred[0], aspiration=pred[1]==1,
+            lenght_tabu=pred[2], time_tabu=pred[3]
         )
     else:
         # return the index.html template
