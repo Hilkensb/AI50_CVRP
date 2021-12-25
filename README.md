@@ -10,6 +10,8 @@ This project requires a 3.8+ python version and multiple library to be runned. B
 pip install requirements.txt
 ```
 
+**_Note:_** You can also run the setup.bat (or setup.sh dependng on your os) to install pyhton dependancies. See the next section for more details.
+
 To be runned the application needs [Redis](https://redis.io/ 'redis.io') server available (version for windows and linux are present in the redis folder).
 
 Finally, since the multi-agent algorithm as been written in  [sarl](http://www.sarl.io/ 'sarl programming language') you will need it in order to get a solution from this algorithm.
@@ -26,8 +28,8 @@ To install all dependencies for python on windows, please run the following comm
 setup.bat
 ```
 
-It will ask you your python command (please enter the python command that will enable you to run python 3.8+). For example python.
-The program will then ask you your pip command. Please enter your pip command linked to the python you have entered previously. For example pip.
+It will ask you your python command (please enter the python command that will enable you to run python 3.8+). For example *python*.
+The program will then ask you your pip command. Please enter your pip command linked to the python you have entered previously. For example *pip*.
 
 Finally you will have a new batch script generated: run.bat. You can run it using the following command (or double clicking on it):
 
@@ -43,8 +45,8 @@ To install all dependencies for linux os, please run the following command:
 ./setup.sh
 ```
 
-It will ask you your python command (please enter the python command that will enable you to run python 3.8+). For example python3.8.
-The program will then ask you your pip command. Please enter your pip command linked to the python you have entered previously. For example pip3.8.
+It will ask you your python command (please enter the python command that will enable you to run python 3.8+). For example *python3.8*.
+The program will then ask you your pip command. Please enter your pip command linked to the python you have entered previously. For example *pip3.8*.
 
 Finally you will have a new shell script generated: run.sh. You can run it using the following command:
 
@@ -52,7 +54,11 @@ Finally you will have a new shell script generated: run.sh. You can run it using
 ./run.sh
 ```
 
+**_Note:_** To run the multi-agent algorithm, you need to launch the sarl program in the *sarl/vrp* directory.
+
 ## Launching the web application
+
+**_Note:_** If you have generated a run.bat or run.sh you can just run this file, no need to launch python. You can then ignore this section.
 
 ### Configuration 
 
