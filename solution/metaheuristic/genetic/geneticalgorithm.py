@@ -45,7 +45,7 @@ def geneticAlgorithm(
     distance: np.nparray = np.array(cvrp.distanceMatrix())
 
     # Run the genetic algorithm
-    fitness, population = genetic(number_conductor, number_node, vehicle_capacity, customer_demand, distance, topic=topic)
+    fitness, population = genetic(number_conductor, number_node, vehicle_capacity, customer_demand, distance, topic=topic, num_generations=num_generations)
 
     # Create the routes
     route_list = []
