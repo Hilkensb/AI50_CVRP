@@ -4,15 +4,19 @@ import numpy as np
 #import pyomo
 
 class Solver():
-
+    #class solver to resolve the CVRP problem from the mathematical modeling presented
+    #in the report
     def __init__(self,customers,nb_vehicles,Q,cost):
         #super(Solver,self).__init__()
+        #using of a concrete model
         self.__model = pyo.ConcreteModel()
+        #retrieving the parameters of the CVRP problem
         self.__customers = customers
         self.__nbVehicules = nb_vehicles
         self.__capacity = Q
         self.__cost = cost
-
+        #initialization of the sets, the parameters, the variables used, the
+        #objective function and the constraints
         self.init_customers_parameters()
         self.create_sets()
         self.create_parameters()
@@ -20,6 +24,7 @@ class Solver():
         self.create_objectif()
         self.create_constraintes()
 
+    #function to initialize the parameters of customers
     def init_customers_parameters(self):
 
         self.__numCustomers = []
@@ -28,6 +33,7 @@ class Solver():
             self.__numCustomers.append(c.node_id-1)
             self.__demands[c.node_id-1] = c.demand
 
+    #function to initialize the sets used in the mathematical model
     def create_sets(self):
 
         #set {1,...,n} number of customers
@@ -48,6 +54,7 @@ class Solver():
         #set {0,...,p} number of nodes (depot + customers)
         self.__model.__p = pyo.Set(initialize=P)
 
+    #function to initialize the parameters of the mathematical model
     def create_parameters(self):
 
         self.__model.__D = pyo.Param(self.__model.__n,initialize = self.__demands)
@@ -68,11 +75,11 @@ class Solver():
 
         self.__model.__C = pyo.Param(self.__model.__p,self.__model.__p, initialize =  c)
 
-
+    #function to create the binary variables
     def create_variables(self):
 
         self.__model.__x = pyo.Var(self.__model.__p,self.__model.__p,self.__model.__k,within = pyo.Binary)
-
+    #methode to create the objective function to minimize
     def create_objectif(self):
 
         self.__model.__obj = pyo.Objective(expr = sum(self.__model.__C[i,j]*self.__model.__x[i,j,k]
@@ -80,6 +87,7 @@ class Solver():
                                                     for j in self.__model.__p if j!=i
                                                     for k in self.__model.__k),sense = pyo.minimize)
 
+    #methode to define mathematically the different constraints of the CVRP problem
     def create_constraintes(self):
 
         self.__model.__C1 = pyo.ConstraintList(doc = "Each customer be visited by exactly one vehicle")
@@ -116,11 +124,13 @@ class Solver():
                         for j in s if j!=i
                         for k in self.__model.__k) <= len(s) - 1
                 )
+    #methode to run the solver
     def run(self):
         self.__instance = self.__model.create_instance('data.dat')
         opt = pyo.SolverFactory('glpk')
         self.__result = opt.solve(self.__model)
 
+    #methode to show the results of the solver
     def show(self):
 
         #instance.pprint()

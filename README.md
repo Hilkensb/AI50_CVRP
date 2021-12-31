@@ -109,7 +109,17 @@ As said previously we also use some heuristics to build a first solution for som
 - First Fit Decreasing (not available on the web gui)
 - Nearest Neighbors (not available on the web gui)
 
-### Learning algorithm
+### Machine Learning
 
+A neural network model has been trained with our dataset that we created (Dataset.csv in the folder ML) to find the best setting to use for the tabu search algorithm.
+
+Moreover a K_means algorithm have been implemented to define different clusters of customers in the graph and to compute the Davies-Bouldin index used among the inputs of our neural network model.
+
+Neural network model used :
+![](./misc/Neural_Network.png)
+
+The Artificial Intelligence have been integrated to the software and gives directly the best settings to use for the tabu search algorithm.
+
+### Learning algorithm
 The last type of algorithm implement is an implementation of the capacited K-means. Note that this algorithm is not available from the web interface, but may be used from python.
 
