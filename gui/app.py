@@ -104,6 +104,8 @@ class Application:
         :type debug: bool
         """
 
+        
+
         # Check if redis is available
         if not isRedisAvailable():
             # Display a warning message

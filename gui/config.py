@@ -26,7 +26,7 @@ BIG_INSTANCE: int = 400
 AUTO_LAUNCH_REDIS: bool = True
 # Redis folder
 WINDOWS_REDIS_FOLDER: str = "redis\Windows\Redis-x64-3.0.504\\"
-UNIX_REDIS_FOLDER: str = "redis\\Unix\\redis\\Unix\\redis-6.2.1\\src\\"
+UNIX_REDIS_FOLDER: str = "redis/Unix/redis-6.2.1/src/"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~  SARL application setting ~~~~~~~~~~~~~~~~~~~~~~~~ #
 
@@ -40,7 +40,7 @@ AUTO_LAUNCH_SARL: bool = True
 # Folder were all html templates are stored
 TEMPLATE_FOLDER: str = "html"
 # Folder were pdf are stored
-PDF_FOLDER: str = "gui\static\pdf\\"
+PDF_FOLDER: str = "gui/static/pdf/"
 
 # ~~~~~~~~~~~~~~~~~~~~~~~~~  Flask Address settings ~~~~~~~~~~~~~~~~~~~~~~~~~ #
 

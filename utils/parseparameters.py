@@ -41,7 +41,7 @@ def getOptions(args: List[str]):
                 print(Fore.GREEN + "Redis has been launched." + Style.RESET_ALL)
             elif platform == "linux":
                 # Run redis server
-                subprocess.Popen(os.path.join(UNIX_REDIS_FOLDER, "redis-server"))
+                subprocess.Popen(os.path.join(config.UNIX_REDIS_FOLDER, "redis-server"))
                 print(Fore.GREEN + "Redis has been launched." + Style.RESET_ALL)
             else:
                print(Fore.RED + "/!\ ERRROR: Functionnality unavailable for your os. You need to launch redis manually." + Style.RESET_ALL)
