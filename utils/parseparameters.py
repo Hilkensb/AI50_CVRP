@@ -59,10 +59,4 @@ def getOptions(args: List[str]):
     # Run test
     if options.test:
         runTest()
-        
-    # Show evolution
-    if options.show_evolution:
-        config.redis_server.set('SHOW_SOLUTION',  1 if options.show_evolution else 0)
-    else:
-        config.redis_server.set('SHOW_SOLUTION', 1 if config.SHOW_SOLUTION else 0)
 
