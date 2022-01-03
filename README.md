@@ -54,7 +54,7 @@ Finally you will have a new shell script generated: run.sh. You can run it using
 ./run.sh
 ```
 
-**_Note:_** To run the multi-agent algorithm, you need to launch the sarl program in the *sarl/vrp* directory.
+**_Note:_** To run the multi-agent algorithm, you need to launch the sarl program in the *sarl/vrp* directory. You then need to launch the *ListnerAgent*.
 
 ## Launching the web application
 
